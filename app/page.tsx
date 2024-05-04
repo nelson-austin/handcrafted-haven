@@ -4,6 +4,7 @@ import SideComponet from "./sideComponent";
 import Cart from "./ui/cart";
 import Header from "./ui/header";
 import HeroImage from "./heroImage";
+import RegisterLink from "./registerLink";
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
         <SideComponet />
         <HeroImage />
       </div>
-      
+      <RegisterLink />
     </main>
   );
 }
