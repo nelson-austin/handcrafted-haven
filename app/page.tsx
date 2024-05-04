@@ -1,10 +1,19 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+import LoginButton from "./loginButton";
+import SideComponet from "./sideComponent";
+import Cart from "./ui/cart";
+import Header from "./ui/header";
+import HeroImage from "./heroImage";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <p className="text-red-300">Hello World!</p>
+    <main className="">
+      <Header />
+      <div className="flex flex-col  items-center gap-3 md:flex-row px-3">
+        <SideComponet />
+        <HeroImage />
+      </div>
+      
     </main>
   );
 }
