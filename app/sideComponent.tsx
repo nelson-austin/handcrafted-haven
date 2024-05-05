@@ -9,7 +9,7 @@ const inter = Inter({
 
 export default function SideComponet() {
   return (
-    <div className="flex flex-col items-start bg-sky-100 p-4 rounded-lg shrink-0 md:w-[365px] w-90">
+    <div className="flex flex-col items-start bg-blue-300 p-4 rounded-lg shrink-0 md:w-[365px] w-90">
       <p
         className={`${inter.className} text-xl text-gray-900 md:text-3xl md:leading-normal flex-col`}
       >
