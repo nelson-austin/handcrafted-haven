@@ -10,65 +10,72 @@ export const metadata: Metadata = {
   title: "Products",
 };
 
-const cartCards = [
+export interface CardProps {
+  cardId: string;
+  cardImage: string;
+  price: number;
+  description: string;
+}
+
+const cartCards: CardProps[] = [
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
   {
     cardId: uuid,
     cardImage: "/product-placeholder-image.png",
-    price: "$345.00",
+    price: 345.00,
     description: "Lorem Ipsum dolo mite",
   },
 ];
@@ -94,7 +101,7 @@ export default function ProductPage() {
             key={card.cardId}
             className="flex flex-col items-center justify-center p-4 bg-blue-50"
           >
-            <ProductCard cardId = {card.cardId} cardImage = {card.cardImage} price = {card.price} description = {card.description}/>
+            <ProductCard key={ card.cardId } {...card}/>
 
           </div>
         );
