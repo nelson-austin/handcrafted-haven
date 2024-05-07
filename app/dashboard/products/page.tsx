@@ -97,13 +97,7 @@ export default function ProductPage() {
       <div className = "flex flex-wrap">
       {cartCards.map((card) => {
         return (
-          <div
-            key={card.cardId}
-            className="flex flex-col items-center justify-center p-4 bg-blue-50"
-          >
             <ProductCard key={ card.cardId } {...card}/>
-
-          </div>
         );
       })}
       </div>
