@@ -4,10 +4,10 @@ export default function HeroImage() {
     <div className="">
       <Image
         src={"/desktop-hero.png"}
-        width={1100}
+        width={1000}
         height={760}
         alt="Placeholder desktop image"
-        className="rounded-lg h-[483px] gap-0 object-cover hidden md:block"
+        className="rounded-lg hidden md:block w-full"
       />
       <Image
         src={"/mobile-placeholder.png"}
