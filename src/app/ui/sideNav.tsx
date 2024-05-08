@@ -12,7 +12,7 @@ const navLinks = [
 export default function SideNav() {
   const pathname = usePathname();
   return (
-    <div className={`flex flex-col bg-blue-50 p-2 `}>
+    <div className={`flex flex-col bg-blue-50 p-2`}>
       <div className="flex h-25 items-center shrink-0 bg-green-900 rounded-lg m-3 md:h-40">
         <Logo />
       </div>
