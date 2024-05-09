@@ -1,4 +1,6 @@
 import Image from "next/image";
+import HeroImageContent from "./hero-image-content";
+
 export default function HeroImage() {
   return (
     <div className="">
@@ -16,6 +18,9 @@ export default function HeroImage() {
         alt="Placeholder mobile image"
         className="block rounded-lg md:hidden"
       />
+      <div className="mb-30">
+        <HeroImageContent />
+      </div>
     </div>
   );
 }

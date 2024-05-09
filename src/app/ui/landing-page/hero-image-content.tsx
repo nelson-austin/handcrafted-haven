@@ -7,9 +7,9 @@ const inter = Inter({
   weight: ["400", "700"],
 });
 
-export default function SideComponet() {
+export default function HeroImageContent() {
   return (
-    <div className="flex flex-col items-start bg-blue-300 p-4 rounded-lg shrink-0 md:w-[365px] w-90">
+    <div className="flex flex-col w-[385px] items-start mx-3 bg-blue-300 p-4 rounded-lg shrink-0 md:w-[640px] lg:w-[98%] mx-3">
       <p
         className={`${inter.className} text-xl text-gray-900 md:text-3xl md:leading-normal flex-col`}
       >
