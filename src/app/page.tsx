@@ -10,7 +10,7 @@ import HeroViewProducts from "./ui/landing-page/hero-components/hero-view-produc
 // import RegisterLink from "./ui/registerLink";
 
 export const metadata: Metadata = {
-  title: "Welcome to Haven",
+  title: "Welcome to Handcrafted Haven",
   description: "Login into Handcrafted Haven or Sign Up",
 };
 
