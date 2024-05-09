@@ -7,7 +7,7 @@ export default function HeroImage() {
       <Image
         src={"/desktop-hero.png"}
         width={1000}
-        height={760}
+        height={560}
         alt="Placeholder desktop image"
         className="rounded-lg hidden md:block w-full"
       />
