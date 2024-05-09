@@ -1,9 +1,12 @@
 import { lazy } from "react";
-import Buttons from "./ui/landing-page/buttons";
-const HeroImage = lazy(() => import("./ui/landing-page/heroImage"));
+import Buttons from "./ui/landing-page/buttons/buttons";
+const HeroRegister = lazy(
+  () => import("./ui/landing-page/hero-components/hero-register")
+);
 import { Metadata } from "next";
-import Header from "./ui/landing-page/header";
-import Footer from "./ui/landing-page/footer";
+import Header from "./ui/landing-page/partials/header";
+import Footer from "./ui/landing-page/partials/footer";
+import HeroViewProducts from "./ui/landing-page/hero-components/hero-view-products";
 // import RegisterLink from "./ui/registerLink";
 
 export const metadata: Metadata = {
@@ -18,8 +21,7 @@ export default function Home() {
         <Header />
       </div>
       <main className="p-3">
-        {/* <SideComponet /> */}
-        <HeroImage />
+        <HeroRegister />
         <Buttons />
       </main>
       {/* <RegisterLink /> */}

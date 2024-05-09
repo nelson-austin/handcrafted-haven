@@ -1,7 +1,7 @@
 import Image from "next/image";
-import HeroImageContent from "./hero-image-content";
+import ViewProducts from "./view-products";
 
-export default function HeroImage() {
+export default function HeroViewProducts() {
   return (
     <div className="">
       <Image
@@ -19,7 +19,7 @@ export default function HeroImage() {
         className="block rounded-lg md:hidden"
       />
       <div className="mb-30">
-        <HeroImageContent />
+        <ViewProducts />
       </div>
     </div>
   );

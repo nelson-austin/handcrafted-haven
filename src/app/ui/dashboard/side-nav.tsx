@@ -1,5 +1,5 @@
 "use client";
-import Logo from "./header";
+import Logo from "../landing-page/partials/header";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";

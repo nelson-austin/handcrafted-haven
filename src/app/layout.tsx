@@ -1,7 +1,5 @@
-import { Source_Sans_3 } from "next/font/google";
+import { source_sans_3 } from "./lib/fonts";
 import "./globals.css";
-
-const source_sans_3 = Source_Sans_3({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,

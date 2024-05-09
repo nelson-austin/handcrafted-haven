@@ -1,13 +1,8 @@
-import { Inter } from "next/font/google";
-import styles from "./page.module.css";
-import RegisterButton from "./register-button";
+import styles from "../landing-page.module.css";
+import ViewProductsButton from "../buttons/view-products-button";
+import { inter } from "@/app/lib/fonts";
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-export default function HeroImageContent() {
+export default function ViewProducts() {
   return (
     <div
       className={`${styles.heroContent} flex flex-col w-[385px] items-start mx-3 bg-blue-200 p-4 rounded-lg shrink-0 md:w-[640px] lg:w-[63%] mx-3`}
@@ -19,7 +14,7 @@ export default function HeroImageContent() {
         aims to provide a platform for artisans and crafters to showcase and
         sell their unique handcrafted items.
       </p>
-      <RegisterButton />
+      <ViewProductsButton />
     </div>
   );
 }
