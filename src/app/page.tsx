@@ -1,9 +1,7 @@
-import { lazy } from "react";
 import Buttons from "./ui/landing-page/buttons/buttons";
 import { Metadata } from "next";
 import Header from "./ui/landing-page/partials/header";
 import Footer from "./ui/landing-page/partials/footer";
-import Carousel from "@/components/carousel.component";
 import HeroRegister from "./ui/landing-page/hero-components/hero-register";
 import HeroViewProducts from "./ui/landing-page/hero-components/hero-view-products";
 import HeroLearnMore from "./ui/landing-page/hero-components/hero-learn-more";
@@ -22,9 +20,8 @@ export default function Home() {
         <Header />
       </div>
       <main className="flex flex-col gap-3">
-        {/* <Carousel slides={slides} /> */}
-        {/* <HeroRegister /> */}
-        <HeroLearnMore />
+        <HeroRegister />
+        {/* <HeroLearnMore /> */}
         {/* <HeroViewProducts /> */}
         <Buttons />
       </main>
