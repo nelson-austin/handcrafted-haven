@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Register from "./register";
 import LearnMore from "./learn-more";
+import ViewProducts from "./view-products";
 
-export default function HeroLearnMore() {
+export default function HeroContent() {
   return (
     <div className="">
       <Image
@@ -19,7 +21,9 @@ export default function HeroLearnMore() {
         className="block w-[94%] m-auto rounded-lg md:hidden"
       />
       <div className="flex justify-center">
-        <LearnMore />
+        <Register />
+        {/* <ViewProducts /> */}
+        {/* <LearnMore /> */}
       </div>
     </div>
   );
