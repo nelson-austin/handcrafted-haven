@@ -4,7 +4,7 @@ import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 const uuid = uuidv4();
 import { Metadata } from "next";
-import ProductCard from "../../ui/products/productCard";
+import ProductCard from "../ui/products/productCard";
 
 export const metadata: Metadata = {
   title: "Products",
@@ -88,12 +88,7 @@ const lusitana = Lusitana({
 export default function ProductPage() {
   return (
     
-    <section>
-      <h2
-        className={`${lusitana.className} text-2xl pb-5 text-center md:text-3xl md:text-left`}
-      >
-        Product Page
-      </h2>
+    <div className="flex flex-col md:p-3">
       <div className = "flex flex-wrap">
       {cartCards.map((card) => {
         return (
@@ -101,6 +96,6 @@ export default function ProductPage() {
         );
       })}
       </div>
-    </section>
+    </div>
   );
 }
