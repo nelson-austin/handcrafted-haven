@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { Source_Sans_3 } from "next/font/google";
-import "./globals.css";
-
-const source_sans_3 = Source_Sans_3({ subsets: ["latin"] });
+import Logo from "../ui/logo";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -15,10 +12,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${source_sans_3.className} antialiased`}>
-        {children}
-      </body>
-    </html>
+    <>
+        <div className="flex h-25 items-center shrink-0 bg-green-900 rounded-lg m-3 md:h-40">
+            <Logo />
+        </div>
+        <main>
+            {children}
+        </main>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from "next/link";
 import Image from 'next/image';
-import { CardProps } from '../../dashboard/products/page';
+import { CardProps } from '../../(main)/page';
 
 export default function ProductCard({ cardImage, price, description }: CardProps) {
   return (
