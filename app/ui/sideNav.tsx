@@ -6,15 +6,16 @@ import clsx from "clsx";
 
 const navLinks = [
   { name: "Home", href: "/dashboard" },
-  { name: "Products", href: "/dashboard/products" },
+  { name: "Inventory", href: "/dashboard/inventory" },
+  { name: "Invoices", href: "/dashboard/invoices" },
 ];
 
 export default function SideNav() {
   const pathname = usePathname();
   return (
     <div className={`flex flex-col bg-blue-50 p-2 `}>
-      <div className="flex h-25 items-center shrink-0 bg-green-900 rounded-lg m-3 md:h-40">
-        <Logo />
+      <div className="h-25 items-center shrink-0 rounded-lg m-3">
+        <h2>My Dashboard</h2>
       </div>
       <div className="">
         {navLinks.map((link) => {
