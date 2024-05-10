@@ -9,16 +9,16 @@ export default function HeroViewProducts() {
         width={1000}
         height={560}
         alt="Placeholder desktop image"
-        className="rounded-lg hidden md:block w-full"
+        className="rounded-lg hidden md:block w-[97%] m-auto lg:w-[97.5%]"
       />
       <Image
         src={"/mobile-placeholder.png"}
         width={560}
         height={620}
         alt="Placeholder mobile image"
-        className="block rounded-lg md:hidden"
+        className="block w-[94%] m-auto rounded-lg md:hidden"
       />
-      <div className="mb-30">
+      <div className="flex justify-center">
         <ViewProducts />
       </div>
     </div>
