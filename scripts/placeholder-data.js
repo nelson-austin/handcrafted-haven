@@ -113,70 +113,70 @@ const products = [
 
 const reviews = [
     {
-      review_id: '5bc91d8c-0d41-47c4-80a3-87a3b1e1bfc2',
+      id: '5bc91d8c-0d41-47c4-80a3-87a3b1e1bfc2',
       product_id: products[0].id,
       user_id: users[2].id,
       rating: 4,
       comment: "Great product, does exactly what it promises."
     },
     {
-      review_id: '9d0d276f-f0d2-4f29-bae6-e9b21c3ef34b',
+      id: '9d0d276f-f0d2-4f29-bae6-e9b21c3ef34b',
       product_id: products[0].id,
       user_id: users[3].id,
       rating: 5,
       comment: "Excellent quality, exceeded my expectations."
     },
     {
-      review_id: '6b6344f9-6d68-4da7-a632-c021cfb2b04a',
+      id: '6b6344f9-6d68-4da7-a632-c021cfb2b04a',
       product_id: products[1].id,
       user_id: users[4].id,
       rating: 3,
       comment: "Decent product, but could be improved."
     },
     {
-      review_id: 'a2f61875-8407-4d26-a4d4-6757ac3baf0a',
+      id: 'a2f61875-8407-4d26-a4d4-6757ac3baf0a',
       product_id: products[1].id,
       user_id: users[2].id,
       rating: 2,
       comment: "Not worth the price, disappointed."
     },
     {
-      review_id: '1b1a674c-0a29-4e5d-8799-eb7a791f75d8',
+      id: '1b1a674c-0a29-4e5d-8799-eb7a791f75d8',
       product_id: products[2].id,
       user_id: users[3].id,
       rating: 5,
       comment: "Absolutely love it, would recommend to everyone."
     },
     {
-      review_id: '5c0a831b-80b2-4647-978b-cb99633fd3a3',
+      id: '5c0a831b-80b2-4647-978b-cb99633fd3a3',
       product_id: products[2].id,
       user_id: users[4].id,
       rating: 4,
       comment: "Very satisfied with the purchase."
     },
     {
-      review_id: '4bc4f72e-0f6f-458a-97f0-30ab1d39c7e1',
+      id: '4bc4f72e-0f6f-458a-97f0-30ab1d39c7e1',
       product_id: products[3].id,
       user_id: users[2].id,
       rating: 2,
       comment: "Disappointing, didn't meet my expectations."
     },
     {
-      review_id: '763b97d2-ba6f-4cb1-835e-ee28cbe688e7',
+      id: '763b97d2-ba6f-4cb1-835e-ee28cbe688e7',
       product_id: products[3].id,
       user_id: users[3].id,
       rating: 3,
       comment: "Average product, nothing special."
     },
     {
-      review_id: 'c319fa67-8a4b-46dc-9c8c-79b3b1c29a3a',
+      id: 'c319fa67-8a4b-46dc-9c8c-79b3b1c29a3a',
       product_id: products[4].id,
       user_id: users[4].id,
       rating: 4,
       comment: "Good value for money, happy with the purchase."
     },
     {
-      review_id: '3af15707-67b5-4db9-93ed-78e15438e7f5',
+      id: '3af15707-67b5-4db9-93ed-78e15438e7f5',
       product_id: products[4].id,
       user_id: users[2].id,
       rating: 5,

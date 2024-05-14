@@ -3,8 +3,9 @@ const { db } = require('@vercel/postgres');
 const {
   users,
   products,
+  reviews,
   orders,
-} = require('../app/lib/placeholder-data.js')
+} = require('./placeholder-data.js')
 const bcrypt = require('bcrypt');
 
 async function seedUsers(client) {
@@ -92,6 +93,49 @@ async function seedProducts(client) {
   }
 };
 
+
+async function seedReviews(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "Reviews" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS reviews (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        product_id UUID REFERENCES products(id),
+        user_id UUID REFERENCES users(id),
+        rating DECIMAL(3, 1) CHECK (Rating >= 0 AND Rating <= 5) NOT NULL,
+        comment TEXT NOT NULL,
+        date Date DEFAULT CURRENT_DATE
+      );
+    `;
+    console.log(`Created "reviews" table`);
+
+    //Seed the "reviews" table
+    const insertedReviews = await Promise.all(
+      reviews.map(async (review) => {
+        console.log(review.id)
+        return client.sql`
+        INSERT INTO reviews (id, product_id, user_id, rating, comment, date)
+        VALUES (${review.id}, ${review.product_id}, ${review.user_id}, ${review.rating}, ${review.comment}, ${review.date})
+        ON CONFLICT (ID) DO NOTHING;
+      `
+      
+      }),
+    );
+
+    console.log(`Seeded ${insertedReviews.length} reviews`);
+
+    return {
+      createTable,
+      products: insertedReviews,
+    };
+
+    } catch (error) {
+    console.error('Error seeding reviews:', error);
+    throw error;
+  }
+};
+
 async function seedOrders(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -108,7 +152,6 @@ async function seedOrders(client) {
     `;
 
     console.log(`Created "orders" table`);
-
     //Seed the "orders" table
     const insertedOrders = await Promise.all(
       orders.map(async (order) => {
@@ -138,6 +181,7 @@ async function main() {
 
   await seedUsers(client);
   await seedProducts(client);
+  await seedReviews(client);
   await seedOrders(client);
 
   await client.end();
