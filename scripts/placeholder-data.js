@@ -43,6 +43,7 @@ const products = [
         id: 'e5f1f7a1-8dc8-42f5-84a2-50c0a1f6e5bc',
         user_id: users[1].id,
         name: "Hand-painted Canvas",
+        image: "painted-canvas.jpg",
         description: "Original abstract artwork on canvas",
         price: 149.99, "quantity_available": 5
     },
@@ -50,6 +51,7 @@ const products = [
         id: 'ac0f8dd6-8944-4b9c-80f3-19cf1d5ad9a0',
         user_id: users[1].id,
         name: "Ceramic Vase",
+        image: "ceramic-vase.jpg",
         description: "Handcrafted ceramic vase with intricate patterns",
         price: 79.99, "quantity_available": 10
     },
@@ -57,6 +59,7 @@ const products = [
         id: '7a1dc67e-01da-4d0d-a58b-d99b59a0e33e',
         user_id: users[1].id,
         name: "Silver Necklace",
+        image: "silver-necklace.jpg",
         description: "Elegant silver necklace with a unique pendant",
         price: 199.99, "quantity_available": 8
     },
@@ -64,6 +67,7 @@ const products = [
         id: '0f15de8b-5ab3-4fe4-9ba1-3cd9f6cbbd0e',
         user_id: users[1].id,
         name: "Gemstone Bracelet",
+        image: "gem-bracelet.jpg",
         description: "Bracelet adorned with colorful gemstones",
         price: 129.99, "quantity_available": 12
     },
@@ -71,6 +75,7 @@ const products = [
         id: 'a242c6a4-b4e0-4b9d-8e82-1a03680ef9e3',
         user_id: users[0].id,
         name: "Wood Carving Sculpture",
+        image: "wood-carving.jpg",
         description: "Hand-carved wooden sculpture of an animal",
         price: 249.99, "quantity_available": 3
     },
@@ -78,6 +83,7 @@ const products = [
         id: 'eb3f77e5-85e7-42a5-a1fc-86c541e396f8',
         user_id: users[1].id,
         name: "Gold Earrings",
+        image: "gold-earrings.jpg",
         description: "Stylish gold earrings with intricate detailing",
         price: 299.99, "quantity_available": 6
     },
@@ -85,6 +91,7 @@ const products = [
         id: '26f26e6c-07c4-4bbf-a81d-6a15f1f444ab',
         user_id: users[0].id,
         name: "Fiber Wall Hanging",
+        image: "macrame-hanging.jpg",
         description: "Bohemian-style fiber wall hanging for home decor",
         price: 89.99, "quantity_available": 7
     },
@@ -92,6 +99,7 @@ const products = [
         id: '7aa44721-fd96-4551-9b90-d2a0ab332026',
         user_id: users[1].id,
         name: "Pearl Ring",
+        image: "pearl-ring.jpg",
         description: "Classic pearl ring set in sterling silver",
         price: 179.99, "quantity_available": 9
     },
@@ -99,6 +107,7 @@ const products = [
         id: '4f876b60-c97a-4908-96d7-35cf4f5f2823',
         user_id: users[0].id,
         name: "Handwoven Basket",
+        image: "woven-basket.jpg",
         description: "Natural fiber basket woven by hand",
         price: 59.99, "quantity_available": 15
     },
@@ -106,6 +115,7 @@ const products = [
         id: '36a42922-f903-45e1-bd97-10f5d3e0a2fd',
         user_id: users[1].id,
         name: "Crystal Pendant",
+        image: "crystal-pendant.jpg",
         description: "Crystal pendant necklace on a delicate chain",
         price: 159.99, "quantity_available": 10
     }
@@ -298,5 +308,3 @@ module.exports = {
     reviews,
     orders,
 }
-
-  

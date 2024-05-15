@@ -4,6 +4,7 @@ import ProductCard from "@/app/ui/products/productCard";
 
 export default async function ProductGrid() {
     const products = await fetchFilteredProducts();
+    console.log(products)
 
 
     return (
@@ -12,7 +13,7 @@ export default async function ProductGrid() {
           <div className = "flex flex-wrap">
           {products.map((card) => {
             return (
-                <ProductCard cardId={''} cardImage={''} key={card.id} {...card}/>
+                <ProductCard cardId={''} cardImage={card.image} key={card.id} {...card}/>
             );
           })}
           </div>

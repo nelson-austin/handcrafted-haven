@@ -59,6 +59,7 @@ async function seedProducts(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID REFERENCES users(id),
         name VARCHAR(255) NOT NULL,
+        image VARCHAR(100),
         description TEXT,
         price NUMERIC(10, 2) NOT NULL,
         quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0)
@@ -71,11 +72,10 @@ async function seedProducts(client) {
     const insertedProducts = await Promise.all(
       products.map(async (product) => {
         return client.sql`
-        INSERT INTO products (id, user_id, name, description, price, quantity_available)
-        VALUES (${product.id}, ${product.user_id}, ${product.name}, ${product.description}, ${product.price}, ${product.quantity_available})
+        INSERT INTO products (id, user_id, name, image, description, price, quantity_available)
+        VALUES (${product.id}, ${product.user_id}, ${product.name}, ${product.image}, ${product.description}, ${product.price}, ${product.quantity_available})
         ON CONFLICT (ID) DO NOTHING;
       `
-      console.log(product.name);
       
       }),
     );
