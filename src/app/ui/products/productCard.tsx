@@ -20,7 +20,6 @@ export default function ProductCard({ name, cardImage, price, description }: Car
           <div className="font-bold text-xl mb-2">{name}</div>
           <p className="text-gray-700 text-base">
             {description}
-            {imgPath}
           </p>
           <p className="text-gray-700 text-base font-semibold">${price}</p>
         </div>
