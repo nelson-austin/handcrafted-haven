@@ -12,6 +12,7 @@ export async function fetchFilteredProducts() {
                 products.id,
                 products.user_id,
                 products.name,
+                products.image,
                 products.description,
                 products.price,
                 products.quantity_available
