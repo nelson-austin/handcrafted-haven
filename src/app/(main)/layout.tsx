@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Logo from "../ui/logo";
+import { Header } from "../ui/products/addToCartButton";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <>
         <div className="flex h-25 items-center shrink-0 bg-green-900 rounded-lg m-3 md:h-28">
-            <Logo />
+            <Header />
         </div>
         <main>
             {children}
