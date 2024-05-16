@@ -1,154 +1,148 @@
-'use server';
+"use server";
 
-import { z } from 'zod';
-import { sql } from '@vercel/postgres';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import { signIn } from '../../auth';
-import { AuthError } from 'next-auth';
+import { z } from "zod";
+import { sql } from "@vercel/postgres";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { signIn } from "../../auth";
+import { AuthError } from "next-auth";
+import bcrypt from "bcrypt";
 
 const FormSchema = z.object({
-  id: z.string(),
-  customerId: z.string({
-    invalid_type_error: 'Please select a customer.',
-  }),
-  amount: z.coerce
-    .number()
-    .gt(0, { message: 'Please enter an amount greater than $0.' }),
-  status: z.enum(['pending', 'paid'], {
-    invalid_type_error: 'Please select an invoice status.',
-  }),
-  date: z.string(),
+  name: z.string().min(1).max(32),
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8)
+    .max(32)
+    .refine((password) => {
+      return password.match("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
+    }, "Password cannot contain at least one letter and one number and be at least 8 characters long"),
+  is_seller: z.boolean(),
+  business_name: z.string(),
 });
 
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
-const UpdateInvoice = FormSchema.omit({ id: true, date: true });
+const UpdateUser = FormSchema.omit({ is_seller: true, business_name: true });
+const CreateUser = FormSchema.refine((schema) => {
+  if (schema.is_seller === true && schema.business_name.length < 1) {
+    return false;
+  }
+  return true;
+});
 
 export type State = {
   errors?: {
-    customerId?: string[];
-    amount?: string[];
-    status?: string[];
+    name?: string[];
+    email?: string[];
+    password?: string[];
+    is_seller?: boolean[];
+    business_name?: string[];
   };
   message?: string | null;
 };
- 
-export async function createInvoice(prevState: State, formData: FormData) {
+
+export async function createUser(prevState: State, formData: FormData) {
   // Validate form using Zod
-  const validatedFields = CreateInvoice.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+  const validatedFields = CreateUser.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    is_seller: formData.get("is_seller") === "true",
+    business_name: formData.get("business_name"),
   });
- 
+
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Invoice.',
+      message: "Missing Fields. Failed to Create User.",
     };
   }
- 
+
   // Prepare data for insertion into the database
-  const { customerId, amount, status } = validatedFields.data;
-  const amountInCents = amount * 100;
-  const date = new Date().toISOString().split('T')[0];
- 
+  const { name, email, password, is_seller, business_name } =
+    validatedFields.data;
+
+  // Hash the password
+  const hashedPassword = bcrypt.hashSync(password, 10);
+
+  const id = bcrypt.hashSync(email, 10);
+
   // Insert data into the database
   try {
     await sql`
-      INSERT INTO invoices (customer_id, amount, status, date)
-      VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+    INSERT INTO users (name, email, password, is_seller, business_name)
+    VALUES (${name}, ${email}, ${hashedPassword}, ${is_seller}, ${business_name})
     `;
   } catch (error) {
     // If a database error occurs, return a more specific error.
     return {
-      message: 'Database Error: Failed to Create Invoice.',
+      message: "Database Error: Failed to Create User.",
     };
   }
- 
+
   // Revalidate the cache for the invoices page and redirect the user.
-  revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
+  revalidatePath(`/profile/${id}`);
+  redirect(`/profile/${id}`);
 }
 
-export async function updateInvoice(
+export async function updateUser(
   id: string,
   prevState: State,
-  formData: FormData,
+  formData: FormData
 ) {
-  const validatedFields = UpdateInvoice.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+  const validatedFields = UpdateUser.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
   });
- 
+
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Invoice.',
+      message: "Missing Fields. Failed to Update Invoice.",
     };
   }
- 
-  const { customerId, amount, status } = validatedFields.data;
-  const amountInCents = amount * 100;
- 
+
+  var {  name, email, password } = validatedFields.data;
+
   try {
     await sql`
-      UPDATE invoices
-      SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+      UPDATE users
+      SET name = ${name}, email = ${email}, password = ${password}
       WHERE id = ${id}
     `;
   } catch (error) {
-    return { message: 'Database Error: Failed to Update Invoice.' };
+    return { message: "Database Error: Failed to Update Invoice." };
   }
- 
-  revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
+
+  revalidatePath(`/profile/${id}`);
+  redirect(`/profile/${id}`);
 }
 
-export async function deleteInvoice(id: string) {
+export async function deleteUser(id: string) {
   try {
-    await sql`DELETE FROM invoices WHERE id = ${id}`;
-    revalidatePath('/dashboard/invoices');
-    return { message: 'Deleted Invoice.' };
+    await sql`DELETE FROM users WHERE id = ${id}`;
+    revalidatePath(`/profile/${id}`);
+    redirect('/');
   } catch (error) {
-    return { message: 'Database Error: Failed to Delete Invoice.' };
+    return { message: "Database Error: Failed to Delete User." };
   }
 }
 
 export async function authenticate(
   prevState: string | undefined,
-  formData: FormData,
+  formData: FormData
 ) {
   try {
-    await signIn('credentials', formData);
+    await signIn("credentials", formData);
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
-        case 'CredentialsSignin':
-          return 'Invalid credentials.';
+        case "CredentialsSignin":
+          return "Invalid credentials.";
         default:
-          return 'Something went wrong.';
-      }
-    }
-    throw error;
-  }
-}
-
-// TODO: Implement signup
-export async function signup( prevState: string | undefined,
-  formData: FormData,
-) {
-  try {
-    await signIn('credentials', formData);
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case 'CredentialsSignin':
-          return 'Invalid credentials.';
-        default:
-          return 'Something went wrong.';
+          return "Something went wrong.";
       }
     }
     throw error;
