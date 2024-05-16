@@ -12,14 +12,14 @@ export default function ProductCard({
 }: CardProps) {
   const imgPath = `/products/${cardImage}`;
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-blue-50">
-      <div className="max-w-sm rounded overflow-hidden shadow-lg mx-4 my-4">
+    <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100">
+      <div className="max-w-sm rounded-xl overflow-hidden shadow-lg mx-4 my-4">
         <Image
           src={imgPath}
           width={150}
           height={250}
           alt="Product Image"
-          className="w-full"
+          className="w-[330px] m-auto rounded-xl md:w-[200px]"
         />
         <div className="px-6 py-4">
           <div className="font-bold text-xl mb-2">{name}</div>
