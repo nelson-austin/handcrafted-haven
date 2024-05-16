@@ -2,7 +2,7 @@ import { UpdateItem } from "./buttons"
 import { fetchProducts } from "@/app/lib/queries"
 
 
-export default async function myProducts() {
+export default async function myInventory() {
     const products = await fetchProducts();
     return (
         <div>
