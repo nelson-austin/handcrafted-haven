@@ -13,12 +13,10 @@ export default function RootLayout({
 }>) {
   return (
     <>
-        <div className="h-25 shrink-0 bg-green-900 rounded-lg m-3 md:h-28">
-            <Header />
-        </div>
-        <main>
-            {children}
-        </main>
+      <div className="h-25 shrink-0 bg-green-900 rounded-lg m-3 md:h-28">
+        <Header />
+      </div>
+      <main>{children}</main>
     </>
   );
 }
