@@ -1,5 +1,5 @@
 import Search from "@/app/ui/search";
-import MyProducts from '@/app/ui/dashboard/myInventory';
+import MyInventory from '@/app/ui/dashboard/myInventory';
 import { NewItem } from '@/app/ui/dashboard/buttons';
 import { Metadata } from 'next';
  
@@ -25,7 +25,7 @@ export default async function Page({
             <Search placeholder="Search my items..." />
             <NewItem />
         </div>
-            <MyProducts />
+            <MyInventory />
     </div>
   );
 }
