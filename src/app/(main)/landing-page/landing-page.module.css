@@ -1,0 +1,19 @@
+.heroContent {
+  position: absolute;
+  bottom: 40%;
+  height: 35%;
+}
+
+@media screen and (min-width: 768px) {
+  .heroContent {
+    bottom: 27%;
+    height: 45%;
+  }
+}
+
+@media screen and (min-width: 1020px) {
+  .heroContent {
+    height: 40%;
+    bottom: 33%;
+  }
+}
