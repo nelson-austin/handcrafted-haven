@@ -3,7 +3,7 @@ import ProductCard from "@/app/ui/products/productCard";
 
 export default async function ProductGrid() {
   const products = await fetchFilteredProducts();
-  console.log(products);
+  // console.log(products);
 
   return (
     <main className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 lg:px-5">

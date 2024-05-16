@@ -4,10 +4,10 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 
 export default function Header() {
-  const cartCount = useSelector((state) => state.cart.cartCount);
+  const cartCount = useSelector((state: any) => state.cart.cartCount);
   return (
-    <header className="shrink-0 bg-green-900 rounded-lg md:h-28">
-      <div className="header-items flex items-center justify-between">
+    <header className={`h-25 bg-green-900 rounded-lg m-3 md:h-28 `}>
+      <div className="header-items flex items-center justify-between ">
         <div className="flex flex-col">
           <Link href={"/"}>
             <div className="flex items-center">
@@ -31,7 +31,7 @@ export default function Header() {
             className="text-[23px] flex flex-col items-center"
           >
             CART{" "}
-            <span className="cart-badge border-2 text-orange-400 text-[33px]">
+            <span className="cart-badge text-orange-400 text-[33px]">
               {`${cartCount}`}
             </span>
           </Link>

@@ -1,3 +1,5 @@
 export default function Page() {
-    return <p>View cart page</p>;
+    return <section>
+        <h2 className="text-center p-5 text-[33px] font-bold">Shopping Cart</h2>
+    </section>;
 }
