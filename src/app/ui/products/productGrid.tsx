@@ -6,19 +6,17 @@ export default async function ProductGrid() {
   console.log(products);
 
   return (
-    <div className="flex flex-col md:p-3">
-      <div className="flex flex-wrap">
-        {products.map((card) => {
-          return (
-            <ProductCard
-              cardId={""}
-              cardImage={card.image}
-              key={card.id}
-              {...card}
-            />
-          );
-        })}
-      </div>
-    </div>
+    <main className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 lg:px-5">
+      {products.map((card) => {
+        return (
+          <ProductCard
+            cardId={""}
+            cardImage={card.image}
+            key={card.id}
+            {...card}
+          />
+        );
+      })}
+    </main>
   );
 }

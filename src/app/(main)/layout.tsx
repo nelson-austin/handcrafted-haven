@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-        <div className="flex h-25 items-center shrink-0 bg-green-900 rounded-lg m-3 md:h-28">
+        <div className="h-25 shrink-0 bg-green-900 rounded-lg m-3 md:h-28">
             <Header />
         </div>
         <main>
