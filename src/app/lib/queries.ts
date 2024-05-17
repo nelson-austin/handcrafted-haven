@@ -58,3 +58,7 @@ export async function updateInventory(id: string, prevState: State, formData: Fo
     revalidatePath('/dashboard/inventory');
     redirect('/dashboard/inventory');
 }
+
+export async function newProduct() {
+    
+}
