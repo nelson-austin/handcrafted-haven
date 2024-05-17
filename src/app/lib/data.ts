@@ -28,6 +28,7 @@ export async function fetchFilteredProducts() {
 
 export async function fetchMyInventory() {
     // will complete when user id is ready
+    unstable_noStore();
     try {
         const data = await sql<Product>`
         SELECT * FROM products`;
