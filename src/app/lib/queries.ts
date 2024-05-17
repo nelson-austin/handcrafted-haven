@@ -1,7 +1,6 @@
 'use server'
 
 import { sql } from '@vercel/postgres';
-import { Product } from '@/app/lib/interface';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
@@ -29,36 +28,6 @@ export type State = {
     message?: string | null;
 };
 
-export async function fetchProducts() {
-    try {
-        const data = await sql<Product>`
-        SELECT * FROM products`;
-        return data.rows;
-
-    } catch (error) {
-        console.error("Data Fetch Error:", error);
-        throw new Error('Failed to fetch product data');
-    }
-}
-
-export async function fetchMyInventory() {
-    // will complete when user id is ready
-}
-
-export async function fetchProductById(id: string) {
-    try {
-        const data = await sql<Product>`
-        SELECT * FROM products
-        WHERE products.id = ${id}`;
-        
-        return data.rows[0];
-
-    } catch (error) {
-        console.error("Data Fetch Error:", error);
-        throw new Error("Failed to find product");
-    }
-}
-
 const UpdateInventory = FormSchema.omit({ id: true });
 
 export async function updateInventory(id: string, prevState: State, formData: FormData) {
@@ -68,7 +37,6 @@ export async function updateInventory(id: string, prevState: State, formData: Fo
         price: formData.get('price'),
         quantity: formData.get('quantity'),
     })
-    
 
     if (!validatedFields.success) {
         return {
@@ -77,18 +45,16 @@ export async function updateInventory(id: string, prevState: State, formData: Fo
         };
     }
 
-    const { name, description, price, quantity } = validatedFields.data;
+    const { name, price, quantity, description } = validatedFields.data;
 
     try {
         await sql`
             UPDATE products
-            SET name = ${name}, description = ${description}, price = ${price}, quantity = ${quantity}
+            SET name = ${name}, description = ${description}, price = ${price}, quantity_available = ${quantity}
             WHERE id = ${id}`;
     } catch (error) {
         return { message: 'Database Error: Failed to update product.' };
     }
     revalidatePath('/dashboard/inventory');
     redirect('/dashboard/inventory');
-
-    
 }

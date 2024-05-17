@@ -1,4 +1,5 @@
 import { sql } from '@vercel/postgres';
+import { unstable_noStore } from 'next/cache';
 
 import {
     Product
@@ -22,5 +23,33 @@ export async function fetchFilteredProducts() {
     } catch(error) {
         console.error('Database Error: ', error);
         throw new Error ('Failed to fetch products.')
+    }
+}
+
+export async function fetchMyInventory() {
+    // will complete when user id is ready
+    try {
+        const data = await sql<Product>`
+        SELECT * FROM products`;
+        return data.rows;
+
+    } catch (error) {
+        console.error("Data Fetch Error:", error);
+        throw new Error('Failed to fetch product data');
+    }
+}
+
+export async function fetchProductById(id: string) {
+    unstable_noStore();
+    try {
+        const data = await sql<Product>`
+        SELECT * FROM products
+        WHERE products.id = ${id}`;
+        
+        return data.rows[0];
+
+    } catch (error) {
+        console.error("Data Fetch Error:", error);
+        throw new Error("Failed to find product");
     }
 }
