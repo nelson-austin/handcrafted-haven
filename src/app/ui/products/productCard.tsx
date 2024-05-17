@@ -1,16 +1,17 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CardProps } from "@/app/lib/interface";
+import { Product } from "@/app/lib/interface";
 import AddToCartButton from "./addToCartButton";
 
 export default function ProductCard({
+  id,
   name,
-  cardImage,
+  image,
   price,
   description,
-}: CardProps) {
-  const imgPath = `/products/${cardImage}`;
+}: Product) {
+  const imgPath = `/products/${image}`;
   return (
     <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100">
       <div className="max-w-sm rounded-xl overflow-hidden shadow-lg mx-4 my-4">
