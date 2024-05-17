@@ -1,4 +1,4 @@
-import { fetchProductById } from "@/app/lib/queries";
+import { fetchProductById } from "@/app/lib/data";
 import ProductForm from "@/app/ui/dashboard/productForm"
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -14,10 +14,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     if (!product) {
         notFound();
     }
-
-    return (
-        <>
-            <ProductForm  product={product}/>
-        </>
-    );
+    
+    return (<ProductForm  product={product}/>);
 }

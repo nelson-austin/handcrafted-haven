@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 export default function Header() {
   const cartCount = useSelector((state: any) => state.cart.cartCount);
   return (
-    <header className={`h-25 bg-green-900 rounded-lg m-3 md:h-28 `}>
+    <header className={`h-25 bg-green-900 rounded-lg m-3 md:h-28  `}>
       <div className="header-items flex items-center justify-between ">
         <div className="flex flex-col">
           <Link href={"/"}>
