@@ -4,11 +4,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCartCount } from "@/redux/features/cartCounterSlice";
+import { RootState } from "@/redux/store";
+import { setCartItems } from "@/redux/features/cartCounterSlice";
+import { Product } from "@/app/lib/interface";
+
+interface CartItem extends Product {
+  quantity: number;
+}
 
 export default function Header() {
   const dispatch = useDispatch();
-  const cartCount = useSelector((state: any) => state.cart.cartCount);
+  const cartCount: number = useSelector((state: RootState) => state.cart.totalItems);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -17,8 +23,20 @@ export default function Header() {
         localStorage.getItem("cart-items") || "[]"
       );
 
-      // Set the total cost in the Redux state as the cart count
-      dispatch(setCartCount(existingCartItems.length));
+      // Initialize a map for item quantities
+      const itemMap: { [key: string]: CartItem } = {};
+
+      // Loop through each item in the cart
+      existingCartItems.forEach((item: Product) => {
+        if (itemMap[item.id]) {
+          itemMap[item.id].quantity += 1;
+        } else {
+          itemMap[item.id] = { ...item, quantity: 1 };
+        }
+      });
+
+      // Set the cart items in Redux state
+      dispatch(setCartItems(Object.values(itemMap)));
     }
   }, [dispatch]);
 
