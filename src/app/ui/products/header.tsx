@@ -1,18 +1,35 @@
 "use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setCartCount } from "@/redux/features/cartCounterSlice";
 
 export default function Header() {
+  const dispatch = useDispatch();
   const cartCount = useSelector((state: any) => state.cart.cartCount);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Retrieve the existing cart items from local storage and parse them
+      const existingCartItems = JSON.parse(
+        localStorage.getItem("cart-items") || "[]"
+      );
+
+      // Set the total cost in the Redux state as the cart count
+      dispatch(setCartCount(existingCartItems.length));
+    }
+  }, [dispatch]);
+
   return (
-    <header className={`h-25 bg-green-900 rounded-lg m-3 md:h-28  `}>
-      <div className="header-items flex items-center justify-between ">
+    <header className="fixed top-0 left-0 right-0 z-50 h-25 bg-green-900 rounded-lg m-3 md:h-28">
+      <div className="header-items flex items-center justify-between">
         <div className="flex flex-col">
-          <Link href={"/"}>
+          <Link href="/">
             <div className="flex items-center">
               <Image
-                src={"/logo-placeholder-image.png"}
+                src="/logo-placeholder-image.png"
                 width={100}
                 height={100}
                 alt="Logo Image"
@@ -26,13 +43,10 @@ export default function Header() {
         </div>
 
         <div className="text-sky-400 font-semibold leading-none mr-4 md:ml-[270px] md:hover:text-sky-100 lg:ml-[900px]">
-          <Link
-            href={"/cart"}
-            className="text-[23px] flex flex-col items-center"
-          >
+          <Link href="/cart" className="text-[23px] flex flex-col items-center">
             CART{" "}
             <span className="cart-badge text-orange-400 text-[33px]">
-              {`${cartCount}`}
+              {cartCount}
             </span>
           </Link>
         </div>

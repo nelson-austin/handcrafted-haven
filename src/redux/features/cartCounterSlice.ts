@@ -22,11 +22,19 @@ export const cartCounterSlice = createSlice({
       }
     },
 
-    reset: (state) => {},
+    setCartCount: (state, action) => {
+      state.cartCount = action.payload;
+    },
 
-    addToCart: (state, action) => {},
+    reset: (state) => {
+      state.cartCount = 0;
+    },
+
+    addToCart: (state, action) => {}, //Items are stored in localStorage... * TODO *
   },
 });
 
-export const { increment, decrement, incrementCartCount } = cartCounterSlice.actions;
+export const { increment, decrement, incrementCartCount, setCartCount, reset } =
+  cartCounterSlice.actions;
+
 export default cartCounterSlice.reducer;

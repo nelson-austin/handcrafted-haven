@@ -8,6 +8,8 @@ export default function ProductCard({
   image,
   price,
   description,
+  user_id,
+  quantity_available,
 }: Product) {
   const imgPath = `/products/${image}`;
 
@@ -26,7 +28,17 @@ export default function ProductCard({
           <p className="text-gray-700 text-base">{description}</p>
           <p className="text-gray-700 text-base font-semibold">${price}</p>
         </div>
-        <AddToCartButton product={{ id, name, image, price, description }} />
+        <AddToCartButton
+          product={{
+            id,
+            name,
+            image,
+            price,
+            description,
+            user_id,
+            quantity_available,
+          }}
+        />
       </div>
     </div>
   );
