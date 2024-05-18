@@ -1,14 +1,14 @@
 import { getServerSession } from "next-auth";
 import { metadata } from "../layout";
-import LoginForm from "./form";
+import SignupForm from "./form";
 import { redirect } from "next/navigation";
 
-metadata.title = "Login";
+metadata.title = "Sign Up";
 
-export default async function LoginPage() {
+export default async function SignupPage() {
     const session = await getServerSession();
     if(session) {
        redirect("/");
     }
-    return <LoginForm />;
+    return <SignupForm />;
 }

@@ -1,23 +1,17 @@
-"use server";
-
 import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { signIn } from "../../auth";
-import { AuthError } from "next-auth";
 import bcrypt from "bcrypt";
+import { User } from "./definitions";
 
-const FormSchema = z.object({
-  name: z.string().min(1).max(32),
+export const FormSchema = z.object({
+  name: z.string().min(1).max(50),
   email: z.string().email(),
   password: z
     .string()
     .min(8)
-    .max(32)
-    .refine((password) => {
-      return password.match("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
-    }, "Password cannot contain at least one letter and one number and be at least 8 characters long"),
+    .max(50),
   is_seller: z.boolean(),
   business_name: z.string(),
 });
@@ -41,14 +35,14 @@ export type State = {
   message?: string | null;
 };
 
-export async function createUser(prevState: State, formData: FormData) {
+export async function createUser(user: User) {
   // Validate form using Zod
   const validatedFields = CreateUser.safeParse({
-    name: formData.get("name"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    is_seller: formData.get("is_seller") === "true",
-    business_name: formData.get("business_name"),
+    name: user.name,
+    email: user.email,
+    password: user.password,
+    is_seller: user.is_seller,
+    business_name: user.business_name,
   });
 
   // If form validation fails, return errors early. Otherwise, continue.
@@ -71,11 +65,10 @@ export async function createUser(prevState: State, formData: FormData) {
   // Insert data into the database
   try {
     await sql`
-    INSERT INTO users (name, email, password, is_seller, business_name)
-    VALUES (${name}, ${email}, ${hashedPassword}, ${is_seller}, ${business_name})
+    INSERT INTO users (id, name, email, password, is_seller, business_name)
+    VALUES (${id}, ${name}, ${email}, ${hashedPassword}, ${is_seller}, ${business_name})
     `;
   } catch (error) {
-    // If a database error occurs, return a more specific error.
     return {
       message: "Database Error: Failed to Create User.",
     };
@@ -100,11 +93,11 @@ export async function updateUser(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Update Invoice.",
+      message: "Missing Fields. Failed to Update User.",
     };
   }
 
-  var {  name, email, password } = validatedFields.data;
+  var { name, email, password } = validatedFields.data;
 
   try {
     await sql`
@@ -113,7 +106,7 @@ export async function updateUser(
       WHERE id = ${id}
     `;
   } catch (error) {
-    return { message: "Database Error: Failed to Update Invoice." };
+    return { message: "Database Error: Failed to Update User." };
   }
 
   revalidatePath(`/profile/${id}`);
@@ -124,27 +117,8 @@ export async function deleteUser(id: string) {
   try {
     await sql`DELETE FROM users WHERE id = ${id}`;
     revalidatePath(`/profile/${id}`);
-    redirect('/');
+    redirect("/");
   } catch (error) {
     return { message: "Database Error: Failed to Delete User." };
-  }
-}
-
-export async function authenticate(
-  prevState: string | undefined,
-  formData: FormData
-) {
-  try {
-    await signIn("credentials", formData);
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return "Invalid credentials.";
-        default:
-          return "Something went wrong.";
-      }
-    }
-    throw error;
   }
 }
