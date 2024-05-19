@@ -1,16 +1,18 @@
-import React from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { CardProps } from "@/app/lib/interface";
+import { Product } from "@/app/lib/interface";
 import AddToCartButton from "./addToCartButton";
 
 export default function ProductCard({
+  id,
   name,
-  cardImage,
+  image,
   price,
   description,
-}: CardProps) {
-  const imgPath = `/products/${cardImage}`;
+  user_id,
+  quantity_available,
+}: Product) {
+  const imgPath = `/products/${image}`;
+
   return (
     <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100">
       <div className="max-w-sm rounded-xl overflow-hidden shadow-lg mx-4 my-4">
@@ -26,7 +28,17 @@ export default function ProductCard({
           <p className="text-gray-700 text-base">{description}</p>
           <p className="text-gray-700 text-base font-semibold">${price}</p>
         </div>
-        <AddToCartButton />
+        <AddToCartButton
+          product={{
+            id,
+            name,
+            image,
+            price,
+            description,
+            user_id,
+            quantity_available,
+          }}
+        />
       </div>
     </div>
   );

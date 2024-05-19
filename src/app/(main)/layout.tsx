@@ -1,5 +1,9 @@
+"use client";
+
 // import type { Metadata } from "next";
 import Header from "../ui/products/header";
+import store from "@/redux/store";
+import { Provider } from "react-redux";
 
 // export const metadata: Metadata = {
 //   title: "Login",
@@ -13,8 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <Header />
-      <main>{children}</main>
+      <Provider store={store}>
+        <Header />
+        <main>{children}</main>
+      </Provider>
     </>
   );
 }

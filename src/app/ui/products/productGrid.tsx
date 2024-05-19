@@ -6,16 +6,9 @@ export default async function ProductGrid() {
   // console.log(products);
 
   return (
-    <main className="grid grid-cols-1 pb-20 w-[365px] m-auto gap-5 md:grid-cols-3 md:w-[745px] lg:w-[1405px] lg:grid-cols-4">
+    <main className="grid grid-cols-1 pt-[140px] pb-20 w-[365px] m-auto gap-5 md:grid-cols-3 md:w-[745px] lg:w-[1405px] lg:grid-cols-4">
       {products.map((card) => {
-        return (
-          <ProductCard
-            cardId={""}
-            cardImage={card.image}
-            key={card.id}
-            {...card}
-          />
-        );
+        return <ProductCard key={card.id} {...card} />;
       })}
     </main>
   );
