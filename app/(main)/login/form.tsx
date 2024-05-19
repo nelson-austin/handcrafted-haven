@@ -6,30 +6,31 @@ import {
   ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { useFormStatus } from "react-dom";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const router = useRouter();
-  var errorMessage = null;
+  const [errorMessage, setErrorMessage] = useState("");
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    errorMessage = null;
+    setErrorMessage("");
     const formData = new FormData(e.currentTarget);
+
     const response = await signIn("credentials", {
       email: formData.get("email"),
       password: formData.get("password"),
       redirect: false,
     });
 
-    if(!response?.error) {
+    if (!response?.error) {
       router.push("/");
       router.refresh();
     } else {
-      errorMessage = response.error;
+      setErrorMessage("Invalid email or password.");
     }
   };
 
@@ -72,7 +73,10 @@ export default function LoginForm() {
                 name="password"
                 placeholder="Enter password"
                 required
-                minLength={6}
+                minLength={8}
+                maxLength={50}
+                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
+                title="Password must contain at least one uppercase letter, one lowercase letter, and one number and be between 8 and 50 characters long."
               />
               <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
