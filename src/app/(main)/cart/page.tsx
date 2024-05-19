@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Product } from "@/app/lib/interface";
-import { RootState } from "@/redux/store";
+
 import {
   setCartItems,
   incrementItemQuantity,
@@ -18,7 +18,7 @@ interface CartItem extends Product {
 
 export default function CartPage() {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartItems = useSelector((state: any) => state.cart.items);
 
   useEffect(() => {
     const storedCartItems: CartItem[] = JSON.parse(
@@ -43,7 +43,7 @@ export default function CartPage() {
   };
 
   const handleIncrement = (id: string) => {
-    dispatch(incrementItemQuantity(id));
+    dispatch(incrementItemQuantity());
 
     const updatedCartItems = cartItems.map((item: any) => {
       if (item.id === id) {
@@ -59,7 +59,7 @@ export default function CartPage() {
   const handleDecrement = (id: string) => {
     dispatch(decrementItemQuantity(id));
 
-    const updatedCartItems = cartItems.map((item) => {
+    const updatedCartItems = cartItems.map((item: any) => {
       if (item.id === id && item.quantity > 1) {
         return { ...item, quantity: item.quantity - 1 };
       }

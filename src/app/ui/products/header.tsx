@@ -2,43 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { setCartItems } from "@/redux/features/cartCounterSlice";
-import { Product } from "@/app/lib/interface";
-
-interface CartItem extends Product {
-  quantity: number;
-}
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  const dispatch = useDispatch();
-  const cartCount: number = useSelector((state: RootState) => state.cart.totalItems);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Retrieve the existing cart items from local storage and parse them
-      const existingCartItems = JSON.parse(
-        localStorage.getItem("cart-items") || "[]"
-      );
-
-      // Initialize a map for item quantities
-      const itemMap: { [key: string]: CartItem } = {};
-
-      // Loop through each item in the cart
-      existingCartItems.forEach((item: Product) => {
-        if (itemMap[item.id]) {
-          itemMap[item.id].quantity += 1;
-        } else {
-          itemMap[item.id] = { ...item, quantity: 1 };
-        }
-      });
-
-      // Set the cart items in Redux state
-      dispatch(setCartItems(Object.values(itemMap)));
-    }
-  }, [dispatch]);
+  const cartCount: number = useSelector((state: any) => state.cart.totalItems);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-25 bg-green-900 rounded-lg m-3 md:h-28">

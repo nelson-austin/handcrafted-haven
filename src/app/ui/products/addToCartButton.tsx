@@ -13,7 +13,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
 
   const handleAddToCart = () => {
     // Increment cart count in Redux state
-    dispatch(incrementItemQuantity(product.id));
+    dispatch(incrementItemQuantity());
 
     // Retrieve the existing cart items from local storage and parse them
     const existingCartItems = JSON.parse(

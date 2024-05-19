@@ -37,14 +37,8 @@ const cartSlice = createSlice({
       }
       state.totalItems += 1;
     },
-    incrementItemQuantity(state, action: PayloadAction<string>) {
-      const itemId = action.payload;
-      const item = state.items.find((item) => item.id === itemId);
-      if (item) {
-        item.quantity += 1;
-        state.totalItems += 1;
-        localStorage.setItem("cart-items", JSON.stringify(state.items));
-      }
+    incrementItemQuantity(state) {
+      state.totalItems += 1;
     },
     decrementItemQuantity(state, action: PayloadAction<string>) {
       const itemId = action.payload;
