@@ -3,7 +3,11 @@ import { unstable_noStore } from "next/cache";
 
 import { Product } from "./interface";
 
-export async function fetchFilteredProducts() {
+export async function fetchFilteredProducts(
+  query: string,
+) {
+  unstable_noStore()
+  
   try {
     const products = await sql<Product>`
             SELECT
@@ -14,7 +18,13 @@ export async function fetchFilteredProducts() {
                 products.description,
                 products.price,
                 products.quantity_available
-            FROM products`;
+            FROM products
+            JOIN users ON products.user_id = users.id
+            WHERE
+              products.name ILIKE ${`%${query}%`} OR
+              products.description ILIKE ${`%${query}%`} OR
+              users.name ILIKE ${`%${query}%`}
+              `;
 
     return products.rows;
   } catch (error) {
