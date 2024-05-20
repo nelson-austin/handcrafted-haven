@@ -3,8 +3,10 @@ const { db } = require('@vercel/postgres');
 const {
   users,
   products,
+  reviews,
+  cart,
   orders,
-} = require('../app/lib/placeholder-data.js')
+} = require('./placeholder-data.js')
 const bcrypt = require('bcrypt');
 
 async function seedUsers(client) {
@@ -58,6 +60,7 @@ async function seedProducts(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID REFERENCES users(id),
         name VARCHAR(255) NOT NULL,
+        image VARCHAR(100),
         description TEXT,
         price NUMERIC(10, 2) NOT NULL,
         quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0)
@@ -70,11 +73,10 @@ async function seedProducts(client) {
     const insertedProducts = await Promise.all(
       products.map(async (product) => {
         return client.sql`
-        INSERT INTO products (id, user_id, name, description, price, quantity_available)
-        VALUES (${product.id}, ${product.user_id}, ${product.name}, ${product.description}, ${product.price}, ${product.quantity_available})
+        INSERT INTO products (id, user_id, name, image, description, price, quantity_available)
+        VALUES (${product.id}, ${product.user_id}, ${product.name}, ${product.image}, ${product.description}, ${product.price}, ${product.quantity_available})
         ON CONFLICT (ID) DO NOTHING;
       `
-      console.log(product.name);
       
       }),
     );
@@ -88,6 +90,48 @@ async function seedProducts(client) {
 
   } catch (error) {
     console.error('Error seeding products:', error);
+    throw error;
+  }
+};
+
+
+async function seedReviews(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "Reviews" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS reviews (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        product_id UUID REFERENCES products(id),
+        user_id UUID REFERENCES users(id),
+        rating DECIMAL(3, 1) CHECK (Rating >= 0 AND Rating <= 5) NOT NULL,
+        comment TEXT NOT NULL,
+        date Date DEFAULT CURRENT_DATE
+      );
+    `;
+    console.log(`Created "reviews" table`);
+
+    //Seed the "reviews" table
+    const insertedReviews = await Promise.all(
+      reviews.map(async (review) => {
+        return client.sql`
+        INSERT INTO reviews (id, product_id, user_id, rating, comment, date)
+        VALUES (${review.id}, ${review.product_id}, ${review.user_id}, ${review.rating}, ${review.comment}, ${review.date})
+        ON CONFLICT (ID) DO NOTHING;
+      `
+      
+      }),
+    );
+
+    console.log(`Seeded ${insertedReviews.length} reviews`);
+
+    return {
+      createTable,
+      products: insertedReviews,
+    };
+
+    } catch (error) {
+    console.error('Error seeding reviews:', error);
     throw error;
   }
 };
@@ -108,7 +152,6 @@ async function seedOrders(client) {
     `;
 
     console.log(`Created "orders" table`);
-
     //Seed the "orders" table
     const insertedOrders = await Promise.all(
       orders.map(async (order) => {
@@ -133,12 +176,52 @@ async function seedOrders(client) {
   }
 };
 
+async function seedCart(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "cart" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS cart (
+      id SERIAL PRIMARY KEY,
+      buyer_id UUID References users(id),
+      product_id UUID REFERENCES products(id),
+      quantity INTEGER
+      );
+    `;
+
+    console.log(`Created "cart" table`);
+    //Seed the "cart" table
+    const insertedCartitems = await Promise.all(
+      cart.map(async (item) => {
+        return client.sql`
+        INSERT INTO cart (id, buyer_id, product_id, quantity)
+        VALUES (${item.id}, ${item.buyer_id}, ${item.product_id}, ${item.quantity})
+        ON CONFLICT (ID) DO NOTHING;
+      `;
+      }),
+    );
+
+    console.log(`Seeded ${insertedCartitems.length} items into customer shopping carts`);
+
+    return {
+      createTable,
+      cart_items: insertedCartitems,
+    };
+
+  } catch (error) {
+    console.error('Error seeding carts items:', error);
+    throw error;
+  }
+};
+
 async function main() {
   const client = await db.connect();
 
-  await seedUsers(client);
-  await seedProducts(client);
-  await seedOrders(client);
+  //await seedUsers(client);
+  //await seedProducts(client);
+ // await seedReviews(client);
+  await seedCart(client);
+ // await seedOrders(client);
 
   await client.end();
 }
@@ -149,3 +232,5 @@ main().catch((err) => {
     err,
   );
 });
+
+
