@@ -194,13 +194,65 @@ const reviews = [
     }
   ]
 
+
+
+const cart = [
+    {   id: 1,
+        buyer_id: users[2].id,
+        product_id: products[0].id,
+        quantity: 1,
+    },
+    {
+        id: 2,
+        buyer_id: users[2].id,
+        product_id: products[6].id,
+        quantity: 2,
+    },
+    {
+        id: 3,
+        buyer_id: users[2].id,
+        product_id: products[1].id,
+        quantity: 2,
+    },
+    {
+        id: 4,
+        buyer_id: users[2].id,
+        product_id: products[7].id,
+        quantity: 1,
+    },
+    {
+        id: 5,
+        buyer_id: users[2].id,
+        product_id: products[2].id,
+        quantity: 1,
+    },
+    {
+        id: 6,
+        buyer_id: users[2].id,
+        product_id: products[8].id,
+        quantity: 1,
+    },
+    {   id: 7,
+        buyer_id: users[3].id,
+        product_id: products[0].id,
+        quantity: 1,
+    },
+    {
+        id: 8,
+        buyer_id: users[3].id,
+        product_id: products[6].id,
+        quantity: 2,
+    }
+]
+
+
 const orders = [
     {
         id: 'c46d6a6e-80a9-43f5-9fc1-dcaa7a4b188d',
         user_id: users[2].id,
         product_id: products[0].id,
         quantity: 1,
-        total_price: 149.99
+        total_price: products[0].price * this.quantity
     },
     {
         id: '988cd4b3-c5d6-4684-b43d-ee6b257a9c02',
@@ -231,7 +283,7 @@ const orders = [
         total_price: 179.97
     },
     {
-        id: '417b6f2b-7020-4d29-9bc9-6b7dab0b3c2f',
+        id: users[3].id,
         user_id: users[2].id,
         product_id: products[1].id,
         quantity: 2,
@@ -306,5 +358,6 @@ module.exports = {
     users,
     products,
     reviews,
+    cart,
     orders,
 }

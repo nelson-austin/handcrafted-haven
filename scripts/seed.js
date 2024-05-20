@@ -4,6 +4,7 @@ const {
   users,
   products,
   reviews,
+  cart,
   orders,
 } = require('./placeholder-data.js')
 const bcrypt = require('bcrypt');
@@ -113,7 +114,6 @@ async function seedReviews(client) {
     //Seed the "reviews" table
     const insertedReviews = await Promise.all(
       reviews.map(async (review) => {
-        console.log(review.id)
         return client.sql`
         INSERT INTO reviews (id, product_id, user_id, rating, comment, date)
         VALUES (${review.id}, ${review.product_id}, ${review.user_id}, ${review.rating}, ${review.comment}, ${review.date})
@@ -176,13 +176,52 @@ async function seedOrders(client) {
   }
 };
 
+async function seedCart(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "cart" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS cart (
+      id SERIAL PRIMARY KEY,
+      buyer_id UUID References users(id),
+      product_id UUID REFERENCES products(id),
+      quantity INTEGER
+      );
+    `;
+
+    console.log(`Created "cart" table`);
+    //Seed the "cart" table
+    const insertedCartitems = await Promise.all(
+      cart.map(async (item) => {
+        return client.sql`
+        INSERT INTO cart (id, buyer_id, product_id, quantity)
+        VALUES (${item.id}, ${item.buyer_id}, ${item.product_id}, ${item.quantity})
+        ON CONFLICT (ID) DO NOTHING;
+      `;
+      }),
+    );
+
+    console.log(`Seeded ${insertedCartitems.length} items into customer shopping carts`);
+
+    return {
+      createTable,
+      cart_items: insertedCartitems,
+    };
+
+  } catch (error) {
+    console.error('Error seeding carts items:', error);
+    throw error;
+  }
+};
+
 async function main() {
   const client = await db.connect();
 
-  await seedUsers(client);
-  await seedProducts(client);
-  await seedReviews(client);
-  await seedOrders(client);
+  //await seedUsers(client);
+  //await seedProducts(client);
+ // await seedReviews(client);
+  await seedCart(client);
+ // await seedOrders(client);
 
   await client.end();
 }
@@ -193,3 +232,5 @@ main().catch((err) => {
     err,
   );
 });
+
+
