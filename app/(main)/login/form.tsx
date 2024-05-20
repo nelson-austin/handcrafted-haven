@@ -104,7 +104,7 @@ function LoginButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button className="mt-4 w-full" aria-disabled={pending}>
+    <Button className="font-bold bg-green-900 text-white m-5 p-2 rounded-md hover:bg-green-300 hover:text-black" aria-disabled={pending}>
       Login <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );

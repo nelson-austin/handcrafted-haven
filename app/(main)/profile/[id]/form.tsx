@@ -6,17 +6,29 @@ import {
   KeyIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import {
-  ArrowRightIcon,
-  DocumentChartBarIcon,
-} from "@heroicons/react/20/solid";
+import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { Button } from "../../../ui/button";
 import { useFormStatus } from "react-dom";
 import { FormEvent } from "react";
 import { useState } from "react";
-import { redirect } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
+import { getSession } from "next-auth/react";
+import { User } from "../../../lib/definitions";
 
 export default function UpdateUserForm() {
+  const router = useRouter();
+  const params = useParams();
+
+  const [user, setUser] = useState({} as User);
+
+  if (user.id === undefined) {
+    getSession().then((session) => {
+      if (session) {
+        setUser(session.user as User);
+      }
+    });
+  }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage("");
@@ -24,17 +36,22 @@ export default function UpdateUserForm() {
     const response = await fetch("/api/auth/update", {
       method: "POST",
       body: JSON.stringify({
+        id: params.id,
         name: formData.get("name"),
         email: formData.get("email"),
+        oldPassword: formData.get("oldPassword"),
         password: formData.get("password"),
         business_name: formData.get("business_name"),
       }),
     });
-    if(response.ok) {
-      redirect("/login");
-    } else {
-      setErrorMessage(response.statusText);
+    if (response.ok) {
+      router.push(`/profile/${params.id}`);
+      router.refresh();
     }
+    
+    response.json().then((data) => {
+      setErrorMessage(data.message);
+    });
   };
 
   // checked state and the onChange method
@@ -58,6 +75,10 @@ export default function UpdateUserForm() {
                 id="name"
                 type="name"
                 name="name"
+                onChange={(e) => {
+                  setUser({ ...user, name: e.target.value });
+                }}
+                value={user.name}
                 placeholder="Enter your name"
                 required
               />
@@ -77,12 +98,41 @@ export default function UpdateUserForm() {
                 id="email"
                 type="email"
                 name="email"
+                onChange={(e) => {
+                  setUser({ ...user, email: e.target.value });
+                }}
+                value={user.email}
                 placeholder="Enter your email address"
                 required
               />
               <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+          {user.is_seller && (
+            <div>
+              <label
+                className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+                htmlFor="business_name"
+              >
+                Business Name
+              </label>
+              <div className="relative">
+                <input
+                  className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                  id="business_name"
+                  onChange={(e) => {
+                    setUser({ ...user, business_name: e.target.value });
+                  }}
+                  value={user.business_name}
+                  type="text"
+                  name="business_name"
+                  placeholder="Enter your business_name"
+                  required
+                />
+                <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              </div>
+            </div>
+          )}
           <div className="mt-4">
             <label
               className="mb-3 mt-5 block text-xs font-medium text-gray-900"
@@ -120,7 +170,6 @@ export default function UpdateUserForm() {
                 type="password"
                 name="password"
                 placeholder="Enter password"
-                required
                 minLength={8}
                 maxLength={50}
                 pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
@@ -136,12 +185,14 @@ export default function UpdateUserForm() {
           aria-live="polite"
           aria-atomic="true"
         >
-          {errorMessage && (
+          {(errorMessage && errorMessage !== "Success" && (
             <>
               <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
               <p className="text-sm text-red-500">{errorMessage}</p>
             </>
-          )}
+          )) || (errorMessage && <><ExclamationCircleIcon className="h-5 w-5 text-green-700" />
+          <p className="text-sm text-green-700">{errorMessage}</p>
+          </>) }
         </div>
       </div>
     </form>
@@ -152,7 +203,7 @@ function UpdateUserButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button className="mt-4 w-full" aria-disabled={pending}>
+    <Button className="font-bold bg-green-900 text-white m-5 p-2 rounded-md hover:bg-green-300 hover:text-black" aria-disabled={pending}>
       Update <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );

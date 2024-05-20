@@ -14,9 +14,10 @@ import { Button } from "../../ui/button";
 import { useFormStatus } from "react-dom";
 import { FormEvent } from "react";
 import { useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
+  const router = useRouter();
   var errorMessage = null;
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,7 +34,7 @@ export default function SignupForm() {
       }),
     });
     if(response.ok) {
-      redirect("/login");
+      router.push("/login");
     } else {
       errorMessage = response.statusText;
     }
@@ -172,7 +173,7 @@ function SignupButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button className="mt-4 w-full" aria-disabled={pending}>
+    <Button className="font-bold bg-green-900 text-white m-5 p-2 rounded-md hover:bg-green-300 hover:text-black" aria-disabled={pending}>
       Sign up <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );

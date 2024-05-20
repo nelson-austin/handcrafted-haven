@@ -65,12 +65,8 @@ export async function createUser(user: User) {
     };
   }
 
-  // Prepare data for insertion into the database
-  const { name, email, password, is_seller, business_name } =
-    validatedFields.data;
-
   // Hash the password
-  const hashedPassword = bcrypt.hashSync(password, 10);
+  const hashedPassword = bcrypt.hashSync(user.password, 10);
 
   user.id = v4();
 
@@ -82,7 +78,6 @@ export async function createUser(user: User) {
         ON CONFLICT (ID) DO NOTHING;
     `;
   } catch (error) {
-    console.log("SIAMO QUI");
     return {
       errors: validatedFields.error,
       message: "Database Error: Failed to Create User.",
@@ -91,15 +86,14 @@ export async function createUser(user: User) {
 }
 
 export async function updateUser(
-  id: string,
-  prevState: SignupState,
-  formData: FormData
+  user: User
 ) {
   const validatedFields = UpdateUser.safeParse({
-    name: formData.get("name"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    oldPassword: formData.get("oldPassword"),
+    name: user.name,
+    email: user.email,
+    password: user.password,
+    is_seller: user.is_seller,
+    business_name: user.business_name,
   });
 
   if (!validatedFields.success) {
@@ -109,29 +103,17 @@ export async function updateUser(
     };
   }
 
-  var { name, email, password } = validatedFields.data;
-
-  const isValid = await compare(validatedFields.data.password, password);
-
-  if (!isValid) {
-    return {
-      errors: { password: ["Incorrect Password"] },
-      message: "Failed to Update User, incorrect password.",
-    };
-  }
+  const hashedPassword = bcrypt.hashSync(user.password, 10);
 
   try {
     await sql`
       UPDATE users
-      SET name = ${name}, email = ${email}, password = ${password}
-      WHERE id = ${id}
+      SET name = ${user.name}, email = ${user.email}, password = ${hashedPassword}, business_name = ${user.business_name}
+      WHERE id = ${user.id}
     `;
   } catch (error) {
     return { message: "Database Error: Failed to Update User." };
   }
-
-  revalidatePath(`/profile/${id}`);
-  redirect(`/profile/${id}`);
 }
 
 export async function deleteUser(id: string) {

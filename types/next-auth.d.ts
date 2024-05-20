@@ -8,6 +8,7 @@ declare module "next-auth" {
             name: string;
             is_seller: boolean;
             business_name: string;
+            password: string;
         };
     }
 }

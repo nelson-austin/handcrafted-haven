@@ -50,6 +50,7 @@ export const authOptions: NextAuthOptions = {
                 email: user.email,
                 is_seller: user.is_seller,
                 business_name: user.business_name,
+                password: user.password,
               };
             }
           }
@@ -66,6 +67,7 @@ export const authOptions: NextAuthOptions = {
             token.email = (user as User).email;
             token.is_seller = (user as User).is_seller;
             token.business_name = (user as User).business_name;
+            token.password = (user as User).password;
         }
 
         return token;
@@ -77,6 +79,7 @@ export const authOptions: NextAuthOptions = {
             session.user.email = token.email as string;
             session.user.is_seller = token.is_seller as boolean;
             session.user.business_name = token.business_name as string;
+            session.user.password = token.password as string;
         }
 
         return session;
