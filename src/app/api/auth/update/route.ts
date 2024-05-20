@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { createUser, updateUser } from "../../../lib/actions";
-import { User } from "../../../lib/definitions";
+import { updateUser } from "../../../lib/actions";
+import { User } from "../../../lib/interface";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../[...nextauth]/route";
 import { compare } from "bcrypt";
@@ -25,10 +25,7 @@ export async function POST(request: Request) {
           : session!.user.business_name,
       };
 
-      console.log(user);
       const response = await updateUser(user);
-
-      console.log(response);
 
       return NextResponse.json({ message: "Success" });
     } else {
