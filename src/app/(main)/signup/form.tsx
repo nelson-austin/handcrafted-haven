@@ -10,11 +10,11 @@ import {
   ArrowRightIcon,
   DocumentChartBarIcon,
 } from "@heroicons/react/20/solid";
-import { Button } from "../../ui/button";
 import { useFormStatus } from "react-dom";
 import { FormEvent } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/app/ui/button";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -47,7 +47,7 @@ export default function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form onSubmit={handleSubmit} className="pt-[150px] pb-20">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`mb-3 text-2xl`}>Please sign up to continue.</h1>
         <div className="w-full">

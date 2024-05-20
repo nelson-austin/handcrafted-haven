@@ -3,8 +3,8 @@ import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import bcrypt, { compare } from "bcrypt";
-import { User } from "./definitions";
 import { v4 } from "uuid";
+import { User } from "./interface";
 
 export const FormSchema = z.object({
   name: z.string().min(1).max(50),

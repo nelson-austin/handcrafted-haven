@@ -2,8 +2,8 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 import { sql } from "@vercel/postgres";
-import { FormSchema } from "../../../lib/actions";
-import { User } from "../../../lib/definitions";
+import { FormSchema } from "@/app/lib/actions";
+import { User } from "@/app/lib/interface";
 
 export const authOptions: NextAuthOptions = {
   session: {

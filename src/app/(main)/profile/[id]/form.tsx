@@ -7,13 +7,13 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
-import { Button } from "../../../ui/button";
 import { useFormStatus } from "react-dom";
 import { FormEvent } from "react";
 import { useState } from "react";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
-import { User } from "../../../lib/definitions";
+import { Button } from "@/app/ui/button";
+import { User } from "@/app/lib/interface";
 
 export default function UpdateUserForm() {
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function UpdateUserForm() {
   const [errorMessage, setErrorMessage] = useState("");
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form onSubmit={handleSubmit} className="pt-[150px] pb-20">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`mb-3 text-2xl`}>Edit your profile</h1>
         <div className="w-full">

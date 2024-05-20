@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { updateUser } from "../../../lib/actions";
-import { User } from "../../../lib/interface";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../[...nextauth]/route";
 import { compare } from "bcrypt";
+import { User } from "@/app/lib/interface";
+import { updateUser } from "@/app/lib/actions";
+import { authOptions } from "../[...nextauth]/route";
 
 export async function POST(request: Request) {
   try {

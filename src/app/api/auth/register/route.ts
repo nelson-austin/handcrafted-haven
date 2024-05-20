@@ -1,6 +1,6 @@
+import { createUser } from "@/app/lib/actions";
+import { User } from "@/app/lib/interface";
 import { NextResponse } from "next/server";
-import { createUser } from "../../../lib/actions";
-import { User } from "../../../lib/definitions";
 
 export async function POST(request: Request) {
   try {
