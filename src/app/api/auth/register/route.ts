@@ -15,12 +15,10 @@ export async function POST(request: Request) {
       business_name: business_name ?? "",
     };
 
-    console.log(user);
     const response = await createUser(user);
 
-    console.log(response);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   return NextResponse.json({ message: "Success" });

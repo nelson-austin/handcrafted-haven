@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { compare } from "bcrypt";
 import { User } from "@/app/lib/interface";
 import { updateUser } from "@/app/lib/actions";
-import { authOptions } from "../[...nextauth]/route";
+import { authOptions } from "@/app/lib/authOptions";
 
 export async function POST(request: Request) {
   try {
