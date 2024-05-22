@@ -12,8 +12,18 @@ const lusitana = Lusitana({
   weight: ["400", "700"],
 });
 
-export default function ProductPage() {
+export default function ProductPage({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+  };
+}) {
+  const query = searchParams?.query || ''
   return (
-    <ProductGrid />
+    <div>
+      <ProductGrid query={query}/>
+    </div>
+    
   );
 }

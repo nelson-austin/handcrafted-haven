@@ -30,5 +30,12 @@ export type Order = {
 }
 
 export type Review = {
+    id: string;
+    product_id: string;
+    user_id: string;
+    rating: number;
+    comment: string;
+    date: string;
+    name: string;
 
 }
