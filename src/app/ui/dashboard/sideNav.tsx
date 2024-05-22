@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 const navLinks = [
   {
-    name: "Home",
+    name: "Profile",
     href: "/dashboard",
     icon: (
       <svg
@@ -71,7 +71,7 @@ export default function SideNav() {
   return (
     <>
       <div className={`flex flex-col md:bg-green-100 p-2 h-full `}>
-        <Link href={"/dashboard"} className="">
+        <Link href={"/"} className="">
           <section className="p-10 bg-green-900 rounded-lg w-[370px] m-auto flex items-center justify-center md:w-[280px]">
             <div className="flex flex-col gap-5 items-center">
               <svg
