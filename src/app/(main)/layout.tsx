@@ -18,7 +18,7 @@ export default function Layout({
   return (
     <>
       <Provider store={store}>
-        {/* <Header /> */}
+        <Header />
         <main>{children}</main>
       </Provider>
     </>
