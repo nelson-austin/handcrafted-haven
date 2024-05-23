@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Product } from "@/app/lib/interface";
-
 import {
   setCartItems,
   incrementItemQuantity,
@@ -43,8 +42,6 @@ export default function CartPage() {
   };
 
   const handleIncrement = (id: string) => {
-    dispatch(incrementItemQuantity());
-
     const updatedCartItems = cartItems.map((item: any) => {
       if (item.id === id) {
         return { ...item, quantity: item.quantity + 1 };

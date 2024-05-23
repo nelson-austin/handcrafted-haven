@@ -10,7 +10,9 @@ import { getSession } from "next-auth/react";
 import Logout from "@/app/logout";
 
 export default function Header() {
+  
   const cartCount: number = useSelector((state: any) => state.cart.totalItems);
+  console.log(cartCount)
 
   const [user, setUser] = useState({} as User);
   if (user.id === undefined) {
