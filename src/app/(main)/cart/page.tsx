@@ -82,7 +82,7 @@ export default function CartPage() {
 
   return (
     <section className="pt-[150px] pb-20">
-      <h2 className="text-center p-5 text-[33px] font-bold">Shopping Cart</h2>
+      <h2 className="text-center  text-[33px] font-bold">Shopping Cart</h2>
       {cartItems.length === 0 ? (
         <div className="text-center text-[36px]">
           <p>Your cart is empty.</p>
@@ -107,11 +107,11 @@ export default function CartPage() {
           </Link>
         </div>
       ) : (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center md:grid grid-cols-2">
           {cartItems.map((item: any) => (
             <div
               key={item.id}
-              className="flex flex-col items-center bg-blue-100 shadow-lg rounded-lg p-4 m-2 w-80"
+              className="flex flex-col m-3 items-center bg-blue-100 shadow-lg rounded-lg p-4 w-[360px]  "
             >
               <img
                 src={`/products/${item.image}`}
@@ -125,7 +125,7 @@ export default function CartPage() {
               <div className="flex gap-3 justify-center mt-1">
                 <button
                   onClick={() => handleIncrement(item.id)}
-                  className="text-[15px] font-black mb-1 bg-white rounded-[50%] p-4"
+                  className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +144,7 @@ export default function CartPage() {
                 </button>
                 <button
                   onClick={() => handleDecrement(item.id)}
-                  className="text-[15px] font-black mb-1 bg-white rounded-[50%] p-4"
+                  className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +163,7 @@ export default function CartPage() {
                 </button>
                 <button
                   onClick={() => handleRemove(item.id)}
-                  className="text-[15px] font-black mb-1 bg-white rounded-[50%] p-4"
+                  className="text-[15px] md:hover:bg-green-700 hover:text-red-900 font-black mb-1 bg-white rounded-[50%] p-4"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -183,13 +183,18 @@ export default function CartPage() {
               </div>
             </div>
           ))}
-          <div className="mt-4 p-4 bg-gray-200 rounded-lg w-full max-w-sm text-center">
-            <h3 className="text-xl font-semibold">
-              Total Cost: {`$${totalCost.toFixed(2)}`}
-            </h3>
-          </div>
         </div>
       )}
+      <div className="flex justify-between items-center mt-20 m-auto p-4 bg-green-900 text-sky-100 rounded-lg w-[360px] md:mr-[20px]">
+        <h3 className="text-xl font-semibold">
+          Total Cost: {`$${totalCost.toFixed(2)}`}
+        </h3>
+        <Link href={"/"}>
+          <p className="text-xl font-semibold md:hover:bg-sky-100 md:p-3 rounded-lg hover:underline md:hover:text-green-900">
+            Checkout
+          </p>
+        </Link>
+      </div>
     </section>
   );
 }

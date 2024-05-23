@@ -2,14 +2,13 @@ import Image from "next/image";
 import Register from "../landing-page/hero-components/register";
 // import LearnMore from "./learn-more";
 // import ViewProducts from "./view-products";
-import Header from "./partials/header";
+
 import Footer from "./partials/footer";
 import Buttons from "./buttons/buttons";
 
 export default function SellerPage() {
   return (
     <div className="">
-      <Header />
       <Image
         src={"/desktop-hero.png"}
         width={1000}
