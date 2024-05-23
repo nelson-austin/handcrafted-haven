@@ -4,12 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Product } from "@/app/lib/interface";
-import {
-  setCartItems,
-  incrementItemQuantity,
-  decrementItemQuantity,
-  removeItemFromCart,
-} from "@/redux/features/cartCounterSlice";
+import { setCartItems, removeItemFromCart } from "@/redux/features/cartSlice";
 
 interface CartItem extends Product {
   quantity: number;
@@ -44,7 +39,11 @@ export default function CartPage() {
   const handleIncrement = (id: string) => {
     const updatedCartItems = cartItems.map((item: any) => {
       if (item.id === id) {
-        return { ...item, quantity: item.quantity + 1 };
+        return {
+          ...item,
+          quantity: item.quantity + 1,
+          quantity_available: item.quantity_available - 1,
+        };
       }
       return item;
     });
@@ -54,11 +53,14 @@ export default function CartPage() {
   };
 
   const handleDecrement = (id: string) => {
-    dispatch(decrementItemQuantity(id));
+    // dispatch(decrementItemQuantity(id));
 
     const updatedCartItems = cartItems.map((item: any) => {
       if (item.id === id && item.quantity > 1) {
-        return { ...item, quantity: item.quantity - 1 };
+        return {
+          ...item,
+          quantity: item.quantity - 1,
+        };
       }
       return item;
     });
@@ -108,11 +110,11 @@ export default function CartPage() {
         </div>
       ) : (
         <div>
-          <div className="flex flex-col items-center md:grid grid-cols-2">
+          <div className="flex flex-col items-center md:grid place-items-center grid-cols-2 lg:grid-cols-3">
             {cartItems.map((item: any) => (
               <div
                 key={item.id}
-                className="flex flex-col m-3 items-center bg-blue-100 shadow-lg rounded-lg p-4 w-[360px]  "
+                className="flex flex-col m-3 items-center bg-blue-100 shadow-lg rounded-lg p-4 w-[363px] md:w-[357px] lg:w-[390px] "
               >
                 <img
                   src={`/products/${item.image}`}

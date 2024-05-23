@@ -2,25 +2,28 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import Search from "@/app/ui/search";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { User } from "@/app/lib/interface";
+import { useState, useEffect } from "react";
 import { getSession } from "next-auth/react";
 import Logout from "@/app/logout";
+import { User } from "@/app/lib/interface";
 
 export default function Header() {
-  
-  const cartCount: number = useSelector((state: any) => state.cart.totalItems);
-  console.log(cartCount)
-
+  const cartCount = useSelector((state: any) => state.cart.totalItems);
   const [user, setUser] = useState({} as User);
-  if (user.id === undefined) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
     getSession().then((session) => {
       if (session) {
         setUser(session.user as User);
       }
     });
+  }, []);
+
+  if (!isMounted) {
+    return null; // Alternatively, you can return a loading spinner or placeholder
   }
 
   return (
