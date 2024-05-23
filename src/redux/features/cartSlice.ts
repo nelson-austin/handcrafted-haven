@@ -10,22 +10,24 @@ interface CartState {
   totalItems: number;
 }
 
-const initialState: CartState = (() => {
-  // Load state from local storage if available
+// Helper function to load state from localStorage
+const loadState = (): CartState => {
   if (typeof window !== "undefined") {
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
       return JSON.parse(savedCart);
     }
   }
-  return {
-    items: [],
-    totalItems: 0,
-  };
-})();
+  return { items: [], totalItems: 0 };
+};
+
+// Initialize state with a function to avoid SSR issues
+const initialState: CartState = loadState();
 
 const saveState = (state: CartState) => {
-  localStorage.setItem("cart", JSON.stringify(state));
+  if (typeof window !== "undefined") {
+    localStorage.setItem("cart", JSON.stringify(state));
+  }
 };
 
 const cartSlice = createSlice({

@@ -15,25 +15,30 @@ export default function CartPage() {
   const cartItems = useSelector((state: any) => state.cart.items);
 
   useEffect(() => {
-    const storedCartItems: CartItem[] = JSON.parse(
-      localStorage.getItem("cart-items") || "[]"
+    const storedCartItems: CartItem[] | null = JSON.parse(
+      localStorage.getItem("cart-items") || "null"
     );
 
-    const itemMap: { [key: string]: CartItem } = {};
+    // Ensure storedCartItems is an array before proceeding
+    if (Array.isArray(storedCartItems)) {
+      const itemMap: { [key: string]: CartItem } = {};
 
-    storedCartItems.forEach((item: Product) => {
-      if (itemMap[item.id]) {
-        itemMap[item.id].quantity += 1;
-      } else {
-        itemMap[item.id] = { ...item, quantity: 1 };
-      }
-    });
+      storedCartItems.forEach((item: CartItem) => {
+        if (itemMap[item.id]) {
+          itemMap[item.id].quantity += 1;
+        } else {
+          itemMap[item.id] = { ...item, quantity: 1 };
+        }
+      });
 
-    dispatch(setCartItems(Object.values(itemMap)));
+      dispatch(setCartItems(Object.values(itemMap)));
+    }
   }, [dispatch]);
 
   const updateLocalStorage = (items: CartItem[]) => {
-    localStorage.setItem("cart-items", JSON.stringify(items));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cart", JSON.stringify(items));
+    }
   };
 
   const handleIncrement = (id: string) => {
@@ -48,13 +53,11 @@ export default function CartPage() {
       return item;
     });
 
-    localStorage.setItem("cart-items", JSON.stringify(updatedCartItems));
+    updateLocalStorage(updatedCartItems);
     dispatch(setCartItems(updatedCartItems));
   };
 
   const handleDecrement = (id: string) => {
-    // dispatch(decrementItemQuantity(id));
-
     const updatedCartItems = cartItems.map((item: any) => {
       if (item.id === id && item.quantity > 1) {
         return {
@@ -65,7 +68,7 @@ export default function CartPage() {
       return item;
     });
 
-    localStorage.setItem("cart-items", JSON.stringify(updatedCartItems));
+    updateLocalStorage(updatedCartItems);
     dispatch(setCartItems(updatedCartItems));
   };
 
@@ -84,7 +87,7 @@ export default function CartPage() {
 
   return (
     <section className="pt-[150px] pb-20">
-      <h2 className="text-center  text-[33px] font-bold">Shopping Cart</h2>
+      <h2 className="text-center text-[33px] font-bold">Shopping Cart</h2>
       {cartItems.length === 0 ? (
         <div className="text-center text-[36px]">
           <p>Your cart is empty.</p>
@@ -94,14 +97,14 @@ export default function CartPage() {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
                 className="w-6 h-6"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 15L3 9m0 0L9 3m-6 6h12a6 6 0 0112 0h-3"
                 />
               </svg>
               <p>Continue Shopping</p>
@@ -134,13 +137,13 @@ export default function CartPage() {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
                       className="w-6 h-6"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M12 4.5v15m7.5-7.5h-15"
                       />
                     </svg>
@@ -153,13 +156,13 @@ export default function CartPage() {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
                       className="w-6 h-6"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M5 12h14"
                       />
                     </svg>
@@ -172,14 +175,14 @@ export default function CartPage() {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
                       className="w-6 h-6"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M14.74 9L14.394 18m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
                       />
                     </svg>
                   </button>
@@ -200,19 +203,19 @@ export default function CartPage() {
             </div>
             <div className="text-[36px]">
               <Link href={"/"}>
-                <div className="flex items-center justify-end gap-1 pt-4 text-gray-400 md:mr-5  md:hover:text-gray-600">
+                <div className="flex items-center justify-end gap-1 pt-4 text-gray-400 md:mr-5 md:hover:text-gray-600">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     className="w-6 h-6"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 15L3 9m0 0L9 3m-6 6h12a6 6 0 010 12h-3"
                     />
                   </svg>
                   <p>Continue Shopping</p>
