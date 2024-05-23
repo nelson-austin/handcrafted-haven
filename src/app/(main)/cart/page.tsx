@@ -179,7 +179,7 @@ export default function CartPage() {
             </div>
             <div className="text-[36px]">
               <Link href={"/"}>
-                <div className="flex items-center justify-end gap-1 pt-4 text-gray-400 md:mr-5  md:hover:text-gray-600">
+                <div className="flex items-center justify-center md:justify-end gap-1 pt-4 text-gray-400 md:mr-5  md:hover:text-gray-600">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
