@@ -14,6 +14,7 @@ export type Product = {
     description: string;
     price: number;
     quantity_available: number;
+    sold_out: boolean;
 }
 
 export type User = {
@@ -30,5 +31,12 @@ export type Order = {
 }
 
 export type Review = {
+    id: string;
+    product_id: string;
+    user_id: string;
+    rating: number;
+    comment: string;
+    date: string;
+    name: string;
 
 }

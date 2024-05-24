@@ -1,7 +1,8 @@
 import { sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
+import { notFound } from 'next/navigation';
 
-import { Product } from "./interface";
+import { Product, Review } from "./interface";
 
 export async function fetchFilteredProducts(
   query: string,
@@ -17,7 +18,8 @@ export async function fetchFilteredProducts(
                 products.image,
                 products.description,
                 products.price,
-                products.quantity_available
+                products.quantity_available,
+                products.is_sold_out
             FROM products
             JOIN users ON products.user_id = users.id
             WHERE
@@ -56,6 +58,22 @@ export async function fetchProductById(id: string) {
     return data.rows[0];
   } catch (error) {
     console.error("Data Fetch Error:", error);
+    notFound();
     throw new Error("Failed to find product");
+  }
+}
+
+export async function fetchReviewsByProductById(id: string) {
+  unstable_noStore();
+  try {
+    const data = await sql<Review>`
+        SELECT * FROM reviews
+        JOIN users ON reviews.user_id = users.id
+        WHERE product_id = ${id}`;
+
+    return data.rows;
+  } catch (error) {
+    console.error("Data Fetch Error:", error);
+    throw new Error("Failed to find reviews");
   }
 }
