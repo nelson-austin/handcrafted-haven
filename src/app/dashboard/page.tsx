@@ -1,3 +1,4 @@
+
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Home"
@@ -5,8 +6,8 @@ export const metadata: Metadata = {
 
 export default function Dashboard() {
   return (
-    <div>
+    <main>
       <p>Dashboard</p>
-    </div>
+    </main>
   );
 }
