@@ -71,12 +71,12 @@ export default function Header() {
           <Link href="/">
             <div className="flex items-center">
               <Image
-                src="/HH-Logo.svg"
+                src="/HH-Logo.png"
                 width={100}
                 height={100}
                 alt="Logo Image"
               />
-              <p className="text-sky-100 text-[26px] font-bold leading-none">
+              <p className="text-sky-100 pl-5 text-[26px] font-bold leading-none">
                 Handcrafted{" "}
                 <span className="text-[51px] md:text-[26px]">Haven</span>
               </p>
