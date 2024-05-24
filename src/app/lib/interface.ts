@@ -14,6 +14,7 @@ export type Product = {
     description: string;
     price: number;
     quantity_available: number;
+    sold_out: boolean;
 }
 
 export type User = {
