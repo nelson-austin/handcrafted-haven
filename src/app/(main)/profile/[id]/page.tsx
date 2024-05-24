@@ -1,14 +1,11 @@
 import { getServerSession } from "next-auth";
-import UpdateUserForm from "./form";
-import { redirect } from "next/navigation";
+import UserProfileView from "./profile";
+import { getProfileById } from "@/app/lib/actions";
 import { authOptions } from "@/app/lib/authOptions";
 
-//metadata.title = "Profile Update";
-
-export default async function UpdateUserPage() {
+export default async function UserProfilePage({ params }: { params: { id: string }}) {
     const session = await getServerSession(authOptions);
-    if(!session) {
-       redirect("/login");
-    }
-    return <UpdateUserForm />;
+    const profile = await getProfileById(params.id);
+
+    return <UserProfileView profile={profile} user={session?.user} />;
 }
