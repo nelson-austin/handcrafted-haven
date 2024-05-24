@@ -87,22 +87,6 @@ export default function Header() {
             </Link>
           </div>
           <div className="header-items flex items-center justify-between">
-            <div className="flex flex-col">
-              <Link href="/">
-                <div className="flex items-center">
-                  <Image
-                    src="/logo-placeholder-image.png"
-                    width={100}
-                    height={100}
-                    alt="Logo Image"
-                  />
-                  <p className="text-sky-100 text-[26px] font-bold leading-none">
-                    Handcrafted{" "}
-                    <span className="text-[51px] md:text-[26px]">Haven</span>
-                  </p>
-                </div>
-              </Link>
-            </div>
             <div className="hidden md:flex items-center">
               <HeaderLinks user={user} cartCount={cartCount} />
             </div>
