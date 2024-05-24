@@ -2,7 +2,6 @@
 
 import { useDispatch } from "react-redux";
 import {
-  incrementItemQuantity,
   addItemToCart,
 } from "@/redux/features/cartSlice";
 import { Product } from "@/app/lib/interface";
@@ -18,27 +17,11 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
   const handleAddToCart = () => {
     // Increment cart count in Redux state
     dispatch(addItemToCart(product));
-    // dispatch(incrementItemQuantity(product.id))
-
-    // Retrieve the existing cart items from local storage and parse them
-    const existingCartItems = JSON.parse(
-      localStorage.getItem("cart-items") || "[]"
-    );
-
-    // Add the new product to the cart items
-    if (product) {
-      product.quantity_available -= 1;
-    }
-
-    const updatedCartItems = [...existingCartItems, product];
-
-    // Save the updated cart items to local storage
-    localStorage.setItem("cart-items", JSON.stringify(updatedCartItems));
   };
 
   return (
     <>
-      <Link href={"/cart"}>
+      <Link href={"/"}>
         <button
           onClick={handleAddToCart}
           className="bg-green-800 m-3 w-80 text-2xl rounded-lg p-3 flex justify-center items-center md:hover:bg-green-700 text-sky-100 md:w-[200px] lg:w-[270px]"

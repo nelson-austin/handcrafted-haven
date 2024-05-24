@@ -14,7 +14,7 @@ export default function CartPage() {
   const cartItems = useSelector((state: any) => state.cart.items);
 
   const updateLocalStorage = (items: CartItem[]) => {
-    localStorage.setItem("cart-items", JSON.stringify(items));
+    localStorage.setItem("cart", JSON.stringify(items));
   };
 
   const handleIncrement = (id: string) => {
