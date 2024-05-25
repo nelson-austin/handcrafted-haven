@@ -20,7 +20,7 @@ export default function ProductCard({
       <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100">
         <div
           className="max-w-sm rounded-xl overflow-hidden shadow-lg mx-4 my-4"
-          style={{ opacity: 0.8 }}
+          style={{ opacity: 0.5 }}
         >
           <Image
             src={imgPath}
