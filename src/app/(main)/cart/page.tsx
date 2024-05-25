@@ -79,25 +79,47 @@ export default function CartPage() {
                 <p className="text-gray-600">{item.description}</p>
                 <p className="text-gray-800">Quantity: {item.quantity}</p>
                 <div className="flex gap-3 justify-center mt-1">
-                  <button
-                    onClick={() => handleIncrement(item.id)}
-                    className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-6 h-6"
+                  {item.quantity_available === 0 ? (
+                    <button
+                      onClick={() => handleIncrement(item.id)}
+                      className="hidden text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 4.5v15m7.5-7.5h-15"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleIncrement(item.id)}
+                      className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                    </button>
+                  )}
                   <button
                     onClick={() => handleDecrement(item.id)}
                     className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
