@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { Product } from "@/app/lib/interface";
-import { setCartItems, removeItemFromCart } from "@/redux/features/cartSlice";
+import {
+  removeItemFromCart,
+  incrementItemQuantity,
+  decrementItemQuantity,
+} from "@/redux/features/cartSlice";
 
 interface CartItem extends Product {
   quantity: number;
@@ -13,46 +17,15 @@ export default function CartPage() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: any) => state.cart.items);
 
-  const updateLocalStorage = (items: CartItem[]) => {
-    localStorage.setItem("cart", JSON.stringify(items));
-  };
-
   const handleIncrement = (id: string) => {
-    const updatedCartItems = cartItems.map((item: CartItem) => {
-      if (item.id === id) {
-        return {
-          ...item,
-          quantity: item.quantity + 1,
-          quantity_available: item.quantity_available - 1,
-        };
-      }
-      return item;
-    });
-
-    updateLocalStorage(updatedCartItems);
-    dispatch(setCartItems(updatedCartItems));
+    dispatch(incrementItemQuantity(id));
   };
 
   const handleDecrement = (id: string) => {
-    const updatedCartItems = cartItems.map((item: CartItem) => {
-      if (item.id === id && item.quantity > 1) {
-        return {
-          ...item,
-          quantity: item.quantity - 1,
-        };
-      }
-      return item;
-    });
-
-    updateLocalStorage(updatedCartItems);
-    dispatch(setCartItems(updatedCartItems));
+    dispatch(decrementItemQuantity(id));
   };
 
   const handleRemove = (id: string) => {
-    const updatedCartItems = cartItems.filter(
-      (item: CartItem) => item.id !== id
-    );
-    updateLocalStorage(updatedCartItems);
     dispatch(removeItemFromCart(id));
   };
 

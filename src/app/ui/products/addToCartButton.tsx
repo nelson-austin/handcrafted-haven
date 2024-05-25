@@ -1,9 +1,7 @@
 "use client";
 
 import { useDispatch } from "react-redux";
-import {
-  addItemToCart,
-} from "@/redux/features/cartSlice";
+import { addItemToCart } from "@/redux/features/cartSlice";
 import { Product } from "@/app/lib/interface";
 import Link from "next/link";
 
@@ -14,16 +12,15 @@ interface AddToCartButtonProps {
 export default function AddToCartButton({ product }: AddToCartButtonProps) {
   const dispatch = useDispatch();
 
-  const handleAddToCart = () => {
-    // Increment cart count in Redux state
+  const handleAddToCart = (id: string) => {
     dispatch(addItemToCart(product));
   };
 
   return (
     <>
-      <Link href={"/"}>
+      <Link href={"/cart"}>
         <button
-          onClick={handleAddToCart}
+          onClick={() => handleAddToCart(product.id)}
           className="bg-green-800 m-3 w-80 text-2xl rounded-lg p-3 flex justify-center items-center md:hover:bg-green-700 text-sky-100 md:w-[200px] lg:w-[270px]"
         >
           Add to Cart
