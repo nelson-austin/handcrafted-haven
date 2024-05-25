@@ -1,44 +1,49 @@
 "use client";
 
-import { User } from "@/app/lib/interface";
+import { Product, User } from "@/app/lib/interface";
 import { ExclamationCircleIcon, UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-
+import Carousel from "./carousel";
 //metadata.title = "Profile View";
 
 export default function UserProfileView({
   profile,
   user,
+  products,
 }: {
   profile: User;
   user?: User;
+  products?: Array<Product>;
 }) {
   return (
     <div className="pt-[150px] pb-20">
-      <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
+      <div className="flex flex-col rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         {(profile && (
           <>
-            <h1 className={`mb-3 text-2xl font-bold`}>{profile.name}&apos;s Profile</h1>
-            <div className="w-full">
-              <div>
-                <label className="mb-3 mt-5 block text-xs font-medium text-gray-900">
-                  Ratings 
-                  </label>
-                <div className="relative">
-                  <input
-                    className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                    id="ratings"
-                    type="text"
-                    name="ratings"
-                    placeholder="Enter your ratings"
-                    required
-                  />
-                  <UserIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-                  </div>
-              </div>
+            <div className="flex flex-col mb-2">
+              <h1 className={`mb-3 text-2xl font-bold`}>
+                {profile.name}&apos;s Profile
+              </h1>
+              <h2 className={`self-start mt-3 mb-3 text-xl font-bold`}>
+                About:
+              </h2>
+              {profile.is_seller === true && (
+                <p className="text-lg">{profile.business_name}</p>
+              )}
+              <p className="text-lg">{profile.email}</p>
             </div>
+
+            {profile.is_seller === true && products && (
+              <>
+                <h2 className={`mb-3 text-xl font-bold`}>Products:</h2>
+                <Carousel products={products} />
+              </>
+            )}
+
             {user && user.id === profile.id && (
-              <EditUserLink id={user.id} />
+              <div className="mt-6">
+                <EditUserLink id={user.id} />
+              </div>
             )}
           </>
         )) ||

@@ -1,14 +1,12 @@
 import { sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
 
 import { Product, Review } from "./interface";
 
-export async function fetchFilteredProducts(
-  query: string,
-) {
-  unstable_noStore()
-  
+export async function fetchFilteredProducts(query: string) {
+  unstable_noStore();
+
   try {
     const products = await sql<Product>`
             SELECT
@@ -35,12 +33,12 @@ export async function fetchFilteredProducts(
   }
 }
 
-export async function fetchMyInventory() {
-    // will complete when user id is ready
-    unstable_noStore();
-    try {
-        const data = await sql<Product>`
-        SELECT * FROM products`;
+export async function fetchMyInventory(id: string) {
+  unstable_noStore();
+  try {
+    const data = await sql<Product>`
+      SELECT * FROM products
+      WHERE products.user_id = ${id}`;
     return data.rows;
   } catch (error) {
     console.error("Data Fetch Error:", error);

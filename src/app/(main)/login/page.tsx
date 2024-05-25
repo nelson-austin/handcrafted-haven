@@ -8,7 +8,7 @@ import { authOptions } from "@/app/lib/authOptions";
 export default async function LoginPage() {
     const session = await getServerSession(authOptions);
     if(session) {
-       redirect("/profile/"+session.user.id);
+       redirect(`/profile/${session.user.id}`);
     }
     return <LoginForm />;
 }
