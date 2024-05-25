@@ -7,7 +7,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const product = await fetchProductById(id);
   const reviews = await fetchReviewsByProductById(id);
-  console.log(reviews);
+  //console.log(reviews);
   const star = "★";
 
   if (!product) {
