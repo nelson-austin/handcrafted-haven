@@ -4,7 +4,7 @@ import ProductCard from "@/app/ui/products/productCard";
 
 export default async function ProductGrid({ query }: { query: string }) {
   const products = await fetchFilteredProducts(query);
-  console.log(products);
+  //console.log(products);
 
   return (
     <main className="pt-[120px] overflow-y-clip">

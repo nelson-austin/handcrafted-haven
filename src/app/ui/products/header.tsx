@@ -5,9 +5,9 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { getSession } from "next-auth/react";
-import Logout from "@/app/logout";
 import { User } from "@/app/lib/interface";
 import HeaderLinks from "../header/links";
+import { set } from "zod";
 
 export default function Header() {
   const cartCount = useSelector((state: any) => state.cart.totalItems);
@@ -15,17 +15,14 @@ export default function Header() {
   const [isLoading, setIsLoading] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      const session = await getSession();
+  if (user.id === undefined) {
+    getSession().then((session) => {
       if (session) {
         setUser(session.user as User);
       }
       setIsLoading(false);
-    };
-
-    fetchSession();
-  }, []);
+    });
+  }
 
   if (isLoading) {
     return (
