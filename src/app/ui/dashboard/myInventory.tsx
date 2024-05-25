@@ -1,8 +1,9 @@
+import { Product } from "@/app/lib/interface";
 import { UpdateItem } from "./updateItem";
 import { fetchMyInventory } from "@/app/lib/data";
 
 export default async function myInventory() {
-  const products = await fetchMyInventory();
+  const products = [] as Array<Product> //await fetchMyInventory(); TODO: restore query
   return (
     <div className="pt-[85px]">
       <div className="overflow-x-auto">
