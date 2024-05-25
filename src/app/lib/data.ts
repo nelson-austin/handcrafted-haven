@@ -34,12 +34,12 @@ export async function fetchFilteredProducts(
   }
 }
 
-export async function fetchMyInventory() {
-    // will complete when user id is ready
+export async function fetchMyInventory(id: string) {
     unstable_noStore();
     try {
         const data = await sql<Product>`
-        SELECT * FROM products`;
+        SELECT * FROM products
+        WHERE products.user_id = ${id}`;
     return data.rows;
   } catch (error) {
     console.error("Data Fetch Error:", error);

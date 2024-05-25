@@ -1,9 +1,15 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/authOptions";
 import { UpdateItem } from "./buttons"
 import { fetchMyInventory } from "@/app/lib/data"
 
 
 export default async function myInventory() {
-    const products = await fetchMyInventory();
+
+    const session = await getServerSession(authOptions);
+    if(session) {
+        const products = await fetchMyInventory(session.user.id);
+        
     return (
         <div>
             <table>
@@ -27,4 +33,5 @@ export default async function myInventory() {
             </table>
         </div>
     )
+}
 }
