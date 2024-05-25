@@ -11,13 +11,12 @@ export default function ProductCard({
   user_id,
   quantity_available,
 }: Product) {
-  const imgPath = `/products/${image}`;
 
   return (
     <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100">
       <div className="max-w-sm rounded-xl overflow-hidden shadow-lg mx-4 my-4">
         <Image
-          src={imgPath}
+          src={image}
           width={150}
           height={250}
           alt="Product Image"

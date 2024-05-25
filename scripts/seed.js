@@ -60,7 +60,7 @@ async function seedProducts(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID REFERENCES users(id),
         name VARCHAR(255) NOT NULL,
-        image VARCHAR(100),
+        image TEXT,
         description TEXT,
         price NUMERIC(10, 2) NOT NULL,
         quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0)
@@ -217,11 +217,11 @@ async function seedCart(client) {
 async function main() {
   const client = await db.connect();
 
-  //await seedUsers(client);
-  //await seedProducts(client);
- // await seedReviews(client);
+  await seedUsers(client);
+  await seedProducts(client);
+  await seedReviews(client);
   await seedCart(client);
- // await seedOrders(client);
+  await seedOrders(client);
 
   await client.end();
 }
