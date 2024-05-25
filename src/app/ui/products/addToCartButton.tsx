@@ -12,7 +12,7 @@ interface AddToCartButtonProps {
 export default function AddToCartButton({ product }: AddToCartButtonProps) {
   const dispatch = useDispatch();
 
-  const handleAddToCart = (id: string) => {
+  const handleAddToCart = () => {
     dispatch(addItemToCart(product));
   };
 
@@ -20,7 +20,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
     <>
       <Link href={"/cart"}>
         <button
-          onClick={() => handleAddToCart(product.id)}
+          onClick={handleAddToCart}
           className="bg-green-800 m-3 w-80 text-2xl rounded-lg p-3 flex justify-center items-center md:hover:bg-green-700 text-sky-100 md:w-[200px] lg:w-[270px]"
         >
           Add to Cart
