@@ -60,7 +60,8 @@ async function seedProducts(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID REFERENCES users(id),
         name VARCHAR(255) NOT NULL,
-        image TEXT,
+        image_id VARCHAR(100),
+        image VARCHAR(100),
         description TEXT,
         price NUMERIC(10, 2) NOT NULL,
         quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0)

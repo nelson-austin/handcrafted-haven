@@ -16,6 +16,7 @@ const FormSchema = z.object({
     price: z.coerce.number()
     .gt(0, { message: 'Please enter an amount greater than $0.' }),
     quantity: z.coerce.number(),
+    imageId: z.string(),
     image: z.string(),
 });
 
@@ -29,7 +30,7 @@ export type State = {
     message?: string | null;
 };
 
-const UpdateInventory = FormSchema.omit({ id: true, image: true });
+const UpdateInventory = FormSchema.omit({ id: true });
 
 export async function updateInventory(id: string, prevState: State, formData: FormData) {
     const validatedFields = UpdateInventory.safeParse({
@@ -37,6 +38,8 @@ export async function updateInventory(id: string, prevState: State, formData: Fo
         description: formData.get('description'),
         price: formData.get('price'),
         quantity: formData.get('quantity'),
+        imageId: formData.get('imageId'),
+        image: formData.get('image'),
     })
 
     if (!validatedFields.success) {
@@ -46,12 +49,12 @@ export async function updateInventory(id: string, prevState: State, formData: Fo
         };
     }
 
-    const { name, price, quantity, description } = validatedFields.data;
+    const { name, image, price, quantity, description, imageId } = validatedFields.data;
 
     try {
         await sql`
             UPDATE products
-            SET name = ${name}, description = ${description}, price = ${price}, quantity_available = ${quantity}
+            SET name = ${name}, image_id = ${imageId}, image = ${image}, description = ${description}, price = ${price}, quantity_available = ${quantity}
             WHERE id = ${id}`;
     } catch (error) {
         return { message: 'Database Error: Failed to update product.' };
@@ -69,6 +72,7 @@ export async function newProduct(id: string, prevState: State, formData: FormDat
         description: formData.get('description'),
         price: formData.get('price'),
         quantity: formData.get('quantity'),
+        imageId: formData.get('imageId'),
         image: formData.get('image'),
     })
     
@@ -79,12 +83,12 @@ export async function newProduct(id: string, prevState: State, formData: FormDat
         };
     }
     
-    const { name, price, quantity, description, image } = validatedFields.data;
+    const { name, price, quantity, description, image, imageId } = validatedFields.data;
  
     try {
         await sql`
-            INSERT INTO products (user_id, name, image, description, price, quantity_available)
-            VALUES (${id}, ${name}, ${image}, ${description}, ${price}, ${quantity})
+            INSERT INTO products (user_id, name, image_id, image, description, price, quantity_available)
+            VALUES (${id}, ${name}, ${imageId}, ${image}, ${description}, ${price}, ${quantity})
             `;
     } catch (error) {
         return { message: 'Database Error: Failed to create product.' };
