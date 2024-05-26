@@ -5,6 +5,7 @@ import AddToCartButton from "./addToCartButton";
 export default function ProductCard({
   id,
   name,
+  image_id,
   image,
   price,
   description,
@@ -31,6 +32,7 @@ export default function ProductCard({
           product={{
             id,
             name,
+            image_id,
             image,
             price,
             description,
