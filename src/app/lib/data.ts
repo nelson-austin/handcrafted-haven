@@ -1,14 +1,12 @@
 import { sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
 
 import { Product, Review } from "./interface";
 
-export async function fetchFilteredProducts(
-  query: string,
-) {
-  unstable_noStore()
-  
+export async function fetchFilteredProducts(query: string) {
+  unstable_noStore();
+
   try {
     const products = await sql<Product>`
             SELECT
@@ -18,7 +16,8 @@ export async function fetchFilteredProducts(
                 products.image,
                 products.description,
                 products.price,
-                products.quantity_available
+                products.quantity_available,
+                products.is_sold_out
             FROM products
             JOIN users ON products.user_id = users.id
             WHERE
