@@ -12,7 +12,6 @@ export default function ProductCard({
   description,
   user_id,
   quantity_available,
-  sold_out,
 }: Product) {
   const productPage = `/product/${id}`
 
@@ -45,7 +44,6 @@ export default function ProductCard({
             description,
             user_id,
             quantity_available,
-            sold_out,
           }}
         />
       </div>

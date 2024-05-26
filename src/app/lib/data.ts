@@ -10,14 +10,13 @@ export async function fetchFilteredProducts(query: string) {
   try {
     const products = await sql<Product>`
             SELECT
-                products.id,
-                products.user_id,
-                products.name,
-                products.image,
-                products.description,
-                products.price,
-                products.quantity_available,
-                products.is_sold_out
+              products.id,
+              products.user_id,
+              products.name,
+              products.image,
+              products.description,
+              products.price,
+              products.quantity_available
             FROM products
             JOIN users ON products.user_id = users.id
             WHERE
@@ -38,8 +37,8 @@ export async function fetchMyInventory(id: string) {
     try {
         const data = await sql<Product>`
         SELECT * FROM products
-        WHERE products.user_id = ${id}`;
-    return data.rows;
+        WHERE products.user_id = ${id}`;  
+        return data.rows;
   } catch (error) {
     console.error("Data Fetch Error:", error);
     throw new Error("Failed to fetch product data");
