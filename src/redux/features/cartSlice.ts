@@ -10,9 +10,22 @@ interface CartState {
   totalItems: number;
 }
 
-const initialState: CartState = {
-  items: [],
-  totalItems: 0,
+const initialState: CartState = (() => {
+  // Load state from local storage if available
+  if (typeof window !== "undefined") {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      return JSON.parse(savedCart);
+    }
+  }
+  return {
+    items: [],
+    totalItems: 0,
+  };
+})();
+
+const saveState = (state: CartState) => {
+  localStorage.setItem("cart", JSON.stringify(state));
 };
 
 const cartSlice = createSlice({
@@ -25,6 +38,7 @@ const cartSlice = createSlice({
         (total, item) => total + item.quantity,
         0
       );
+      saveState(state);
     },
     addItemToCart(state, action: PayloadAction<Product>) {
       const existingItem = state.items.find(
@@ -36,9 +50,16 @@ const cartSlice = createSlice({
         state.items.push({ ...action.payload, quantity: 1 });
       }
       state.totalItems += 1;
+      saveState(state);
     },
-    incrementItemQuantity(state) {
-      state.totalItems += 1;
+    incrementItemQuantity(state, action: PayloadAction<string>) {
+      const itemId = action.payload;
+      const item = state.items.find((item) => item.id === itemId);
+      if (item) {
+        item.quantity += 1;
+        state.totalItems += 1;
+        saveState(state);
+      }
     },
     decrementItemQuantity(state, action: PayloadAction<string>) {
       const itemId = action.payload;
@@ -46,7 +67,7 @@ const cartSlice = createSlice({
       if (item && item.quantity > 1) {
         item.quantity -= 1;
         state.totalItems -= 1;
-        localStorage.setItem("cart-items", JSON.stringify(state.items));
+        saveState(state);
       }
     },
     removeItemFromCart(state, action: PayloadAction<string>) {
@@ -55,6 +76,7 @@ const cartSlice = createSlice({
       if (itemIndex !== -1) {
         state.totalItems -= state.items[itemIndex].quantity;
         state.items.splice(itemIndex, 1);
+        saveState(state);
       }
     },
   },

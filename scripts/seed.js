@@ -64,7 +64,8 @@ async function seedProducts(client) {
         image VARCHAR(100),
         description TEXT,
         price NUMERIC(10, 2) NOT NULL,
-        quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0)
+        quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0),
+        is_sold_out BOOLEAN NOT NULL
       );
     `;
 
@@ -73,9 +74,10 @@ async function seedProducts(client) {
     //Seed the "products" table
     const insertedProducts = await Promise.all(
       products.map(async (product) => {
+        console.log(product.sold_out)
         return client.sql`
-        INSERT INTO products (id, user_id, name, image, description, price, quantity_available)
-        VALUES (${product.id}, ${product.user_id}, ${product.name}, ${product.image}, ${product.description}, ${product.price}, ${product.quantity_available})
+        INSERT INTO products (id, user_id, name, image, description, price, quantity_available, is_sold_out)
+        VALUES (${product.id}, ${product.user_id}, ${product.name}, ${product.image}, ${product.description}, ${product.price}, ${product.quantity_available}, ${product.sold_out})
         ON CONFLICT (ID) DO NOTHING;
       `
       
