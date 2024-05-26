@@ -1,9 +1,12 @@
-import { Product } from "@/app/lib/interface";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/authOptions";
 import { UpdateItem } from "./updateItem";
 import { fetchMyInventory } from "@/app/lib/data";
 
 export default async function myInventory() {
-  const products = [] as Array<Product> //await fetchMyInventory(); TODO: restore query
+  const session = await getServerSession(authOptions);
+    if(session) {
+        const products = await fetchMyInventory(session.user.id);
   return (
     <div className="pt-[85px]">
       <div className="overflow-x-auto">
@@ -49,4 +52,5 @@ export default async function myInventory() {
       </div>
     </div>
   );
+}
 }
