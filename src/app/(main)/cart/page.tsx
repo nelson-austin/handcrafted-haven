@@ -88,7 +88,7 @@ export default function CartPage() {
                 <img
                   src={`${item.image}`}
                   alt={item.name}
-                  className="w-40 h-40 object-cover"
+                  className="w-[270px] rounded-lg"
                 />
                 <h3 className="text-xl font-semibold">{item.name}</h3>
                 <p className="text-gray-700">${item.price}</p>
