@@ -20,17 +20,14 @@ export default function CartPage() {
   // Use the selector hook to access the cart items from the Redux store
   const cartItems = useSelector((state: any) => state.cart.items);
 
-  // Function to handle incrementing the quantity of an item in the cart
   const handleIncrement = (id: string) => {
     dispatch(incrementItemQuantity(id));
   };
 
-  // Function to handle decrementing the quantity of an item in the cart
   const handleDecrement = (id: string) => {
     dispatch(decrementItemQuantity(id));
   };
 
-  // Function to handle removing an item from the cart
   const handleRemove = (id: string) => {
     dispatch(removeItemFromCart(id));
   };
@@ -44,9 +41,6 @@ export default function CartPage() {
 
   return (
     <section className="pt-[150px] pb-20 md:pt-[160px]">
-      {" "}
-      {/* Styling the section with padding */}
-      <h2 className="text-center text-[33px] font-bold">Shopping Cart</h2>{" "}
       {/* Title */}
       {cartItems.length === 0 ? ( // Conditional rendering based on whether the cart is empty
         <div className="text-center text-[36px]">
@@ -75,6 +69,15 @@ export default function CartPage() {
       ) : (
         <div>
           {/* Grid layout for displaying cart items */}
+          <Link href={"/cart/order-history"}>
+            <span className="absolute top-[19%] underline underline-offset-4 decoration-orange-300 right-[5%] md:right-[3%] md:text-[18px] md:hover:underline md:no-underline text-green-800 md:top-[18%] lg:right-[2%]">
+              View Order History
+            </span>
+          </Link>{" "}
+          {/* Styling the section with padding */}
+          <h2 className="text-center text-[33px] font-bold">
+            Shopping Cart
+          </h2>{" "}
           <div className="flex flex-col items-center md:grid place-items-center grid-cols-2 lg:grid-cols-3">
             {cartItems.map((item: CartItem) => (
               <div
