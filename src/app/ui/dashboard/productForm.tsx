@@ -6,7 +6,6 @@ import { useFormState } from "react-dom";
 import { updateInventory } from "@/app/lib/queries";
 import { State } from "@/app/lib/queries";
 import UploadWidget from "@/app/ui/uploadWidget";
-import Image from "next/image";
 
 export default function Page({ product }: {product: Product}) {
 
@@ -40,19 +39,11 @@ export default function Page({ product }: {product: Product}) {
 
     return (
         <form action={dispatch} className="grid grid-cols-[3fr_5fr]">
-          <div className="grid">
-            <div className="col-[1] row-[1] z-[2] relative flex justify-center items-center opacity-0 hover:opacity-80">
-              <UploadWidget imageId={imageId} setImageId={setImageId} setImageUrl={setImageUrl}  />
-            </div>
-            <input ref={imageIdRef} id="imageId" name="imageId" type="hidden"></input>
-            <input ref={imageRef} id="image" name="image" type="hidden"></input>
-            <Image className="col-[1] row-[1] z-[1] relative m-auto"
-            src={product.image}
-            width={300}
-            height={300}
-            alt="product image"
-            />
-          </div>
+          <UploadWidget imageId={imageId} setImageId={setImageId} imageUrl={imageUrl} setImageUrl={setImageUrl}  />
+           
+          <input ref={imageIdRef} id="imageId" name="imageId" type="hidden"></input>
+          <input ref={imageRef} id="image" name="image" type="hidden"></input>
+          
           <div key={time}>
             <div className="block py-3 grid grid-cols-[1fr_4fr]">
               <label htmlFor="name" className="text-[1.2em]">Product name</label>

@@ -17,6 +17,8 @@ async function seedUsers(client) {
       CREATE TABLE IF NOT EXISTS users (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
+        image_id VARCHAR(100),
+        image VARCHAR(255),
         email text UNIQUE NOT NULL,
         password text NOT NULL,
         is_seller BOOLEAN NOT NULL DEFAULT FALSE,
