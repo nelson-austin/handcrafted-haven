@@ -41,6 +41,7 @@ export default async function OrderHistoryPage() {
             {orderHistory.map((order) => {
               return (
                 <OrderHistoryCard
+                  image_id={""}
                   id={""}
                   user_id={""}
                   quantity_available={0}

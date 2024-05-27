@@ -70,8 +70,22 @@ export default function CartPage() {
         <div>
           {/* Grid layout for displaying cart items */}
           <Link href={"/cart/order-history"}>
-            <span className="absolute top-[19%] underline underline-offset-4 decoration-orange-300 right-[5%] md:right-[3%] md:text-[18px] md:hover:underline md:no-underline text-green-800 md:top-[18%] lg:right-[2%]">
+            <span className="absolute top-[19%] flex gap-1 items-center underline underline-offset-4 decoration-orange-300 right-[5%] md:right-[3%] md:text-[18px] md:hover:underline md:no-underline text-green-800 md:top-[18%] lg:right-[2%]">
               View Order History
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                />
+              </svg>
             </span>
           </Link>{" "}
           {/* Styling the section with padding */}
