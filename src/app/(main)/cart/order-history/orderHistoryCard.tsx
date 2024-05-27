@@ -16,7 +16,7 @@ export default function OrderHistoryCard({
 
   return (
     <section className="rounded-xl justify-center ">
-      <div className="flex w-[360px] md:w-[355px] lg:w-[450px] rounded-xl overflow-hidden shadow-lg mx-4 my-4 bg-blue-100">
+      <div className="flex w-[360px] md:w-[355px] lg:w-[450px] rounded-xl overflow-hidden shadow-xl mx-4 my-4 bg-blue-100">
         <Image
           src={image}
           width={150}
