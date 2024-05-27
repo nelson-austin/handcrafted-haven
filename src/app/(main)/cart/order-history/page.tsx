@@ -37,7 +37,7 @@ export default async function OrderHistoryPage() {
             </div>
           </Link>
         ) : (
-          <div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 place-items-center">
             {orderHistory.map((order) => {
               return (
                 <OrderHistoryCard
@@ -56,7 +56,7 @@ export default async function OrderHistoryPage() {
                 />
               );
             })}
-            <Link href={"/"}>
+            <Link href={"/cart"}>
               <div className="flex items-center justify-center gap-3 pt-1 text-gray-400 md:hover:text-gray-500">
                 {/* SVG icon for the continue shopping link */}
                 <svg
@@ -73,7 +73,7 @@ export default async function OrderHistoryPage() {
                     d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
                   />
                 </svg>
-                <p className="text-[38px]">Continue Shopping</p>
+                <p className="text-[38px]">Back to cart</p>
               </div>
             </Link>
           </div>
