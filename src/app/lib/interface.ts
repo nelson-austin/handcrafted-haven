@@ -1,10 +1,10 @@
 export interface CardProps {
-    cardId: string;
-    cardImage: string;
-    name: string;
-    price: number;
-    description: string;
-  }
+  cardId: string;
+  cardImage: string;
+  name: string;
+  price: number;
+  description: string;
+}
 
 export type Product = {
     id: string;
@@ -18,25 +18,29 @@ export type Product = {
 }
 
 export type User = {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-    is_seller: boolean;
-    business_name: string;
-}
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  is_seller: boolean;
+  business_name: string;
+};
 
-export type Order = {
-
+export type Order ={
+  id: string;
+  user_id: string;
+  product_id: string;
+  quantity: number;
+  total_price: number;
+  order_date?: Date;
 }
 
 export type Review = {
-    id: string;
-    product_id: string;
-    user_id: string;
-    rating: number;
-    comment: string;
-    date: string;
-    name: string;
-
-}
+  id: string;
+  product_id: string;
+  user_id: string;
+  rating: number;
+  comment: string;
+  date: string;
+  name: string;
+};

@@ -1,61 +1,38 @@
-"use client";
+"use client"; // Indicates that this module should be run on the client-side only
 
-import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import { Product } from "@/app/lib/interface";
-import { setCartItems, removeItemFromCart } from "@/redux/features/cartSlice";
+import Link from "next/link"; // Import Link component from Next.js for client-side navigation
+import { useDispatch, useSelector } from "react-redux"; // Import hooks from react-redux to interact with the Redux store
+import { Product } from "@/app/lib/interface"; // Import the Product interface
+import {
+  removeItemFromCart,
+  incrementItemQuantity,
+  decrementItemQuantity,
+} from "@/redux/features/cartSlice"; // Import actions from the cart slice
 
+// Create new interface from the Product interface and add a new property "quantity"
 interface CartItem extends Product {
   quantity: number;
 }
 
 export default function CartPage() {
+  // Use the dispatch hook to dispatch actions to the Redux store
   const dispatch = useDispatch();
+  // Use the selector hook to access the cart items from the Redux store
   const cartItems = useSelector((state: any) => state.cart.items);
 
-  const updateLocalStorage = (items: CartItem[]) => {
-    localStorage.setItem("cart-items", JSON.stringify(items));
-  };
-
   const handleIncrement = (id: string) => {
-    const updatedCartItems = cartItems.map((item: CartItem) => {
-      if (item.id === id) {
-        return {
-          ...item,
-          quantity: item.quantity + 1,
-          quantity_available: item.quantity_available - 1,
-        };
-      }
-      return item;
-    });
-
-    updateLocalStorage(updatedCartItems);
-    dispatch(setCartItems(updatedCartItems));
+    dispatch(incrementItemQuantity(id));
   };
 
   const handleDecrement = (id: string) => {
-    const updatedCartItems = cartItems.map((item: CartItem) => {
-      if (item.id === id && item.quantity > 1) {
-        return {
-          ...item,
-          quantity: item.quantity - 1,
-        };
-      }
-      return item;
-    });
-
-    updateLocalStorage(updatedCartItems);
-    dispatch(setCartItems(updatedCartItems));
+    dispatch(decrementItemQuantity(id));
   };
 
   const handleRemove = (id: string) => {
-    const updatedCartItems = cartItems.filter(
-      (item: CartItem) => item.id !== id
-    );
-    updateLocalStorage(updatedCartItems);
     dispatch(removeItemFromCart(id));
   };
 
+  // Calculate the total cost of items in the cart
   const totalCost = cartItems.reduce(
     (accumulator: number, currentItem: CartItem) =>
       accumulator + currentItem.price * currentItem.quantity,
@@ -63,13 +40,14 @@ export default function CartPage() {
   );
 
   return (
-    <section className="pt-[150px] pb-20">
-      <h2 className="text-center text-[33px] font-bold">Shopping Cart</h2>
-      {cartItems.length === 0 ? (
+    <section className="pt-[150px] pb-20 md:pt-[160px]">
+      {/* Title */}
+      {cartItems.length === 0 ? ( // Conditional rendering based on whether the cart is empty
         <div className="text-center text-[36px]">
           <p>Your cart is empty.</p>
           <Link href={"/"}>
             <div className="flex items-center justify-center gap-3 pt-5 text-gray-400 md:hover:text-gray-500">
+              {/* SVG icon for the continue shopping link */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -90,45 +68,96 @@ export default function CartPage() {
         </div>
       ) : (
         <div>
+          {/* Grid layout for displaying cart items */}
+          <Link href={"/cart/order-history"}>
+            <span className="absolute top-[19%] flex gap-1 items-center underline underline-offset-4 decoration-orange-300 right-[5%] md:right-[3%] md:text-[18px] md:hover:underline md:no-underline text-green-800 md:top-[18%] lg:right-[2%]">
+              View Order History
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                />
+              </svg>
+            </span>
+          </Link>{" "}
+          {/* Styling the section with padding */}
+          <h2 className="text-center text-[33px] font-bold">
+            Shopping Cart
+          </h2>{" "}
           <div className="flex flex-col items-center md:grid place-items-center grid-cols-2 lg:grid-cols-3">
             {cartItems.map((item: CartItem) => (
               <div
                 key={item.id}
-                className="flex flex-col m-3 items-center bg-blue-100 shadow-lg rounded-lg p-4 w-[363px] md:w-[357px] lg:w-[390px]"
+                className="flex flex-col m-3 items-center bg-blue-100 shadow-lg rounded-lg p-4 w-[363px] md:w-[365px] lg:w-[390px]"
               >
+                {/* Display product image */}
                 <img
-                  src={`/products/${item.image}`}
+                  src={`${item.image}`}
                   alt={item.name}
-                  className="w-40 h-40 object-cover"
+                  className="w-[270px] rounded-lg"
                 />
                 <h3 className="text-xl font-semibold">{item.name}</h3>
                 <p className="text-gray-700">${item.price}</p>
                 <p className="text-gray-600">{item.description}</p>
                 <p className="text-gray-800">Quantity: {item.quantity}</p>
                 <div className="flex gap-3 justify-center mt-1">
-                  <button
-                    onClick={() => handleIncrement(item.id)}
-                    className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-6 h-6"
+                  {/* Conditional rendering based on item availability */}
+                  {item.quantity_available === 0 ? (
+                    <button
+                      onClick={() => handleIncrement(item.id)}
+                      className="hidden text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 4.5v15m7.5-7.5h-15"
-                      />
-                    </svg>
-                  </button>
+                      {/* SVG icon for increment button */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleIncrement(item.id)}
+                      className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
+                    >
+                      {/* SVG icon for increment button */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                    </button>
+                  )}
                   <button
                     onClick={() => handleDecrement(item.id)}
                     className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
                   >
+                    {/* SVG icon for decrement button */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -148,6 +177,7 @@ export default function CartPage() {
                     onClick={() => handleRemove(item.id)}
                     className="text-[15px] md:hover:bg-green-700 hover:text-red-900 font-black mb-1 bg-white rounded-[50%] p-4"
                   >
+                    {/* SVG icon for remove button */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -168,6 +198,7 @@ export default function CartPage() {
             ))}
           </div>
           <div className="flex flex-col">
+            {/* Display total cost and checkout link */}
             <div className="flex justify-between items-center mt-10 m-auto p-4 bg-green-900 text-sky-100 rounded-lg w-[360px] md:mr-[20px]">
               <h3 className="text-xl font-semibold">
                 Total Cost: {`$${totalCost.toFixed(2)}`}
@@ -179,6 +210,7 @@ export default function CartPage() {
               </Link>
             </div>
             <div className="text-[36px]">
+              {/* Continue shopping link */}
               <Link href={"/"}>
                 <div className="flex items-center justify-center md:justify-end gap-1 pt-4 text-gray-400 md:mr-5 md:hover:text-gray-600">
                   <svg
