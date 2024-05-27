@@ -16,8 +16,7 @@ export async function fetchFilteredProducts(query: string) {
                 products.image,
                 products.description,
                 products.price,
-                products.quantity_available,
-                products.is_sold_out
+                products.quantity_available
             FROM products
             JOIN users ON products.user_id = users.id
             WHERE
