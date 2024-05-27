@@ -76,13 +76,18 @@ export async function fetchReviewsByProductById(id: string) {
 }
 
 export async function fetchOrderHistory() {
-  // unstable_noStore();
   try {
-    const orders = await sql<Order>`
-  SELECT * FROM orders JOIN products ON products.user_id = user_id
-  `;
+    const orders = await sql`
+      SELECT 
+        orders.*,
+        products.*
+      FROM orders
+      JOIN products ON orders.product_id = products.id
+    `;
     return orders.rows;
   } catch (err) {
-    console.error(`Failed to orders... ${err}`);
+    console.error(`Failed to fetch orders: ${err}`);
+    return []; // or return null, based on your needs
   }
 }
+

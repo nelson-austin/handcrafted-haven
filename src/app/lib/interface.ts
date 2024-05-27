@@ -31,7 +31,7 @@ export type Order ={
   product_id: string;
   quantity: number;
   total_price: number;
-  date?: Date;
+  order_date?: Date;
 }
 
 export type Review = {
