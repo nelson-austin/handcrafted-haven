@@ -28,9 +28,10 @@ export default function Page({ id }: { id: string }) {
 
     return (
         <form action={dispatch} className="grid grid-cols-[1fr_2fr]">
-            <UploadWidget imageId={imageId} setImageId={setImageId} setImageUrl={setImageUrl} />
+            <UploadWidget imageId={imageId} setImageId={setImageId} imageUrl={imageUrl} setImageUrl={setImageUrl} />
             <input ref={imageIdRef} id="imageId" name="imageId" type="hidden"></input>
             <input ref={imageRef} id="image" name="image" type="hidden"></input>
+            
             <div>
                 <div className="block py-3 grid grid-cols-[1fr_4fr]">
                     <label htmlFor="name" className="text-[1.2em]">Product name</label>
