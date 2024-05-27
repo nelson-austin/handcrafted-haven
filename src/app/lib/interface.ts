@@ -7,14 +7,15 @@ export interface CardProps {
 }
 
 export type Product = {
-  id: string;
-  user_id: string;
-  name: string;
-  image: string;
-  description: string;
-  price: number;
-  quantity_available: number;
-};
+    id: string;
+    user_id: string;
+    name: string;
+    image_id: string;
+    image: string;
+    description: string;
+    price: number;
+    quantity_available: number;
+}
 
 export type User = {
   id: string;

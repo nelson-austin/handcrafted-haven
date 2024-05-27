@@ -6,13 +6,13 @@ import AddToCartButton from "./addToCartButton";
 export default function ProductCard({
   id,
   name,
+  image_id,
   image,
   price,
   description,
   user_id,
   quantity_available,
 }: Product) {
-  const imgPath = `/products/${image}`;
   const productPage = `/product/${id}`;
 
   if (quantity_available === 0) {
@@ -50,9 +50,10 @@ export default function ProductCard({
   return (
     <section className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100">
       <div className="max-w-sm rounded-xl overflow-hidden shadow-lg mx-4 my-4">
+
         <Link href={productPage}>
           <Image
-            src={imgPath}
+            src={image}
             width={150}
             height={250}
             alt="Product Image"
@@ -64,10 +65,12 @@ export default function ProductCard({
             <p className="text-gray-700 text-base font-semibold">${price}</p>
           </div>
         </Link>
+        
         <AddToCartButton
           product={{
             id,
             name,
+            image_id,
             image,
             price,
             description,

@@ -7,19 +7,18 @@ export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const product = await fetchProductById(id);
   const reviews = await fetchReviewsByProductById(id);
-  console.log(reviews);
+  //console.log(reviews);
   const star = "★";
 
   if (!product) {
     notFound();
   }
-  const imgPath = `/products/${product.image}`;
 
   return (
     <div className="pt-[140px] pl-3 pr-3 overflow-y-clip md:pl-[10%] md:pr-[10%]">
       <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100">
         <Image
-          src={imgPath}
+          src={product.image}
           width={560}
           height={620}
           className="w-[330px] rounded-xl"

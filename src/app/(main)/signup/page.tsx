@@ -6,9 +6,9 @@ import { authOptions } from "@/app/lib/authOptions";
 //metadata.title = "Sign Up";
 
 export default async function SignupPage() {
-    const session = await getServerSession(authOptions);
-    if(session) {
-        redirect("/profile/"+session.user.id);
-    }
-    return <SignupForm />;
+  const session = await getServerSession(authOptions);
+  if (session) {
+    redirect(`/profile/${session.user.id}`);
+  }
+  return <SignupForm />;
 }

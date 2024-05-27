@@ -1,6 +1,6 @@
 import Search from "@/app/ui/search";
 import MyInventory from "@/app/ui/dashboard/myInventory";
-import { NewItem } from "@/app/ui/dashboard/updateItem";
+import { NewItem } from "@/app/ui/dashboard/newItemButton";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -17,13 +17,11 @@ export default async function Page({
   const query = searchParams?.query || "";
 
   return (
-    <div className="">
-      <div className="">{/* <h1>My Items for Sell</h1> */}</div>
-      <div className="fixed top-30">
-        <NewItem />
+    <div>
+      <div className="grid grid-cols-[2fr_1fr] m-10">
         <Search placeholder="Search my items..." />
+        <NewItem />
       </div>
-
       <MyInventory />
     </div>
   );

@@ -17,6 +17,8 @@ async function seedUsers(client) {
       CREATE TABLE IF NOT EXISTS users (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
+        image_id VARCHAR(100),
+        image VARCHAR(255),
         email text UNIQUE NOT NULL,
         password text NOT NULL,
         is_seller BOOLEAN NOT NULL DEFAULT FALSE,
@@ -60,11 +62,11 @@ async function seedProducts(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID REFERENCES users(id),
         name VARCHAR(255) NOT NULL,
-        image VARCHAR(100),
+        image_id VARCHAR(100),
+        image VARCHAR(255),
         description TEXT,
         price NUMERIC(10, 2) NOT NULL,
-        quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0),
-        is_sold_out BOOLEAN NOT NULL
+        quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0)
       );
     `;
 
@@ -219,11 +221,11 @@ async function seedCart(client) {
 async function main() {
   const client = await db.connect();
 
-  //await seedUsers(client);
+  await seedUsers(client);
   await seedProducts(client);
- // await seedReviews(client);
-  //await seedCart(client);
- // await seedOrders(client);
+  await seedReviews(client);
+  await seedCart(client);
+  await seedOrders(client);
 
   await client.end();
 }
