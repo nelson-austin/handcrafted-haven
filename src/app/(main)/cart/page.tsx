@@ -86,7 +86,7 @@ export default function CartPage() {
               >
                 {/* Display product image */}
                 <img
-                  src={`/products/${item.image}`}
+                  src={`${item.image}`}
                   alt={item.name}
                   className="w-40 h-40 object-cover"
                 />

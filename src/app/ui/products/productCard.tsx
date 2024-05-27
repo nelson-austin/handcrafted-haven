@@ -23,7 +23,7 @@ export default function ProductCard({
           style={{ opacity: 0.5 }}
         >
           <Image
-            src={imgPath}
+            src={image}
             width={150}
             height={250}
             alt="Product Image"
