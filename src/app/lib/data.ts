@@ -2,7 +2,7 @@ import { sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 
-import { Order, Product, Review } from "./interface";
+import { Invoice, Order, Product, Review } from "./interface";
 
 export async function fetchFilteredProducts(query: string) {
   unstable_noStore();
@@ -33,12 +33,12 @@ export async function fetchFilteredProducts(query: string) {
 }
 
 export async function fetchMyInventory(id: string) {
-    unstable_noStore();
-    try {
-        const data = await sql<Product>`
+  unstable_noStore();
+  try {
+    const data = await sql<Product>`
         SELECT * FROM products
-        WHERE products.user_id = ${id}`;  
-        return data.rows;
+        WHERE products.user_id = ${id}`;
+    return data.rows;
   } catch (error) {
     console.error("Data Fetch Error:", error);
     throw new Error("Failed to fetch product data");
@@ -91,3 +91,63 @@ export async function fetchOrderHistory() {
   }
 }
 
+// INVOICES
+const ITEMS_PER_PAGE = 5;
+export async function fetchFilteredInvoices(
+  query: string,
+  currentPage: number,
+  sellerId: string
+) {
+  unstable_noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const invoices = await sql<Invoice>`
+      SELECT
+        orders.id,
+        users.name,
+        users.email,
+        orders.total_price,
+        orders.order_date
+      FROM orders
+      JOIN users ON orders.user_id = users.id
+      JOIN products ON orders.product_id = products.id
+      WHERE
+        (users.name ILIKE ${`%${query}%`} OR
+        users.email ILIKE ${`%${query}%`} OR
+        orders.total_price::text ILIKE ${`%${query}%`} OR
+        orders.order_date::text ILIKE ${`%${query}%`}) AND
+        products.user_id = ${sellerId}
+      ORDER BY orders.order_date DESC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+    
+    return invoices.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch invoices.");
+  }
+}
+
+export async function fetchInvoicesPages(query: string, sellerId: string) {
+  unstable_noStore();
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM orders
+    JOIN users ON orders.user_id = users.id
+    JOIN products ON orders.product_id = products.id
+    WHERE
+      (users.name ILIKE ${`%${query}%`} OR
+      users.email ILIKE ${`%${query}%`} OR
+      orders.total_price::text ILIKE ${`%${query}%`} OR
+      orders.order_date::text ILIKE ${`%${query}%`}) AND
+      products.user_id = ${sellerId}
+  `;
+  
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total number of invoices.");
+  }
+}
