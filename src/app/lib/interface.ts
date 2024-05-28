@@ -39,7 +39,7 @@ export type Review = {
   id: string;
   product_id: string;
   user_id: string;
-  rating: number;
+  rating: string;
   comment: string;
   date: string;
   name: string;
