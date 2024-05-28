@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="pt-[140px] pl-3 pr-3 overflow-y-clip md:pl-[10%] md:pr-[10%]">
+    <div className="pl-3 pr-3 overflow-y-clip md:pl-[10%] md:pr-[10%]">
       <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100">
         <Image
           src={product.image}
