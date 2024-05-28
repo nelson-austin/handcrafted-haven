@@ -21,11 +21,46 @@ export default function CheckoutPage() {
   );
 
   const [isCheckoutComplete, setIsCheckoutComplete] = useState(false);
+  const [emptyCart, setEmptyCart] = useState(false);
 
   const handleCheckout = () => {
     dispatch(clearCart());
     setIsCheckoutComplete(true);
   };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+    setEmptyCart(true);
+  };
+
+  if (emptyCart) {
+    return (
+      <section className="pb-20">
+        <div className="text-center text-[36px]">
+          <p>Your cart is empty!</p>
+          <Link href={"/"}>
+            <div className="flex items-center justify-center gap-3 pt-5 text-gray-400 md:hover:text-gray-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+                />
+              </svg>
+              <p>Continue Shopping</p>
+            </div>
+          </Link>
+        </div>
+      </section>
+    );
+  }
 
   if (isCheckoutComplete) {
     return (
@@ -60,8 +95,8 @@ export default function CheckoutPage() {
     <section className="pb-10">
       <h2 className="text-center text-[33px] font-bold">Checkout</h2>
       <div className="flex flex-col items-center">
-        <div className="w-full max-w-3xl">
-          <div className="flex flex-col md:flex-row">
+        <div className="w-full max-w-6xl">
+          <div className="flex flex-col md:grid grid-cols-2 lg:grid-cols-3">
             {cartItems.map((item: CartItem) => (
               <div
                 key={item.id}
@@ -83,12 +118,20 @@ export default function CheckoutPage() {
             <h3 className="text-xl font-semibold">
               Total Cost: ${totalCost.toFixed(2)}
             </h3>
-            <button
-              onClick={handleCheckout}
-              className="text-xl font-semibold bg-sky-100 text-green-900 p-3 rounded-lg hover:underline"
-            >
-              Complete Purchase
-            </button>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={handleCheckout}
+                className="text-xl font-semibold bg-sky-100 text-green-900 p-3 rounded-lg hover:underline"
+              >
+                Complete Purchase
+              </button>
+              <button
+                onClick={handleClearCart}
+                className="text-xl font-semibold bg-sky-100 text-green-900 p-3 rounded-lg hover:underline"
+              >
+                Clear Cart
+              </button>
+            </div>
           </div>
         </div>
         <div className="text-[36px]">
