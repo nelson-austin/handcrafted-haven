@@ -20,6 +20,10 @@ export default function CartPage() {
   // Use the selector hook to access the cart items from the Redux store
   const cartItems = useSelector((state: any) => state.cart.items);
 
+  const updateLocalStorage = (items: CartItem[]) => {
+    localStorage.setItem("cart-items", JSON.stringify(items));
+  };
+
   const handleIncrement = (id: string) => {
     dispatch(incrementItemQuantity(id));
   };

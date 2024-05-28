@@ -131,27 +131,27 @@ const categories = [
 const product_category = [
     {
         id: 1,
-        category_id: 1,
+        category_id: categories[0].id,
         product_id: products[2].id
     },
     {
         id: 2,
-        category_id: 1,
+        category_id: categories[0].id,
         product_id: products[3].id
     },
     {
         id: 3,
-        category_id: 1,
+        category_id: categories[0].id,
         product_id: products[5].id
     },
     {
         id: 4,
-        category_id: 1,
+        category_id: categories[0].id,
         product_id: products[7].id
     },
     {
         id: 4,
-        category_id: 1,
+        category_id: categories[0].id,
         product_id: products[9].id
     }
 ]
