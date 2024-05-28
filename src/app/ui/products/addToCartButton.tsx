@@ -2,7 +2,7 @@
 
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "@/redux/features/cartSlice";
-import { Product, User } from "@/app/lib/interface";
+import { Product } from "@/app/lib/interface";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
