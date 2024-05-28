@@ -6,8 +6,11 @@ const {
   reviews,
   cart,
   orders,
+  categories,
+  product_category
 } = require('./placeholder-data.js')
 const bcrypt = require('bcrypt');
+const { isSetAccessorDeclaration } = require('typescript');
 
 async function seedUsers(client) {
   try {
@@ -66,7 +69,8 @@ async function seedProducts(client) {
         image VARCHAR(255),
         description TEXT,
         price NUMERIC(10, 2) NOT NULL,
-        quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0)
+        quantity_available INTEGER NOT NULL CHECK (quantity_available >= 0),
+        category VARCHAR(20)
       );
     `;
 
@@ -75,13 +79,11 @@ async function seedProducts(client) {
     //Seed the "products" table
     const insertedProducts = await Promise.all(
       products.map(async (product) => {
-        console.log(product.sold_out)
         return client.sql`
-        INSERT INTO products (id, user_id, name, image, description, price, quantity_available, is_sold_out)
-        VALUES (${product.id}, ${product.user_id}, ${product.name}, ${product.image}, ${product.description}, ${product.price}, ${product.quantity_available}, ${product.sold_out})
+        INSERT INTO products (id, user_id, name, image, description, price, quantity_available, category)
+        VALUES (${product.id}, ${product.user_id}, ${product.name}, ${product.image}, ${product.description}, ${product.price}, ${product.quantity_available}, ${product.category})
         ON CONFLICT (ID) DO NOTHING;
       `
-      
       }),
     );
 
@@ -180,6 +182,77 @@ async function seedOrders(client) {
   }
 };
 
+async function seedCategories(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    //create the "categories" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS categories (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(20)
+      );
+    `;
+    console.log(`Created "categories" table`)
+    //Seed the "categories" table
+    const insertedCategories = await Promise.all(
+      categories.map(async (category) => {
+        return client.sql`
+          INSERT INTO categories (id, name)
+          VALUES (${category.id}, ${category.name})
+          ON CONFLICT (ID) DO NOTHING;
+        `;
+      }),
+    );
+    
+    console.log(`Seeded ${insertedCategories.length} items into categories`);
+    
+    return {
+      createTable,
+      categories: insertedCategories,
+    };
+    
+  } catch (error) {
+    console.error('Error seeding categories: ', error);
+    throw error;
+  }
+};
+
+async function seedProductCategories(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    //create the "categories" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS product_categories (
+        id SERIAL PRIMARY KEY,
+        category_id UUID REFERENCES categories(id)
+        product_id UUID REFERENCES products(id)
+      );
+    `;
+    console.log(`Created "product_categories" table`)
+    //Seed the "categories" table
+    const insertedProductCategories = await Promise.all(
+      categories.map(async (prodCat) => {
+        return client.sql`
+          INSERT INTO categories (id, category_id, product_id)
+          VALUES (${prodCat.id}, ${prodCat.category_id}, ${prodCat.product_id})
+          ON CONFLICT (ID) DO NOTHING;
+        `;
+      }),
+    );
+    
+    console.log(`Seeded ${insertedProductCategories.length} items into product_categories`);
+    
+    return {
+      createTable,
+      product_categories: insertedProductCategories,
+    };
+    
+  } catch (error) {
+    console.error('Error seeding product_categories: ', error);
+    throw error;
+  }
+};
+
 async function seedCart(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -187,7 +260,7 @@ async function seedCart(client) {
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS cart (
       id SERIAL PRIMARY KEY,
-      buyer_id UUID References users(id),
+      buyer_id UUID REFERENCES users(id),
       product_id UUID REFERENCES products(id),
       quantity INTEGER
       );
@@ -221,11 +294,13 @@ async function seedCart(client) {
 async function main() {
   const client = await db.connect();
 
-  await seedUsers(client);
-  await seedProducts(client);
-  await seedReviews(client);
-  await seedCart(client);
-  await seedOrders(client);
+  //await seedUsers(client);
+  //await seedProducts(client);
+ // await seedReviews(client);
+  //await seedCart(client);
+ // await seedOrders(client);
+  await seedCategories(client)
+  await seedProductCategories(client)
 
   await client.end();
 }

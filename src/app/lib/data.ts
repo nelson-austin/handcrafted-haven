@@ -10,14 +10,13 @@ export async function fetchFilteredProducts(query: string) {
   try {
     const products = await sql<Product>`
             SELECT
-              products.id,
-              products.user_id,
-              products.name,
-              products.image,
-              products.description,
-              products.price,
-              products.quantity_available
-
+                products.id,
+                products.user_id,
+                products.name,
+                products.image,
+                products.description,
+                products.price,
+                products.quantity_available
             FROM products
             JOIN users ON products.user_id = users.id
             WHERE
