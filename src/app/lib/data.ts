@@ -19,7 +19,6 @@ export async function fetchFilteredProducts(
                 products.description,
                 products.price,
                 products.quantity_available,
-                products.is_sold_out
             FROM products
             JOIN users ON products.user_id = users.id
             WHERE

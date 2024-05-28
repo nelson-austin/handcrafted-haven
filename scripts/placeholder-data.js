@@ -46,7 +46,6 @@ const products = [
         image: "painted-canvas.jpg",
         description: "Original abstract artwork on canvas",
         price: 149.99, "quantity_available": 5,
-        sold_out: false
     },
     {
         id: 'ac0f8dd6-8944-4b9c-80f3-19cf1d5ad9a0',
@@ -55,7 +54,6 @@ const products = [
         image: "ceramic-vase.jpg",
         description: "Handcrafted ceramic vase with intricate patterns",
         price: 79.99, "quantity_available": 10,
-        sold_out: false
     },
     {
         id: '7a1dc67e-01da-4d0d-a58b-d99b59a0e33e',
@@ -64,7 +62,6 @@ const products = [
         image: "silver-necklace.jpg",
         description: "Elegant silver necklace with a unique pendant",
         price: 199.99, "quantity_available": 8,
-        sold_out: false
     },
     {
         id: '0f15de8b-5ab3-4fe4-9ba1-3cd9f6cbbd0e',
@@ -73,7 +70,6 @@ const products = [
         image: "gem-bracelet.jpg",
         description: "Bracelet adorned with colorful gemstones",
         price: 129.99, "quantity_available": 12,
-        sold_out: false
     },
     {
         id: 'a242c6a4-b4e0-4b9d-8e82-1a03680ef9e3',
@@ -82,7 +78,6 @@ const products = [
         image: "wood-carving.jpg",
         description: "Hand-carved wooden sculpture of an animal",
         price: 249.99, "quantity_available": 3,
-        sold_out: false
     },
     {
         id: 'eb3f77e5-85e7-42a5-a1fc-86c541e396f8',
@@ -91,7 +86,6 @@ const products = [
         image: "gold-earrings.jpg",
         description: "Stylish gold earrings with intricate detailing",
         price: 299.99, "quantity_available": 0,
-        sold_out: true
     },
     {
         id: '26f26e6c-07c4-4bbf-a81d-6a15f1f444ab',
@@ -99,8 +93,7 @@ const products = [
         name: "Fiber Wall Hanging",
         image: "macrame-hanging.jpg",
         description: "Bohemian-style fiber wall hanging for home decor",
-        price: 89.99, "quantity_available": 7,
-        sold_out: false
+        price: 89.99, "quantity_available": 7
     },
     {
         id: '7aa44721-fd96-4551-9b90-d2a0ab332026',
@@ -109,7 +102,6 @@ const products = [
         image: "pearl-ring.jpg",
         description: "Classic pearl ring set in sterling silver",
         price: 179.99, "quantity_available": 9,
-        sold_out: false
     },
     {
         id: '4f876b60-c97a-4908-96d7-35cf4f5f2823',
@@ -117,8 +109,7 @@ const products = [
         name: "Handwoven Basket",
         image: "woven-basket.jpg",
         description: "Natural fiber basket woven by hand",
-        price: 59.99, "quantity_available": 15,
-        sold_out: false
+        price: 59.99, "quantity_available": 15
     },
     {
         id: '36a42922-f903-45e1-bd97-10f5d3e0a2fd',
@@ -127,9 +118,43 @@ const products = [
         image: "crystal-pendant.jpg",
         description: "Crystal pendant necklace on a delicate chain",
         price: 159.99, "quantity_available": 0,
-        sold_out: true
     }
 ];
+
+const categories = [
+    {
+        id: 1,
+        name: "Jewlery",
+    }
+]
+
+const product_category = [
+    {
+        id: 1,
+        category_id: 1,
+        product_id: products[2].id
+    },
+    {
+        id: 2,
+        category_id: 1,
+        product_id: products[3].id
+    },
+    {
+        id: 3,
+        category_id: 1,
+        product_id: products[5].id
+    },
+    {
+        id: 4,
+        category_id: 1,
+        product_id: products[7].id
+    },
+    {
+        id: 4,
+        category_id: 1,
+        product_id: products[9].id
+    }
+]
 
 const reviews = [
     {
@@ -370,4 +395,6 @@ module.exports = {
     reviews,
     cart,
     orders,
+    categories,
+    product_category
 }
