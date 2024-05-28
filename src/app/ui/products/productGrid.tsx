@@ -11,7 +11,7 @@ export default async function ProductGrid({ query }: { query: string }) {
       <div className="">
         <Search placeholder="Search products..." />
       </div>
-      <div className="pt-[80px] grid grid-cols-1 pb-20 w-[365px] m-auto gap-5 md:grid-cols-3 md:w-[750px] lg:w-[1405px] lg:grid-cols-4">
+      <div className="pt-[15px] grid grid-cols-1 pb-20 w-[365px] m-auto gap-5 md:grid-cols-3 md:w-[750px] lg:w-[1405px] lg:grid-cols-4">
         {products.map((card) => {
           return <ProductCard key={card.id} {...card} />;
         })}
