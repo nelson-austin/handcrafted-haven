@@ -203,7 +203,7 @@ export default function CartPage() {
               <h3 className="text-xl font-semibold">
                 Total Cost: {`$${totalCost.toFixed(2)}`}
               </h3>
-              <Link href={"/checkout"}>
+              <Link href={"/cart/checkout"}>
                 <p className="text-xl font-semibold md:hover:bg-sky-100 md:p-3 rounded-lg hover:underline md:hover:text-green-900">
                   Checkout
                 </p>
