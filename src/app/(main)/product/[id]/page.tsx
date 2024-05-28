@@ -33,25 +33,33 @@ export default async function Page({ params }: { params: { id: string } }) {
         <AddToCartButton product={product} />
       </div>
       <div className="flex flex-col rounded-xl items-left justify-left p-3 bg-blue-100 mt-5">
-        <h1 className="font-bold mb-2 text-[25px] text-center mt-5">Reviews</h1>
-        {reviews.map((review) => {
-          const stars = star.repeat(review.rating);
+        <div className="block bg-gray-50  rounded-xl overflow-hidden shadow-lg mx-4 my-4 p-5 md:min-w-[35rem]">
+            <h1 className="font-bold mb-2 text-[25px] text-center">Please Leave a Review</h1>
+        </div>
+      </div>
+      <div className="flex flex-col rounded-xl items-left justify-left p-3 bg-blue-100 mt-5">
+        <h1 className="font-bold mb-2 text-[25px] text-center mt-5">Reviews {!reviews[0] ? (`(0) ${star} 0/5`) : (`(${reviews.length}) ${star} ${reviews.reduce((acc, review) => acc + parseFloat(review.rating), 0) / reviews.length}/5` 
+        )}</h1>
+        {!reviews[0] ? (
+        <p className="text-center text-gray-900">Leave the first review!</p>
+        ) : (reviews.map((review) => {
+            const stars = star.repeat(parseFloat(review.rating));
 
-          if (review.date == null) {
-            review.date = "01-01-2024";
-          }
-          return (
-            <div key={review.id}>
-              <div className="block bg-gray-50  rounded-xl overflow-hidden shadow-lg mx-4 my-4 p-5 md:min-w-[35rem]">
-                <p className="font-bold">
-                  {review.name} - {review.date}
-                </p>
-                <p>{review.comment}</p>
-                <p className="font-bold">Rating: {stars}</p>
-              </div>
-            </div>
-          );
-        })}
+            if (review.date == null) {
+                review.date = "Jan 1, 2024";
+            }
+            return (
+                <div key={review.id}>
+                <div className="block bg-gray-50  rounded-xl overflow-hidden shadow-lg mx-4 my-4 p-5 md:min-w-[35rem]">
+                    <p className="font-bold">
+                    {review.name} | {review.date}
+                    </p>
+                    <p>{review.comment}</p>
+                    <p className="font-bold">Rating: {stars}</p>
+                </div>
+                </div>
+            );
+            }))}                                    
       </div>
     </div>
   );
