@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import { getSession } from "next-auth/react";
 import { User } from "@/app/lib/interface";
 import HeaderLinks from "../header/links";
-import { set } from "zod";
 
 export default function Header() {
   const cartCount = useSelector((state: any) => state.cart.totalItems);
@@ -26,59 +25,45 @@ export default function Header() {
 
   if (isLoading) {
     return (
-      <header className="fixed top-0 left-0 right-0 z-50 h-25 bg-green-900 rounded-lg m-3 md:h-28">
-        <div className="header-items flex items-center justify-between">
+      <header className="z-50 h-20 bg-green-900 rounded-lg m-3 md:h-28">
+        <div className="header-items flex justify-between md:h-28">
           <div className="flex flex-col">
             <Link href="/">
-              <div className="flex items-center">
+              <div className="flex items-center justify-center md:h-28 pl-5">
                 <Image
                   src="/logo-placeholder-image.png"
-                  width={100}
-                  height={100}
+                  width={75}
+                  height={75}
                   alt="Logo Image"
                 />
                 <p className="text-sky-100 text-[26px] font-bold leading-none">
                   Handcrafted{" "}
-                  <span className="text-[51px] md:text-[26px]">Haven</span>
+                  <span className="text-[26px]">Haven</span>
                 </p>
               </div>
             </Link>
           </div>
-          <div className="flex flex-row">
-            <div className="font-bold bg-green-700 text-white m-5 p-2 rounded-md">
-              Loading...
-            </div>
           </div>
-          <div className="text-sky-400 font-semibold leading-none mr-4 md:ml-[270px] md:hover:text-sky-100 lg:ml-[900px]">
-            <Link
-              href="/cart"
-              className="text-[23px] flex flex-col items-center"
-            >
-              CART{" "}
-              <span className="cart-badge text-orange-400 text-[33px]">0</span>
-            </Link>
-          </div>
-        </div>
       </header>
     );
   }
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 h-25 bg-green-900 rounded-lg m-3 md:h-28">
-        <div className="header-items flex items-center justify-between">
+      <header className="z-50 h-20 bg-green-900 rounded-lg m-3 md:h-28">
+        <div className="header-items flex justify-between md:h-28">
           <div className="flex flex-col">
             <Link href="/">
-              <div className="flex items-center">
+              <div className="flex items-center justify-center md:h-28 pl-5">
                 <Image
                   src="/HH-Logo.png"
-                  width={100}
-                  height={100}
+                  width={75}
+                  height={75}
                   alt="Logo Image"
                 />
                 <p className="text-sky-100 pl-5 text-[26px] font-bold leading-none">
                   Handcrafted{" "}
-                  <span className="text-[51px] md:text-[26px]">Haven</span>
+                  <span className="text-[26px]">Haven</span>
                 </p>
               </div>
             </Link>
@@ -116,7 +101,7 @@ export default function Header() {
         </div>
       </header>
       {isNavOpen && (
-        <div className="md:hidden mt-[140px] p-10 bg-green-900 rounded-lg ml-20 mb-[-100px] mr-20 md:h-28">
+        <div className="md:hidden p-5 bg-green-900 rounded-lg ml-20 mr-20 md:h-28">
           <HeaderLinks user={user} cartCount={cartCount} />
         </div>
       )}
