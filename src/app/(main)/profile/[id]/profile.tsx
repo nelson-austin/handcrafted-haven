@@ -16,7 +16,7 @@ export default function UserProfileView({
   products?: Array<Product>;
 }) {
   return (
-    <div className="pt-[150px] pb-20">
+    <div className="pb-20">
       <div className="flex flex-col rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         {(profile && (
           <>

@@ -40,7 +40,7 @@ export default function CartPage() {
   );
 
   return (
-    <section className="pt-[150px] pb-20 md:pt-[160px]">
+    <section className="pb-20">
       {/* Title */}
       {cartItems.length === 0 ? ( // Conditional rendering based on whether the cart is empty
         <div className="text-center text-[36px]">

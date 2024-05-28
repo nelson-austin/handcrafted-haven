@@ -65,7 +65,7 @@ export default function UpdateUserForm() {
   const [errorMessage, setErrorMessage] = useState("");
 
   return (
-    <form onSubmit={handleSubmit} className="pt-[150px] pb-20">
+    <form onSubmit={handleSubmit} className="pb-20">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`mb-3 text-2xl`}>Edit your profile</h1>
         <div className="w-full">

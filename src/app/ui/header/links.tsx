@@ -1,6 +1,7 @@
 import { User } from "@/app/lib/interface";
 import Logout from "@/app/logout";
 import Link from "next/link";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 export default function HeaderLinks({ user, cartCount }: { user: User; cartCount: number }) {
   return (
@@ -39,12 +40,14 @@ export default function HeaderLinks({ user, cartCount }: { user: User; cartCount
         </Link>
       )}
       {!!user.id && (
-        <div className="text-sky-400 font-semibold leading-none mr-4 md:hover:text-sky-100">
-          <Link href="/cart" className="text-[23px] flex flex-col items-center">
-            CART{" "}
-            <span className="cart-badge text-orange-400 text-[33px]">
+        <div className="text-white font-semibold leading-none md:hover:text-sky-100 px-12">
+          <Link href="/cart" className="text-[23px] grid">
+            <ShoppingCartIcon className="w-10 col-[1] row-[1] -mx-5 my-2" />
+            {cartCount > 0 && (
+            <span className="text-[20px] bg-red-900 col-[1] row-[1] p-1 rounded-[50%] w-[25px] h-[25px] flex items-center justify-center">
               {cartCount}
             </span>
+            )}
           </Link>
         </div>
       )}

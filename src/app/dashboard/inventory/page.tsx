@@ -18,8 +18,7 @@ export default async function Page({
 
   return (
     <div>
-      <div className="grid grid-cols-[2fr_1fr] m-10">
-        <Search placeholder="Search my items..." />
+      <div className="flex m-10">
         <NewItem />
       </div>
       <MyInventory />
