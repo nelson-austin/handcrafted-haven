@@ -1,20 +1,18 @@
 import Image from "next/image";
-import Register from "../landing-page/hero-components/register";
-// import LearnMore from "./learn-more";
-// import ViewProducts from "./view-products";
+import Link from "next/link";
 
 import Footer from "./partials/footer";
-import Buttons from "./buttons/buttons";
 
 export default function SellerPage() {
   return (
-    <div className="">
+    <>
+    <div className="grid grid-cols-[1fr_2fr] m-3 my-12">
       <Image
-        src={"/desktop-hero.png"}
-        width={1000}
+        src={"/artist-unsplash.jpg"}
+        width={500}
         height={560}
         alt="Placeholder desktop image"
-        className="rounded-lg hidden md:block w-[97%] m-auto lg:w-[97.5%]"
+        className="rounded-lg hidden md:block m-auto"
       />
       <Image
         src={"/mobile-placeholder.png"}
@@ -23,13 +21,16 @@ export default function SellerPage() {
         alt="Placeholder mobile image"
         className="block w-[94%] m-auto rounded-lg md:hidden"
       />
-      <div className="flex justify-center">
-        <Register />
+      <div className="">
+        <h1 className="text-[2rem]">Start Selling Today</h1>
+        <Link className="" href={'/'}>Link to sign up</Link>
+        {/* <Register /> */}
         {/* <ViewProducts /> */}
         {/* <LearnMore /> */}
+        {/* <Buttons /> */}
       </div>
-      <Buttons />
-      <Footer />
     </div>
+    <Footer />
+    </>
   );
 }

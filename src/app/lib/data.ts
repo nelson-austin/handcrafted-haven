@@ -1,14 +1,12 @@
 import { sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
 
-import { Product, Review } from "./interface";
+import { Order, Product, Review } from "./interface";
 
-export async function fetchFilteredProducts(
-  query: string,
-) {
-  unstable_noStore()
-  
+export async function fetchFilteredProducts(query: string) {
+  unstable_noStore();
+
   try {
     const products = await sql<Product>`
             SELECT
@@ -18,7 +16,7 @@ export async function fetchFilteredProducts(
                 products.image,
                 products.description,
                 products.price,
-                products.quantity_available,
+                products.quantity_available
             FROM products
             JOIN users ON products.user_id = users.id
             WHERE
@@ -34,13 +32,13 @@ export async function fetchFilteredProducts(
   }
 }
 
-export async function fetchMyInventory() {
-    // will complete when user id is ready
+export async function fetchMyInventory(id: string) {
     unstable_noStore();
     try {
         const data = await sql<Product>`
-        SELECT * FROM products`;
-    return data.rows;
+        SELECT * FROM products
+        WHERE products.user_id = ${id}`;  
+        return data.rows;
   } catch (error) {
     console.error("Data Fetch Error:", error);
     throw new Error("Failed to fetch product data");
@@ -76,3 +74,20 @@ export async function fetchReviewsByProductById(id: string) {
     throw new Error("Failed to find reviews");
   }
 }
+
+export async function fetchOrderHistory() {
+  try {
+    const orders = await sql`
+      SELECT 
+        orders.*,
+        products.*
+      FROM orders
+      JOIN products ON orders.product_id = products.id
+    `;
+    return orders.rows;
+  } catch (err) {
+    console.error(`Failed to fetch orders: ${err}`);
+    return []; // or return null, based on your needs
+  }
+}
+

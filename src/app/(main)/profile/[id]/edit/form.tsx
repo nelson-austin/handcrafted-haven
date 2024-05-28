@@ -24,7 +24,14 @@ export default function UpdateUserForm() {
   if (user.id === undefined) {
     getSession().then((session) => {
       if (session) {
+        if(session.user.id !== params.id) {
+          router.push(`/profile/${session.user.id}/edit`);
+          router.refresh();
+        }
         setUser(session.user as User);
+      } else {
+        router.push("/login");
+        router.refresh();
       }
     });
   }
@@ -58,7 +65,7 @@ export default function UpdateUserForm() {
   const [errorMessage, setErrorMessage] = useState("");
 
   return (
-    <form onSubmit={handleSubmit} className="pt-[150px] pb-20">
+    <form onSubmit={handleSubmit} className="pb-20">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`mb-3 text-2xl`}>Edit your profile</h1>
         <div className="w-full">
@@ -204,7 +211,7 @@ function UpdateUserButton() {
 
   return (
     <Button className="font-bold bg-green-900 text-white m-5 p-2 rounded-md hover:bg-green-300 hover:text-black" aria-disabled={pending}>
-      Update <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+      Update Profile <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );
 }

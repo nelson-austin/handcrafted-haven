@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { sql } from "@vercel/postgres";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import bcrypt, { compare } from "bcrypt";
 import { v4 } from "uuid";
@@ -123,5 +123,19 @@ export async function deleteUser(id: string) {
     redirect("/");
   } catch (error) {
     return { message: "Database Error: Failed to Delete User." };
+  }
+}
+
+export async function getProfileById(id: string) {
+  unstable_noStore();
+  try {
+    const data = await sql<User>`
+        SELECT id, name, email, is_seller, business_name FROM users
+        WHERE id = ${id}`;
+
+    return data.rows[0];
+  } catch (error) {
+    console.error("Data Fetch Error:", error);
+    throw new Error("Failed to find user");
   }
 }
