@@ -43,7 +43,7 @@ export default function Page({
             </div>
             {imageUrl
                 ?
-                <Image className="col-[1] row-[1] z-[1] relative m-auto"
+                <Image key={Date.now()} className="col-[1] row-[1] z-[1] relative m-auto"
                 src={imageUrl}
                 width={300}
                 height={300}
