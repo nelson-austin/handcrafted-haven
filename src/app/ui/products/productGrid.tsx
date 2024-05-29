@@ -1,9 +1,19 @@
-import { fetchFilteredProducts } from "@/app/lib/data";
+import { fetchFilteredProducts,  } from "@/app/lib/data";
 import Search from "@/app/ui/search";
 import ProductCard from "@/app/ui/products/productCard";
 
-export default async function ProductGrid({ query }: { query: string }) {
-  const products = await fetchFilteredProducts(query);
+export default async function ProductGrid({
+  query,
+  category,
+  minPrice,
+  maxPrice
+}: {
+  query: string;
+  category: number;
+  minPrice: number;
+  maxPrice: number;
+}) {
+  const products = await fetchFilteredProducts(query, category, minPrice, maxPrice);
   //console.log(products);
 
   return (

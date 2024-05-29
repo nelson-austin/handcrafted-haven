@@ -224,16 +224,16 @@ async function seedProductCategories(client) {
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS product_categories (
         id SERIAL PRIMARY KEY,
-        category_id UUID REFERENCES categories(id)
+        category_id INTEGER REFERENCES categories(id),
         product_id UUID REFERENCES products(id)
       );
     `;
     console.log(`Created "product_categories" table`)
     //Seed the "categories" table
     const insertedProductCategories = await Promise.all(
-      categories.map(async (prodCat) => {
+      product_category.map(async (prodCat) => {
         return client.sql`
-          INSERT INTO categories (id, category_id, product_id)
+          INSERT INTO product_categories  (id, category_id, product_id)
           VALUES (${prodCat.id}, ${prodCat.category_id}, ${prodCat.product_id})
           ON CONFLICT (ID) DO NOTHING;
         `;
