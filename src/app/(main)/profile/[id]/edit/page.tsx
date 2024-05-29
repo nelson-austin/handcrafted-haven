@@ -11,6 +11,9 @@ export default async function UpdateUserPage() {
     if(!session) {
        redirect("/login");
     }
+
+    const image = session.user.image;
+    const image_id = session.user.image_id
     
-    return <UpdateUserForm />;
+    return <UpdateUserForm imageUrl={image} imageId={image_id}/>;
 }

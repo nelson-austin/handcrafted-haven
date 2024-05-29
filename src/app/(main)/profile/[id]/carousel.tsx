@@ -27,7 +27,7 @@ export default function Carousel({ products } = { products: [] as Product[] }) {
                   description: product.description,
                   currencyCode: 'USD',
                 }}
-                src={`/products/${product.image}`}
+                src={product.image}
                 fill
                 sizes="(min-width: 560px) 25vw, (min-width: 620px) 33vw, 50vw"
               />

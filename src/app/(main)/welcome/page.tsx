@@ -1,9 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { authOptions } from "@/app/lib/authOptions";
+import { getServerSession } from "next-auth";
 
 import Footer from "./partials/footer";
 
-export default function SellerPage() {
+export default async function SellerPage() {
+  const session = await getServerSession(authOptions);
+    
   return (
     <>
     <div className="grid grid-cols-[1fr_2fr] m-3 my-12">
@@ -23,11 +27,11 @@ export default function SellerPage() {
       />
       <div className="">
         <h1 className="text-[2rem]">Start Selling Today</h1>
-        <Link className="" href={'/'}>Link to sign up</Link>
-        {/* <Register /> */}
-        {/* <ViewProducts /> */}
-        {/* <LearnMore /> */}
-        {/* <Buttons /> */}
+        {session
+          ? <Link className="" href={`/welcome/start-selling`}>
+            <button>Start Selling</button>
+            </Link>
+          : <Link href={"/signup"}><button>Start Selling</button></Link>}
       </div>
     </div>
     <Footer />

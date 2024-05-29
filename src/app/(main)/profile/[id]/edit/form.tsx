@@ -9,13 +9,17 @@ import {
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { useFormStatus } from "react-dom";
 import { FormEvent } from "react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
 import { Button } from "@/app/ui/button";
 import { User } from "@/app/lib/interface";
+import UploadWidget from "@/app/ui/uploadWidget";
 
-export default function UpdateUserForm() {
+export default function UpdateUserForm({imageUrl, imageId}: {
+  imageUrl: string,
+  imageId: string,
+}) {
   const router = useRouter();
   const params = useParams();
 
@@ -49,6 +53,9 @@ export default function UpdateUserForm() {
         oldPassword: formData.get("oldPassword"),
         password: formData.get("password"),
         business_name: formData.get("business_name"),
+        image: formData.get("image"),
+        image_id: formData.get("image_id"),
+        is_seller: user.is_seller,
       }),
     });
     if (response.ok) {
@@ -60,7 +67,19 @@ export default function UpdateUserForm() {
       setErrorMessage(data.message);
     });
   };
+  const [image, setImage] = useState(imageUrl);
+  const imageRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    imageRef.current!.value = image;
+  }, [image]);
+
+  const [image_id, setImage_id] = useState(imageId);
+  const imageIdRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    imageIdRef.current!.value = image_id;
+}, [image_id]);
   // checked state and the onChange method
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -68,6 +87,12 @@ export default function UpdateUserForm() {
     <form onSubmit={handleSubmit} className="pb-20">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`mb-3 text-2xl`}>Edit your profile</h1>
+        {user.is_seller && (
+          <UploadWidget imageId={image_id} setImageId={setImage_id} imageUrl={image} setImageUrl={setImage}  />
+        
+        )}
+        <input ref={imageIdRef} id="image_id" name="image_id" type="hidden"></input>
+        <input ref={imageRef} id="image" name="image" type="hidden"></input>
         <div className="w-full">
           <div>
             <label

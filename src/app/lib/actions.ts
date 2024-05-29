@@ -19,9 +19,11 @@ export const FormSchema = z.object({
     ),
   is_seller: z.boolean(),
   business_name: z.string(),
+  image: z.string(),
+  image_id: z.string(),
 });
 
-const UpdateUser = FormSchema.omit({ is_seller: true, business_name: true });
+const UpdateUser = FormSchema.omit({ is_seller: true, business_name: true }); // error
 const CreateUser = FormSchema.refine((schema) => {
   if (schema.is_seller) {
     if (schema.business_name === "") return false;
@@ -35,6 +37,8 @@ export type SignupState = {
     email?: string[];
     password?: string[];
     business_name?: string[];
+    image?: string[];
+    image_id?: string[];
   };
   message?: string | null;
 };
@@ -55,6 +59,8 @@ export async function createUser(user: User) {
     password: user.password,
     is_seller: user.is_seller,
     business_name: user.business_name,
+    image: user.image,
+    image_id: user.image_id,
   });
 
   // If form validation fails, return errors early. Otherwise, continue.
@@ -73,8 +79,8 @@ export async function createUser(user: User) {
   // Insert data into the database
   try {
     await sql`
-    INSERT INTO users (id, name, email, password, is_seller, business_name)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword}, ${user.is_seller}, ${user.business_name})
+    INSERT INTO users (id, name, email, password, is_seller, business_name, image, image_id)
+        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword}, ${user.is_seller}, ${user.business_name}, ${user.image}, ${user.image_id})
         ON CONFLICT (ID) DO NOTHING;
     `;
   } catch (error) {
@@ -94,6 +100,8 @@ export async function updateUser(
     password: user.password,
     is_seller: user.is_seller,
     business_name: user.business_name,
+    image: user.image,
+    image_id: user.image_id,
   });
 
   if (!validatedFields.success) {
@@ -108,7 +116,8 @@ export async function updateUser(
   try {
     await sql`
       UPDATE users
-      SET name = ${user.name}, email = ${user.email}, password = ${hashedPassword}, business_name = ${user.business_name}
+      SET name = ${user.name}, email = ${user.email}, password = ${hashedPassword}, business_name = ${user.business_name}, 
+      image = ${user.image}, image_id = ${user.image_id}, is_seller = ${user.is_seller}
       WHERE id = ${user.id}
     `;
   } catch (error) {
@@ -130,7 +139,7 @@ export async function getProfileById(id: string) {
   unstable_noStore();
   try {
     const data = await sql<User>`
-        SELECT id, name, email, is_seller, business_name FROM users
+        SELECT id, name, email, is_seller, business_name, image, image_id FROM users
         WHERE id = ${id}`;
 
     return data.rows[0];
