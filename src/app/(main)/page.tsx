@@ -17,12 +17,24 @@ export default function ProductPage({
 }: {
   searchParams?: {
     query?: string;
+    category?: number;
+    minPrice?: number;
+    maxPrice?: number;
   };
 }) {
-  const query = searchParams?.query || ''
+  const query = searchParams?.query || "";
+  const category = searchParams?.category || undefined;
+  const minPrice = searchParams?.minPrice || 0;
+  const maxPrice = searchParams?.maxPrice || 5000;
+
   return (
     <div>
-      <ProductGrid query={query}/>
+        <ProductGrid
+          query={query}
+          category={category}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+        />
     </div>
     
   );

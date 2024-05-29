@@ -1,34 +1,62 @@
-import { sql } from "@vercel/postgres";
+import { db, sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 
 import { Invoice, Order, Product, Review } from "./interface";
 
-export async function fetchFilteredProducts(query: string) {
+export async function fetchFilteredProducts(
+  query: string,
+  category: number,
+  minPrice: number,
+  maxPrice: number
+) {
   unstable_noStore();
 
   try {
-    const products = await sql<Product>`
-            SELECT
-                products.id,
-                products.user_id,
-                products.name,
-                products.image,
-                products.description,
-                products.price,
-                products.quantity_available
-            FROM products
-            JOIN users ON products.user_id = users.id
-            WHERE
-              products.name ILIKE ${`%${query}%`} OR
-              products.description ILIKE ${`%${query}%`} OR
-              users.name ILIKE ${`%${query}%`}
-              `;
+    const client = await db.connect()
+    let categories = ""
+    let keyword = ""
+
+    var sqlQuery = `
+              SELECT * FROM products
+              FULL JOIN product_categories ON products.id = product_categories.product_id
+            `;
+
+            let categoryOptions = ""
+            let priceOptions = ""
+
+            if (query && query.length > 0) {
+              keyword = ` (products.name ILIKE ${`'%${query}%'`} OR products.description ILIKE ${`'%${query}%'`})`
+            }
+        
+            if (category != undefined) {
+              //categories = category.map((_, index) => `$${index + 1}`).join(', ');
+              //categoryOptions = ` category_id IN (${categories})`
+              categoryOptions = ` category_id = ${category}`
+            }
+        
+            if (minPrice && maxPrice == undefined) {
+              priceOptions = ` price >= ${minPrice}`
+            }
+            if (maxPrice && minPrice == undefined) {
+              priceOptions = ` price <= ${maxPrice}`
+            }
+            if (minPrice != undefined && maxPrice != undefined) {
+              priceOptions = ` price BETWEEN ${minPrice} AND ${maxPrice}`
+            }
+        
+            let options = [keyword, categoryOptions, priceOptions].filter(val => val).join(' AND');
+            sqlQuery += ` WHERE ${options}`
+            console.log(sqlQuery)
+        
+            // Execute the query with the parameterized values
+            const products = await client.query(sqlQuery)
+            client.release();
 
     return products.rows;
   } catch (error) {
     console.error("Database Error: ", error);
-    throw new Error("Failed to fetch products.");
+    throw new Error("failed to fetch products\n" + error);
   }
 }
 
