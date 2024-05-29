@@ -12,11 +12,9 @@ interface CartState {
 
 const initialState: CartState = (() => {
   // Load state from local storage if available
-  if (typeof window !== "undefined") {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      return JSON.parse(savedCart);
-    }
+  const savedCart = localStorage.getItem("cart");
+  if (savedCart) {
+    return JSON.parse(savedCart);
   }
   return {
     items: [],
