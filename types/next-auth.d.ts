@@ -9,6 +9,8 @@ declare module "next-auth" {
             is_seller: boolean;
             business_name: string;
             password: string;
+            image: string;
+            image_id: string;
         };
     }
 }

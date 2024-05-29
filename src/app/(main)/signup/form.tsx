@@ -12,9 +12,10 @@ import {
 } from "@heroicons/react/20/solid";
 import { useFormStatus } from "react-dom";
 import { FormEvent } from "react";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/ui/button";
+import { useRef, useState, useEffect } from "react";
+import UploadWidget from "@/app/ui/uploadWidget";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -31,6 +32,8 @@ export default function SignupForm() {
         password: formData.get("password"),
         is_seller: formData.get("is_seller") === "on",
         business_name: formData.get("business_name"),
+        image: formData.get("image"),
+        image_id: formData.get("image_id"),
       }),
     });
     if(response.ok) {
@@ -45,6 +48,20 @@ export default function SignupForm() {
   const onChangeCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
     set_is_seller(e.target.checked);
   };
+
+  const [image, setImage] = useState('');
+  const imageRef = useRef<HTMLInputElement>(null);
+  
+  useEffect(() => {
+      imageRef.current!.value = image;
+  }, [image]);
+
+  const [image_id, setImage_id] = useState('');
+  const imageIdRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+      imageIdRef.current!.value = image_id;
+  }, [image_id]);
 
   return (
     <form onSubmit={handleSubmit} className="pb-20">
@@ -117,7 +134,7 @@ export default function SignupForm() {
               className="self-center mb-3 mt-5 block text-xs font-medium text-gray-900"
               htmlFor="is_seller"
             >
-              Are you a seller?
+              Create a seller profile?
             </label>
             <input
               className="peer block size-5 ml-5 self-center rounded-md border border-gray-200 py-[9px] text-sm outline-2 placeholder:text-gray-500"
@@ -130,6 +147,8 @@ export default function SignupForm() {
             />
           </div>
           {is_seller && (
+            <>
+            <UploadWidget imageId={image_id} setImageId={setImage_id} imageUrl={image} setImageUrl={setImage} />
             <div>
               <label
                 className="mb-3 mt-5 block text-xs font-medium text-gray-900"
@@ -149,7 +168,10 @@ export default function SignupForm() {
                 <DocumentChartBarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
               </div>
             </div>
+            </>
           )}
+          <input ref={imageIdRef} id="image_id" name="image_id" type="hidden"></input>
+          <input ref={imageRef} id="image" name="image" type="hidden"></input>
         </div>
         <SignupButton />
         <div

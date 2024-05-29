@@ -24,6 +24,8 @@ export type User = {
   password: string;
   is_seller: boolean;
   business_name: string;
+  image: string;
+  image_id: string;
 };
 
 export type Order ={

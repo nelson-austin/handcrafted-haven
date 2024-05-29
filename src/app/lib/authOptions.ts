@@ -22,6 +22,8 @@ export const authOptions: NextAuthOptions = {
           name: true,
           is_seller: true,
           business_name: true,
+          image: true,
+          image_id: true,
         });
 
         const validatedFields = LoginSchema.safeParse({
@@ -48,6 +50,8 @@ export const authOptions: NextAuthOptions = {
                 is_seller: user.is_seller,
                 business_name: user.business_name,
                 password: user.password,
+                image: user.image,
+                image_id: user.image_id,
               };
             }
           }
@@ -65,6 +69,8 @@ export const authOptions: NextAuthOptions = {
             token.is_seller = (user as User).is_seller;
             token.business_name = (user as User).business_name;
             token.password = (user as User).password;
+            token.image = (user as User).image;
+            token.image_id = (user as User).image_id;
         }
 
         return token;
@@ -77,6 +83,8 @@ export const authOptions: NextAuthOptions = {
             session.user.is_seller = token.is_seller as boolean;
             session.user.business_name = token.business_name as string;
             session.user.password = token.password as string;
+            session.user.image = token.image as string;
+            session.user.image_id = token.image_id as string;
         }
 
         return session;

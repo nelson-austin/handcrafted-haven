@@ -8,7 +8,7 @@ import { authOptions } from "@/app/lib/authOptions";
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    const { id, name, email, oldPassword, password, business_name } =
+    const { id, name, email, oldPassword, password, business_name, image, image_id, is_seller } =
       await request.json();
 
     const isValid = await compare(oldPassword, session!.user.password);
@@ -19,10 +19,10 @@ export async function POST(request: Request) {
         name: name,
         email: email,
         password: password === "" ? oldPassword : password,
-        is_seller: session!.user.is_seller,
-        business_name: session!.user.is_seller
-          ? business_name
-          : session!.user.business_name,
+        is_seller: is_seller,
+        business_name: business_name ?? "",
+        image: image,
+        image_id: image_id,
       };
 
       const response = await updateUser(user);
