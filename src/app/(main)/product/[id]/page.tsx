@@ -42,7 +42,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="flex flex-col rounded-xl items-left justify-left p-3 bg-blue-100 mt-5">
-        <h1 className="font-bold mb-2 text-[25px] text-center mt-5">Reviews {!reviews[0] ? (`(0) ${star} 0/5`) : (`(${reviews.length}) ${star} ${reviews.reduce((acc, review) => acc + parseFloat(review.rating), 0) / reviews.length}/5` 
+        <h1 className="font-bold mb-2 text-[25px] text-center mt-5">Reviews {!reviews[0] ? (`(0) ${star} 0/5`) : (`(${reviews.length}) ${star} ${(reviews.reduce((acc, review) => acc + parseFloat(review.rating), 0) / reviews.length).toFixed(1)}/5` 
         )}</h1>
         {!reviews[0] ? (
         <p className="text-center text-gray-900">Leave the first review!</p>
