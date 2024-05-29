@@ -28,7 +28,5 @@ export default function ThankYouPage() {
                   <p>Continue Shopping</p>
                 </div>
         </Link>
-    </div>
-    
-    
+    </div> 
 )}
