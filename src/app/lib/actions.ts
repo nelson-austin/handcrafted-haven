@@ -4,7 +4,7 @@ import { revalidatePath, unstable_noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import bcrypt, { compare } from "bcrypt";
 import { v4 } from "uuid";
-import { User } from "./interface";
+import { User, Review } from "./interface";
 
 export const FormSchema = z.object({
   name: z.string().min(1).max(50),
@@ -138,4 +138,60 @@ export async function getProfileById(id: string) {
     console.error("Data Fetch Error:", error);
     throw new Error("Failed to find user");
   }
+}
+
+const FormReviewSchema = z.object({
+  id: z.string(),
+  product_id: z.string(),
+  user_id: z.string(),
+  comment: z.string(),
+  rating: z.coerce.number().gt(0, { message: 'Please enter an amount greater than $0.' }),
+  date: z.string(),
+});
+
+const CreateReview = FormReviewSchema.omit({id: true, date: true});
+
+export type ReviewState = {
+  errors?: {
+    product_id?: string[];
+    user_id?: string[];
+    comment?: string[];
+  };
+  message?: string | null;
+};
+
+export async function createReview(review: Review) {
+  const validatedFields = CreateReview.safeParse({
+      product_id: review.product_id,
+      user_id: review.user_id,
+      comment: review.comment,
+      rating: review.rating,
+  });
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+      return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Review.',
+      };
+  }
+
+  // Prepare data for insertion into the database
+  const { product_id, user_id, comment } = validatedFields.data;
+  const rating = Number(review.rating);
+  const date = new Date().toISOString().split('T')[0];
+
+  try {
+      await sql`
+      INSERT INTO reviews (product_id, user_id, rating, comment, date)
+      VALUES (${review.product_id}, ${review.user_id}, ${rating}, ${review.comment}, ${date})        
+      ON CONFLICT (ID) DO NOTHING`;
+  } catch (error) {
+      return {
+          message: 'Database Error: Failed to Create Review.'
+      };
+  }
+  
+  revalidatePath(`/product/${product_id}`);
+  redirect(`/product/${product_id}`);
 }
