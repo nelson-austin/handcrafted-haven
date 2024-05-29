@@ -1,13 +1,13 @@
-"use client"; // Indicates that this module should be run on the client-side only
+"use client"; 
 
-import Link from "next/link"; // Import Link component from Next.js for client-side navigation
-import { useDispatch, useSelector } from "react-redux"; // Import hooks from react-redux to interact with the Redux store
-import { Product } from "@/app/lib/interface"; // Import the Product interface
+import Link from "next/link"; 
+import { useDispatch, useSelector } from "react-redux"; 
+import { Product } from "@/app/lib/interface"; 
 import {
   removeItemFromCart,
   incrementItemQuantity,
   decrementItemQuantity,
-} from "@/redux/features/cartSlice"; // Import actions from the cart slice
+} from "@/redux/features/cartSlice"; 
 
 // Create new interface from the Product interface and add a new property "quantity"
 interface CartItem extends Product {

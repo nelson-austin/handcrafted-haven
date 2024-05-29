@@ -134,9 +134,29 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
-        <div className="text-[36px]">
+        <div className="text-[36px] flex flex-col md:flex-row md:items-center md:gap-3 ">
+          <Link href={"/cart"}>
+            <div className="flex items-center justify-center gap-1 pt-4 text-gray-400 md:hover:text-gray-500">
+              {/* SVG icon for the back to cart link */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+                />
+              </svg>
+              <p className="">Back to cart</p>
+            </div>
+          </Link>
           <Link href={"/"}>
-            <div className="flex items-center justify-center gap-1 pt-4 text-gray-400 md:hover:text-gray-600">
+            <div className="flex items-center justify-center gap-1 pt-4 text-gray-400 md:hover:text-gray-600 md:justify-end">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
