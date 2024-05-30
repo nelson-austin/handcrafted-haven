@@ -54,3 +54,8 @@ export type Review = {
   date: Date;
   name: string;
 };
+
+export type Category = {
+  id: number;
+  name: string;
+};
