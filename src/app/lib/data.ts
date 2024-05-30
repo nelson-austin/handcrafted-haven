@@ -2,7 +2,18 @@ import { db, sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 
-import { Invoice, Order, Product, Review } from "./interface";
+import { Invoice, Order, Product, Review, Category } from "./interface";
+
+export async function fetchCategories() {
+  try {
+    const data = await sql<Category>`SELECT * FROM categories`
+
+    return data.rows;
+  } catch (error) {
+    console.error("Data Fetch Error:", error);
+    throw new Error("Failed to fetch categories");
+  }
+}
 
 export async function fetchFilteredProducts(
   query: string,
@@ -14,7 +25,6 @@ export async function fetchFilteredProducts(
 
   try {
     const client = await db.connect()
-    let categories = ""
     let keyword = ""
 
     var sqlQuery = `
@@ -30,8 +40,6 @@ export async function fetchFilteredProducts(
             }
         
             if (category.length > 0) {
-              //categories = category.map((_, index) => `$${index + 1}`).join(', ');
-              //categoryOptions = ` category_id IN (${categories})`
               categoryOptions = ` category_id = ${parseInt(category)}`
             }
         
