@@ -29,12 +29,12 @@ export default function ProductPage({
 
   return (
     <div>
-        <ProductGrid
+        {/* <ProductGrid
           query={query}
           category={category}
           minPrice={minPrice}
           maxPrice={maxPrice}
-        />
+        /> */}
     </div>
     
   );
