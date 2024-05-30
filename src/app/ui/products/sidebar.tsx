@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import { Category } from '@/app/lib/interface';
 
 
-export default function CollapsibleMenu({ categories }) {
+export default function CollapsibleMenu({ categories } : {categories: Category[]} ) {
   const [isOpen, setIsOpen] = useState(false);
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -28,7 +29,7 @@ export default function CollapsibleMenu({ categories }) {
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryChange = (category: string) => {
     const params = new URLSearchParams(searchParams);
     if (category) {
       params.set('category', category);
@@ -38,8 +39,8 @@ export default function CollapsibleMenu({ categories }) {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  const handlePriceChange = (type, value) => {
-    if (value < 0 || value > 5000) return;
+  const handlePriceChange = (type:string, value:string) => {
+    if (parseInt(value) < 0 || parseInt(value) > 5000) return;
     
     const params = new URLSearchParams(searchParams);
     if (value) {
