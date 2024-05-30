@@ -125,6 +125,18 @@ const categories = [
     {
         id: 1,
         name: "Jewlery",
+    },
+    {
+        id: 2,
+        name: "Decor",
+    },
+    {
+        id: 3,
+        name: "Art",
+    },
+    {
+        id: 4,
+        name: "Sculptures",
     }
 ]
 
@@ -150,7 +162,32 @@ const product_category = [
         product_id: products[7].id
     },
     {
-        id: 4,
+        id: 5,
+        category_id: categories[0].id,
+        product_id: products[9].id
+    },
+    {
+        id: 6,
+        category_id: categories[0].id,
+        product_id: products[9].id
+    },
+    {
+        id: 7,
+        category_id: categories[0].id,
+        product_id: products[9].id
+    },
+    {
+        id: 8,
+        category_id: categories[0].id,
+        product_id: products[9].id
+    },
+    {
+        id: 9,
+        category_id: categories[0].id,
+        product_id: products[9].id
+    },
+    {
+        id: 10,
         category_id: categories[0].id,
         product_id: products[9].id
     }
