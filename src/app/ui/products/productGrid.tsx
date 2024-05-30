@@ -9,7 +9,7 @@ export default async function ProductGrid({
   maxPrice
 }: {
   query: string;
-  category: number;
+  category: string;
   minPrice: number;
   maxPrice: number;
 }) {
