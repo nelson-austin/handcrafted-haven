@@ -17,13 +17,13 @@ export default function ProductPage({
 }: {
   searchParams?: {
     query?: string;
-    category?: number;
+    category?: string;
     minPrice?: number;
     maxPrice?: number;
   };
 }) {
   const query = searchParams?.query || "";
-  const category = searchParams?.category || undefined;
+  const category = searchParams?.category || "";
   const minPrice = searchParams?.minPrice || 0;
   const maxPrice = searchParams?.maxPrice || 5000;
 

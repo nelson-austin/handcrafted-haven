@@ -6,7 +6,7 @@ import { Invoice, Order, Product, Review } from "./interface";
 
 export async function fetchFilteredProducts(
   query: string,
-  category: number,
+  category: string,
   minPrice: number,
   maxPrice: number
 ) {
@@ -29,10 +29,10 @@ export async function fetchFilteredProducts(
               keyword = ` (products.name ILIKE ${`'%${query}%'`} OR products.description ILIKE ${`'%${query}%'`})`
             }
         
-            if (category != undefined) {
+            if (category.length > 0) {
               //categories = category.map((_, index) => `$${index + 1}`).join(', ');
               //categoryOptions = ` category_id IN (${categories})`
-              categoryOptions = ` category_id = ${category}`
+              categoryOptions = ` category_id = ${parseInt(category)}`
             }
         
             if (minPrice && maxPrice == undefined) {
