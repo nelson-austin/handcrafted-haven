@@ -143,52 +143,77 @@ const categories = [
 const product_category = [
     {
         id: 1,
-        category_id: categories[0].id,
-        product_id: products[2].id
+        category_id: categories[1].id,
+        product_id: products[0].id
     },
     {
         id: 2,
-        category_id: categories[0].id,
-        product_id: products[3].id
+        category_id: categories[2].id,
+        product_id: products[0].id
     },
     {
         id: 3,
-        category_id: categories[0].id,
-        product_id: products[5].id
+        category_id: categories[1].id,
+        product_id: products[1].id
     },
     {
         id: 4,
         category_id: categories[0].id,
-        product_id: products[7].id
+        product_id: products[2].id
     },
     {
         id: 5,
         category_id: categories[0].id,
-        product_id: products[9].id
+        product_id: products[3].id
     },
     {
         id: 6,
-        category_id: categories[0].id,
-        product_id: products[9].id
+        category_id: categories[1].id,
+        product_id: products[4].id
     },
     {
         id: 7,
-        category_id: categories[0].id,
-        product_id: products[9].id
+        category_id: categories[2].id,
+        product_id: products[4].id
     },
     {
         id: 8,
-        category_id: categories[0].id,
-        product_id: products[9].id
+        category_id: categories[3].id,
+        product_id: products[4].id
     },
     {
         id: 9,
         category_id: categories[0].id,
-        product_id: products[9].id
+        product_id: products[5].id
     },
     {
         id: 10,
+        category_id: categories[1].id,
+        product_id: products[6].id
+    },
+    {
+        id: 11,
+        category_id: categories[2].id,
+        product_id: products[6].id
+    },
+    {
+        id: 12,
         category_id: categories[0].id,
+        product_id: products[7].id
+    },
+    {
+        id: 13,
+        category_id: categories[1].id,
+        product_id: products[8].id
+    },
+    {
+        id: 14,
+        category_id: categories[0].id,
+        product_id: products[9].id
+    },
+    {
+        id: 15,
+        category_id: categories[1].id,
         product_id: products[9].id
     }
 ]
@@ -322,107 +347,170 @@ const orders = [
     {
         id: 'c46d6a6e-80a9-43f5-9fc1-dcaa7a4b188d',
         user_id: users[2].id,
-        product_id: products[0].id,
-        quantity: 1,
-        total_price: products[0].price * this.quantity
     },
     {
         id: '988cd4b3-c5d6-4684-b43d-ee6b257a9c02',
         user_id: users[3].id,
-        product_id: products[2].id,
-        quantity: 1,
-        total_price: 199.99
     },
     {
         id: 'e1c48fa1-8d82-48cb-aa3c-9d303b9fd942',
         user_id: users[4].id,
-        product_id: products[4].id,
-        quantity: 1,
-        total_price: 249.99
     },
     {
         id: '35d999f8-7e60-4e3c-a99c-9b80abf11e97',
         user_id: users[2].id,
-        product_id: products[6].id,
-        quantity: 2,
-        total_price: 179.98
     },
     {
         id: 'f833d2d6-2280-4a61-b325-2db5c40d22c4',
         user_id: users[3].id,
-        product_id: products[8].id,
-        quantity: 3,
-        total_price: 179.97
     },
     {
         id: users[3].id,
         user_id: users[2].id,
-        product_id: products[1].id,
-        quantity: 2,
-        total_price: 159.98
     },
     {
         id: '2d3bcade-bd4e-4742-9a6d-5d9b3568882e',
         user_id: users[4].id,
-        product_id: products[3].id,
-        quantity: 1,
-        total_price: 129.99
     },
     {
         id: 'a1a0a44f-689c-4b8a-8d94-09e9bf1a41f7',
         user_id: users[3].id,
-        product_id: products[5].id,
-        quantity: 1,
-        total_price: 299.99
     },
     {
         id: 'f6fe28fc-f8a2-4945-8a7d-0b84fd51f285',
         user_id: users[2].id,
-        product_id: products[7].id,
-        quantity: 1,
-        total_price: 299.99
     },
     {
         id: '09d0fabe-04de-4d6d-b6f1-92a5005f9208',
         user_id: users[4].id,
-        product_id: products[9].id,
-        quantity: 1,
-        total_price: 159.99
     },
     {
         id: 'c4b3c7fe-fd23-4d7b-9e89-1554d23a2e8d',
         user_id: users[3].id,
-        product_id: products[0].id,
-        quantity: 2,
-        total_price: 299.98
     },
     {
         id: '888ecddd-6706-4c43-a43e-525af8a775f5',
         user_id: users[2].id,
-        product_id: products[2].id,
-        quantity: 1,
-        total_price: 199.99
     },
     {
         id: '6d1d9b12-795e-4b12-8a2b-67c95fd1e732',
         user_id: users[4].id,
-        product_id: products[4].id,
-        quantity: 2,
-        total_price: 499.98
     },
     {
         id: 'cbe8cf6d-3b3f-448c-bc41-c5db7efc9dcf',
         user_id: users[3].id,
-        product_id: products[6].id,
-        quantity: 1,
-        total_price: 89.99
     },
     {
         id: '19f9862f-4f80-40b7-bb9a-24a863a15913',
         user_id: users[2].id,
+    }
+];
+
+const ordered_products = [
+    {
+        id:1,
+        order_id: orders[0].id,
+        product_id: products[0].id,
+        quantity: 1,
+        price: products[0].price
+    },
+    {
+        id: 2,
+        order_id: orders[1].id,
+        product_id: products[2].id,
+        quantity: 1,
+        price: products[2].price
+    },
+    {
+        id: 3,
+        order_id: orders[2].id,
+        product_id: products[4].id,
+        quantity: 1,
+        price: products[4].price
+    },
+    {
+        id: 4,
+        order_id: orders[3].id,
+        product_id: products[6].id,
+        quantity: 2,
+        price: products[6].price
+    },
+    {
+        id: 5,
+        order_id: orders[4].id,
+        product_id: products[8].id,
+        quantity: 3,
+        price: products[8].price
+    },
+    {
+        id: 6,
+        order_id: orders[5].id,
+        product_id: products[1].id,
+        quantity: 2,
+        price: products[1].price
+    },
+    {
+        id: 7,
+        order_id: orders[6].id,
+        product_id: products[3].id,
+        quantity: 1,
+        price: products[3].price
+    },
+    {
+        id: 8,
+        order_id: orders[7].id,
+        product_id: products[5].id,
+        quantity: 1,
+        price: products[5].price
+    },
+    {
+        id: 9,
+        order_id: orders[8].id,
+        product_id: products[7].id,
+        quantity: 1,
+        price: products[7].price
+    },
+    {
+        id: 10,
+        order_id: orders[9].id,
+        product_id: products[9].id,
+        quantity: 1,
+        price: products[9].price
+    },
+    {
+        id: 11,
+        order_id: orders[10].id,
+        product_id: products[0].id,
+        quantity: 2,
+        price: products[0].price
+    },
+    {
+        id: 12,
+        order_id: orders[11].id,
+        product_id: products[2].id,
+        quantity: 1,
+        price: products[2].price
+    },
+    {
+        id: 13,
+        order_id: orders[12].id,
+        product_id: products[4].id,
+        quantity: 2,
+        price: products[4].price
+    },
+    {
+        id: 14,
+        order_id: orders[13].id,
+        product_id: products[6].id,
+        quantity: 1,
+        price: products[6].price
+    },
+    {
+        id: 15,
+        order_id: orders[14].id,
         product_id: products[8].id,
         quantity: 1,
-        total_price: 59.99
+        price: products[8].price
     }
 ];
 
@@ -432,6 +520,7 @@ module.exports = {
     reviews,
     cart,
     orders,
+    ordered_products,
     categories,
     product_category
 }

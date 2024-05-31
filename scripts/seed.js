@@ -6,6 +6,7 @@ const {
   reviews,
   cart,
   orders,
+  ordered_products,
   categories,
   product_category
 } = require('./placeholder-data.js')
@@ -150,9 +151,6 @@ async function seedOrders(client) {
       CREATE TABLE IF NOT EXISTS orders (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID REFERENCES users(id),
-        product_id UUID REFERENCES products(id),
-        quantity INTEGER NOT NULL CHECK (quantity > 0),
-        total_price NUMERIC(10, 2) NOT NULL,
         order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `;
@@ -162,8 +160,8 @@ async function seedOrders(client) {
     const insertedOrders = await Promise.all(
       orders.map(async (order) => {
         return client.sql`
-        INSERT INTO orders (id, user_id, product_id, quantity, total_price, order_date)
-        VALUES (${order.id}, ${order.user_id}, ${order.product_id}, ${order.quantity}, ${order.total_price}, ${order.order_date})
+        INSERT INTO orders (id, user_id)
+        VALUES (${order.id}, ${order.user_id})
         ON CONFLICT (ID) DO NOTHING;
       `;
       }),
@@ -181,6 +179,44 @@ async function seedOrders(client) {
     throw error;
   }
 };
+
+async function seedOrderedproducts (client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS ordered_products (
+        id SERIAL PRIMARY KEY,
+        order_id UUID REFERENCES orders(id),
+        product_id UUID REFERENCES products(id),
+        quantity INTEGER NOT NULL CHECK (quantity > 0),
+        price NUMERIC(10, 2) NOT NULL
+      );
+    `;
+    
+    console.log((`Created "ordered_products" table`));
+
+    const insertedOrderedProducts = await Promise.all(
+      ordered_products.map(async (ordered) => {
+        return client.sql`
+          INSERT INTO ordered_products (id, order_id, product_id, quantity, price)
+          VALUES (${ordered.id}, ${ordered.order_id}, ${ordered.product_id}, ${ordered.quantity}, ${ordered.price})
+          ON CONFLICT (ID) DO NOTHING;
+        `;
+      })
+    );
+
+    console.log(`Seeded ${insertedOrderedProducts.length} items into the order history`)
+
+    return {
+      createTable,
+      ordered_products: insertedOrderedProducts,
+    };
+  } catch (error) {
+    console.error('Error seeding ordered_products: ', error);
+    throw error;
+  }
+}
+
 
 async function seedCategories(client) {
   try {
@@ -298,9 +334,10 @@ async function main() {
   //await seedProducts(client);
  // await seedReviews(client);
   //await seedCart(client);
- // await seedOrders(client);
+  //await seedOrders(client);
+  //await seedOrderedproducts(client);
   await seedCategories(client)
-  await seedProductCategories(client)
+  //await seedProductCategories(client)
 
   await client.end();
 }
