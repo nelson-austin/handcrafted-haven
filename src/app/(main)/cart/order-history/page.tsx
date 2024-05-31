@@ -4,7 +4,6 @@ import Link from "next/link";
 
 export default async function OrderHistoryPage() {
   const orderHistory = await fetchOrderHistory();
-  console.log(orderHistory);
 
   return (
     <>

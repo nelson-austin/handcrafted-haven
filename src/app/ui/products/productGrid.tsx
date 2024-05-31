@@ -14,7 +14,6 @@ export default async function ProductGrid({
   maxPrice: number;
 }) {
   const products = await fetchFilteredProducts(query, category, minPrice, maxPrice);
-  //console.log(products);
 
   return (
     <main className="m-3">

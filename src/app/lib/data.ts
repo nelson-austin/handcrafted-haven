@@ -55,7 +55,6 @@ export async function fetchFilteredProducts(
         
             let options = [keyword, categoryOptions, priceOptions].filter(val => val).join(' AND');
             sqlQuery += ` WHERE ${options}`
-            console.log(sqlQuery)
         
             // Execute the query with the parameterized values
             const products = await client.query(sqlQuery)
