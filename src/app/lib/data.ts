@@ -2,7 +2,20 @@ import { db, sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 
-import { Invoice, Order, Product, Review } from "./interface";
+import { Invoice, Order, Product, Review, Category } from "./interface";
+
+export async function fetchCategories() {
+  unstable_noStore();
+  
+  try {
+    const data = await sql<Category>`SELECT * FROM categories`
+
+    return data.rows;
+  } catch (error) {
+    console.error("Data Fetch Error:", error);
+    throw new Error("Failed to fetch categories");
+  }
+}
 
 export async function fetchFilteredProducts(
   query: string,
@@ -14,11 +27,10 @@ export async function fetchFilteredProducts(
 
   try {
     const client = await db.connect()
-    let categories = ""
     let keyword = ""
 
     var sqlQuery = `
-              SELECT * FROM products
+              SELECT DISTINCT ON (products.id) * FROM products
               FULL JOIN product_categories ON products.id = product_categories.product_id
             `;
 
@@ -30,8 +42,6 @@ export async function fetchFilteredProducts(
             }
         
             if (category.length > 0) {
-              //categories = category.map((_, index) => `$${index + 1}`).join(', ');
-              //categoryOptions = ` category_id IN (${categories})`
               categoryOptions = ` category_id = ${parseInt(category)}`
             }
         
@@ -47,7 +57,6 @@ export async function fetchFilteredProducts(
         
             let options = [keyword, categoryOptions, priceOptions].filter(val => val).join(' AND');
             sqlQuery += ` WHERE ${options}`
-            console.log(sqlQuery)
         
             // Execute the query with the parameterized values
             const products = await client.query(sqlQuery)
