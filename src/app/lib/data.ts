@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { Invoice, Order, Product, Review, Category } from "./interface";
 
 export async function fetchCategories() {
+  unstable_noStore();
+  
   try {
     const data = await sql<Category>`SELECT * FROM categories`
 
