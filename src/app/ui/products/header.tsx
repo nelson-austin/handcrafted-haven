@@ -97,7 +97,7 @@ export default function Header() {
                 />
               </svg>
             </button>
-            <span className={`text-white font-semibold text-[20px] bg-red-900 p-1 rounded-[50%] w-[25px] h-[25px] flex items-center justify-center mb-5 -ml-10 mr-10 md:hidden
+            <span className={`text-white font-semibold text-[20px] bg-red-900 p-1 rounded-[50%] w-[25px] h-[25px] flex items-center justify-center mb-5 -ml-10 mr-5 md:hidden
               ${cartCount < 1 && 'invisible'}`}>
               {cartCount}
             </span>
