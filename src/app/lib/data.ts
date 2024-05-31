@@ -28,7 +28,7 @@ export async function fetchFilteredProducts(
     let keyword = ""
 
     var sqlQuery = `
-              SELECT * FROM products
+              SELECT DISTINCT ON (products.id) * FROM products
               FULL JOIN product_categories ON products.id = product_categories.product_id
             `;
 
