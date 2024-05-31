@@ -12,11 +12,9 @@ interface CartState {
 
 const initialState: CartState = (() => {
   // Load state from local storage if available
-  if (typeof window !== "undefined") {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      return JSON.parse(savedCart);
-    }
+  const savedCart = localStorage.getItem("cart");
+  if (savedCart) {
+    return JSON.parse(savedCart);
   }
   return {
     items: [],
@@ -96,6 +94,11 @@ const cartSlice = createSlice({
         saveState(state);
       }
     },
+    clearCart(state) {
+      state.items = [];
+      state.totalItems = 0;
+      localStorage.removeItem("cart");
+    },
   },
 });
 
@@ -104,5 +107,6 @@ export const {
   incrementItemQuantity,
   decrementItemQuantity,
   removeItemFromCart,
+  clearCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;
