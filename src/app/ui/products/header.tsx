@@ -20,7 +20,6 @@ export default function Header() {
     if (session !== null) {
       setUser(session.user as User);
     }
-    setIsLoading(false);
   }, [session]);
 
   return (
