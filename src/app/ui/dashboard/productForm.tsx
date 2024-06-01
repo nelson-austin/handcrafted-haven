@@ -1,13 +1,13 @@
 'use client'
 
 import { useRef, useState, useEffect } from "react";
-import { Product } from "@/app/lib/interface";
+import { Category, Product } from "@/app/lib/interface";
 import { useFormState } from "react-dom";
 import { updateInventory } from "@/app/lib/queries";
 import { State } from "@/app/lib/queries";
 import UploadWidget from "@/app/ui/uploadWidget";
 
-export default function Page({ product }: {product: Product}) {
+export default function Page({ product, categories }: {product: Product, categories: Category[]}) {
 
     const initialState = { message: null, errors: {} };
     const updateProduct = updateInventory.bind(null, product.id);
@@ -60,6 +60,14 @@ export default function Page({ product }: {product: Product}) {
             <div className="block py-3 grid grid-cols-[1fr_4fr]">
               <label htmlFor="description" className="text-[1.2em]">Description</label>
               <textarea name="description" defaultValue={product.description} disabled={disabled} className="disabled:bg-slate-200 enabled:border enabled:border-solid enabled:border-[gray] py-1"></textarea>
+            </div>
+            <div className="block py-3 grid grid-cols-[1fr_4fr]">
+              <label htmlFor="category" className="text-[1.2em]">Product Category</label>
+              <select id="category" name="category" className="border border-solid border-[gray] py-1">
+                {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
             </div>
             {disabled
               ? <button type="button" onClick={allowEdit} className="text-[1.2em] text-[white] bg-green-900 hover:bg-green-400 float-right p-2">Edit Product</button>

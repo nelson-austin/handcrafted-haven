@@ -1,4 +1,4 @@
-import { fetchProductById } from "@/app/lib/data";
+import { fetchCategories, fetchProductById } from "@/app/lib/data";
 import ProductForm from "@/app/ui/dashboard/productForm"
 import { auth } from "@/auth";
 import { Metadata } from "next";
@@ -12,6 +12,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     const session = await auth();
     const id = params.id;
     const product = await fetchProductById(id);
+    const categories = await fetchCategories()
     
     if (!product) {
         notFound();
@@ -20,5 +21,5 @@ export default async function Page({ params }: { params: { id: string } }) {
         redirect(`/product/${id}`);
     }
     
-    return (<ProductForm  product={product}/>);
+    return (<ProductForm  product={product} categories={categories}/>);
 }

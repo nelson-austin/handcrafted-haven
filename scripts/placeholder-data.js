@@ -142,77 +142,62 @@ const categories = [
 
 const product_category = [
     {
-        id: 1,
         category_id: categories[1].id,
         product_id: products[0].id
     },
     {
-        id: 2,
         category_id: categories[2].id,
         product_id: products[0].id
     },
     {
-        id: 3,
         category_id: categories[1].id,
         product_id: products[1].id
     },
     {
-        id: 4,
         category_id: categories[0].id,
         product_id: products[2].id
     },
     {
-        id: 5,
         category_id: categories[0].id,
         product_id: products[3].id
     },
     {
-        id: 6,
         category_id: categories[1].id,
         product_id: products[4].id
     },
     {
-        id: 7,
         category_id: categories[2].id,
         product_id: products[4].id
     },
     {
-        id: 8,
         category_id: categories[3].id,
         product_id: products[4].id
     },
     {
-        id: 9,
         category_id: categories[0].id,
         product_id: products[5].id
     },
     {
-        id: 10,
         category_id: categories[1].id,
         product_id: products[6].id
     },
     {
-        id: 11,
         category_id: categories[2].id,
         product_id: products[6].id
     },
     {
-        id: 12,
         category_id: categories[0].id,
         product_id: products[7].id
     },
     {
-        id: 13,
         category_id: categories[1].id,
         product_id: products[8].id
     },
     {
-        id: 14,
         category_id: categories[0].id,
         product_id: products[9].id
     },
     {
-        id: 15,
         category_id: categories[1].id,
         product_id: products[9].id
     }
