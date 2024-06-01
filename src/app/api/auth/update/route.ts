@@ -8,8 +8,17 @@ import { authOptions } from "@/app/lib/authOptions";
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    const { id, name, email, oldPassword, password, business_name, image, image_id, is_seller } =
-      await request.json();
+    const {
+      id,
+      name,
+      email,
+      oldPassword,
+      password,
+      business_name,
+      image,
+      image_id,
+      is_seller,
+    } = await request.json();
 
     const isValid = await compare(oldPassword, session!.user.password);
 
@@ -27,6 +36,8 @@ export async function POST(request: Request) {
 
       const response = await updateUser(user);
 
+      if (session !== null) session.user = user;
+
       return NextResponse.json({ message: "Success" });
     } else {
       return NextResponse.json({ message: "Invalid password" });
@@ -34,5 +45,5 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error(error);
   }
-  return NextResponse.json({ message: "Error" });;
+  return NextResponse.json({ message: "Error" });
 }
