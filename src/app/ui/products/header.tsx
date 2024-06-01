@@ -14,14 +14,16 @@ export default function Header() {
   const [isLoading, setIsLoading] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-  if (user.id === undefined) {
-    getSession().then((session) => {
-      if (session) {
-        setUser(session.user as User);
-      }
-      setIsLoading(false);
-    });
-  }
+  useEffect(() => {
+    if (user.id === undefined) {
+      getSession().then((session) => {
+        if (session) {
+          setUser(session.user as User);
+        }
+        setIsLoading(false);
+      });
+    }
+  }, []);
 
   if (isLoading) {
     return (
