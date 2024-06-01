@@ -8,6 +8,7 @@ export interface CardProps {
 
 export type Product = {
   id: string;
+  product_id: string
   user_id: string;
   name: string;
   image_id: string;

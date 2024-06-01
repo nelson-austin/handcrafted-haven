@@ -1,11 +1,10 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
 import { fetchMyInventory } from "@/app/lib/data";
+import { auth } from "@/auth";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function myInventory() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
     if(session) {
         const products = await fetchMyInventory(session.user.id);
   return (

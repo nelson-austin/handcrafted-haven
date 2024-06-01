@@ -1,24 +1,19 @@
-"use client";
-
-import { Source_Sans_3 } from "next/font/google";
+import { auth } from "@/auth";
 import "./globals.css";
-import store from "@/redux/store";
-import { Provider } from "react-redux";
+import { NextAuthProvider, ReduxProviders } from "./provider";
 
-const source_sans_3 = Source_Sans_3({ subsets: ["latin"] });
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+
   return (
     <html lang="en">
-      <Provider store={store}>
-        <body className={`${source_sans_3.className} antialiased`}>
-          {children}
-        </body>
-      </Provider>
+      <NextAuthProvider session={session}>
+        <ReduxProviders>{children}</ReduxProviders>
+      </NextAuthProvider>
     </html>
   );
 }

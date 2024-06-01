@@ -11,33 +11,26 @@ import { useFormStatus } from "react-dom";
 import { FormEvent } from "react";
 import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { Button } from "@/app/ui/button";
 import { User } from "@/app/lib/interface";
 import UploadWidget from "@/app/ui/uploadWidget";
 
-export default function UpdateUserForm({imageUrl, imageId}: {
-  imageUrl: string,
-  imageId: string,
+export default function UpdateUserForm({
+  imageUrl,
+  imageId,
+}: {
+  imageUrl: string;
+  imageId: string;
 }) {
   const router = useRouter();
   const params = useParams();
+  const { data: session, update, status } = useSession();
 
   const [user, setUser] = useState({} as User);
 
   if (user.id === undefined) {
-    getSession().then((session) => {
-      if (session) {
-        if(session.user.id !== params.id) {
-          router.push(`/profile/${session.user.id}/edit`);
-          router.refresh();
-        }
-        setUser(session.user as User);
-      } else {
-        router.push("/login");
-        router.refresh();
-      }
-    });
+    if (session !== null) setUser(session.user as User);
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -59,10 +52,11 @@ export default function UpdateUserForm({imageUrl, imageId}: {
       }),
     });
     if (response.ok) {
+      await update({user: user});
       router.push(`/profile/${params.id}`);
       router.refresh();
     }
-    
+
     response.json().then((data) => {
       setErrorMessage(data.message);
     });
@@ -79,7 +73,7 @@ export default function UpdateUserForm({imageUrl, imageId}: {
 
   useEffect(() => {
     imageIdRef.current!.value = image_id;
-}, [image_id]);
+  }, [image_id]);
   // checked state and the onChange method
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -88,10 +82,19 @@ export default function UpdateUserForm({imageUrl, imageId}: {
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`mb-3 text-2xl`}>Edit your profile</h1>
         {user.is_seller && (
-          <UploadWidget imageId={image_id} setImageId={setImage_id} imageUrl={image} setImageUrl={setImage}  />
-        
+          <UploadWidget
+            imageId={image_id !== "undefined" ? image_id : ""}
+            setImageId={setImage_id}
+            imageUrl={image !== "undefined" ? image : ""}
+            setImageUrl={setImage}
+          />
         )}
-        <input ref={imageIdRef} id="image_id" name="image_id" type="hidden"></input>
+        <input
+          ref={imageIdRef}
+          id="image_id"
+          name="image_id"
+          type="hidden"
+        ></input>
         <input ref={imageRef} id="image" name="image" type="hidden"></input>
         <div className="w-full">
           <div>
@@ -222,9 +225,13 @@ export default function UpdateUserForm({imageUrl, imageId}: {
               <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
               <p className="text-sm text-red-500">{errorMessage}</p>
             </>
-          )) || (errorMessage && <><ExclamationCircleIcon className="h-5 w-5 text-green-700" />
-          <p className="text-sm text-green-700">{errorMessage}</p>
-          </>) }
+          )) ||
+            (errorMessage && (
+              <>
+                <ExclamationCircleIcon className="h-5 w-5 text-green-700" />
+                <p className="text-sm text-green-700">{errorMessage}</p>
+              </>
+            ))}
         </div>
       </div>
     </form>
@@ -235,7 +242,10 @@ function UpdateUserButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button className="font-bold bg-green-900 text-white m-5 p-2 rounded-md hover:bg-green-300 hover:text-black" aria-disabled={pending}>
+    <Button
+      className="font-bold bg-green-900 text-white m-5 p-2 rounded-md hover:bg-green-300 hover:text-black"
+      aria-disabled={pending}
+    >
       Update Profile <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );

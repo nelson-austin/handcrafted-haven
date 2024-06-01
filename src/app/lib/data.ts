@@ -31,7 +31,7 @@ export async function fetchFilteredProducts(
 
     var sqlQuery = `
               SELECT DISTINCT ON (products.id) * FROM products
-              FULL JOIN product_categories ON products.id = product_categories.product_id
+              JOIN product_categories ON products.id = product_categories.product_id
             `;
 
             let categoryOptions = ""
@@ -42,7 +42,12 @@ export async function fetchFilteredProducts(
             }
         
             if (category.length > 0) {
-              categoryOptions = ` category_id = ${parseInt(category)}`
+              let categories: string[] = []
+              const cats = category.split(',')
+              cats.forEach((cat) => {
+                categories.push(`category_id = ${parseInt(cat)}`)
+              })
+              categoryOptions = ` ${categories.join(' OR ')}`
             }
         
             if (minPrice && maxPrice == undefined) {
