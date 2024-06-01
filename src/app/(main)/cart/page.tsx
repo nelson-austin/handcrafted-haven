@@ -1,16 +1,16 @@
-"use client"; // Indicates that this module should be run on the client-side only
+"use client";
 
-import Link from "next/link"; // Import Link component from Next.js for client-side navigation
-import { useDispatch, useSelector } from "react-redux"; // Import hooks from react-redux to interact with the Redux store
-import { Product } from "@/app/lib/interface"; // Import the Product interface
+import Link from "next/link"; 
+import { useDispatch, useSelector } from "react-redux"; 
+import { Product } from "@/app/lib/interface"; 
 import {
   removeItemFromCart,
   incrementItemQuantity,
   decrementItemQuantity,
-} from "@/redux/features/cartSlice"; // Import actions from the cart slice
+} from "@/redux/features/cartSlice";
 
 // Create new interface from the Product interface and add a new property "quantity"
-interface CartItem extends Product {
+export interface CartItem extends Product {
   quantity: number;
 }
 
@@ -19,10 +19,6 @@ export default function CartPage() {
   const dispatch = useDispatch();
   // Use the selector hook to access the cart items from the Redux store
   const cartItems = useSelector((state: any) => state.cart.items);
-
-  const updateLocalStorage = (items: CartItem[]) => {
-    localStorage.setItem("cart-items", JSON.stringify(items));
-  };
 
   const handleIncrement = (id: string) => {
     dispatch(incrementItemQuantity(id));
@@ -44,7 +40,7 @@ export default function CartPage() {
   );
 
   return (
-    <section className="pb-20">
+    <section className="pb-10">
       {/* Title */}
       {cartItems.length === 0 ? ( // Conditional rendering based on whether the cart is empty
         <div className="text-center text-[36px]">
@@ -73,29 +69,31 @@ export default function CartPage() {
       ) : (
         <div>
           {/* Grid layout for displaying cart items */}
-          <Link href={"/cart/order-history"}>
-            <span className="absolute top-[19%] flex gap-1 items-center underline underline-offset-4 decoration-orange-300 right-[5%] md:right-[3%] md:text-[18px] md:hover:underline md:no-underline text-green-800 md:top-[18%] lg:right-[2%]">
-              View Order History
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                />
-              </svg>
-            </span>
-          </Link>{" "}
-          {/* Styling the section with padding */}
-          <h2 className="text-center text-[33px] font-bold">
-            Shopping Cart
-          </h2>{" "}
+          <div className="flex flex-col items-center gap-5">
+            <Link href={"/cart/order-history"}>
+              <span className="flex mt-[30px] gap-1 items-center underline underline-offset-4 decoration-orange-300 md:text-[18px] md:hover:underline md:no-underline text-green-800 md:absolute top-[13%] right-[2%]">
+                View Order History
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                  />
+                </svg>
+              </span>
+            </Link>{" "}
+            {/* Styling the section with padding */}
+            <h2 className="text-center text-[33px] font-bold">
+              Shopping Cart
+            </h2>{" "}
+          </div>
           <div className="flex flex-col items-center md:grid place-items-center grid-cols-2 lg:grid-cols-3">
             {cartItems.map((item: CartItem) => (
               <div

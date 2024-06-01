@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import { signOut } from "next-auth/react";
 
 const navLinks = [
   {
@@ -136,7 +137,12 @@ export default function SideNav() {
                   d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"
                 />
               </svg>
-              <p className="hidden md:block">Logout</p>
+              <p
+                className="hidden md:block hover:bg-green-300 hover:text-black cursor-pointer"
+                onClick={() => signOut()}
+              >
+                Logout
+              </p>
             </Link>
           </div>
         </div>

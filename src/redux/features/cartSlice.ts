@@ -1,10 +1,10 @@
+"use client";
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Product } from "@/app/lib/interface";
-
 interface CartItem extends Product {
   quantity: number;
 }
-
 interface CartState {
   items: CartItem[];
   totalItems: number;
@@ -18,6 +18,7 @@ const initialState: CartState = (() => {
       return JSON.parse(savedCart);
     }
   }
+
   return {
     items: [],
     totalItems: 0,
@@ -96,6 +97,11 @@ const cartSlice = createSlice({
         saveState(state);
       }
     },
+    clearCart(state) {
+      state.items = [];
+      state.totalItems = 0;
+      localStorage.removeItem("cart");
+    },
   },
 });
 
@@ -104,5 +110,6 @@ export const {
   incrementItemQuantity,
   decrementItemQuantity,
   removeItemFromCart,
+  clearCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;
