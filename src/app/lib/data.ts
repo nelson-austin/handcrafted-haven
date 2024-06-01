@@ -31,7 +31,7 @@ export async function fetchFilteredProducts(
 
     var sqlQuery = `
               SELECT DISTINCT ON (products.id) * FROM products
-              FULL JOIN product_categories ON products.id = product_categories.product_id
+              JOIN product_categories ON products.id = product_categories.product_id
             `;
 
             let categoryOptions = ""
@@ -61,6 +61,8 @@ export async function fetchFilteredProducts(
             // Execute the query with the parameterized values
             const products = await client.query(sqlQuery)
             client.release();
+
+    console.log(products.rows)
 
     return products.rows;
   } catch (error) {
