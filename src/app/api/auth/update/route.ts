@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { compare } from "bcrypt";
 import { User } from "@/app/lib/interface";
 import { updateUser } from "@/app/lib/actions";
-import { authOptions } from "@/app/lib/authOptions";
+import { auth } from "@/auth";
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const {
       id,
       name,

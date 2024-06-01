@@ -3,9 +3,9 @@ import { compare } from "bcrypt";
 import { sql } from "@vercel/postgres";
 import { FormSchema } from "@/app/lib/actions";
 import { User } from "@/app/lib/interface";
-import { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 
-export const authOptions: NextAuthOptions = {
+export const { auth, handlers, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
           email: credentials?.email,
           password: credentials?.password,
         });
-        
+
         if (validatedFields.success) {
           const response =
             await sql`SELECT * FROM users WHERE email = ${validatedFields.data.email}`;
@@ -61,33 +61,36 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-        if (user) {
-            token.id = (user as User).id;
-            token.name = (user as User).name;
-            token.email = (user as User).email;
-            token.is_seller = (user as User).is_seller;
-            token.business_name = (user as User).business_name;
-            token.password = (user as User).password;
-            token.image = (user as User).image;
-            token.image_id = (user as User).image_id;
-        }
-
+    async jwt({ token, user, trigger, session }) {
+      if (user) {
+        token.id = (user as User).id;
+        token.name = (user as User).name;
+        token.email = (user as User).email;
+        token.is_seller = (user as User).is_seller;
+        token.business_name = (user as User).business_name;
+        token.password = (user as User).password;
+        token.image = (user as User).image;
+        token.image_id = (user as User).image_id;
+      }
+      if (trigger === "update" && session) {
+        token = {...token, ...session.user as User};
         return token;
+      };
+
+      return token;
     },
     async session({ session, token, user }) {
-        if (session.user) {
-            session.user.id = token.id as string;
-            session.user.name = token.name as string;
-            session.user.email = token.email as string;
-            session.user.is_seller = token.is_seller as boolean;
-            session.user.business_name = token.business_name as string;
-            session.user.password = token.password as string;
-            session.user.image = token.image as string;
-            session.user.image_id = token.image_id as string;
-        }
-
-        return session;
-    }
-}
-}
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
+        session.user.is_seller = token.is_seller as boolean;
+        session.user.business_name = token.business_name as string;
+        session.user.password = token.password as string;
+        session.user.image = token.image as string;
+        session.user.image_id = token.image_id as string;
+      }
+      return session;
+    },
+  },
+});

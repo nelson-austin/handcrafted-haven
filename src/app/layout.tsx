@@ -1,14 +1,13 @@
-import NextAuth, { getServerSession } from "next-auth";
+import { auth } from "@/auth";
 import "./globals.css";
 import { NextAuthProvider, ReduxProviders } from "./provider";
-import { authOptions } from "./lib/authOptions";
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   return (
     <html lang="en">

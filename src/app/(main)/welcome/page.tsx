@@ -1,12 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { authOptions } from "@/app/lib/authOptions";
-import { getServerSession } from "next-auth";
 
 import Footer from "./partials/footer";
+import { auth } from "@/auth";
 
 export default async function SellerPage() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
     
   return (
     <>
