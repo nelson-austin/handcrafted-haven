@@ -11,13 +11,13 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <SessionProvider>
-        <Provider store={store}>
-          <Header />
-          <main>{children}</main>
-        </Provider>
-      </SessionProvider>
+   <>
+      <Provider store={store}>
+        <Header />
+        <main>
+          {children}
+        </main>
+      </Provider>
     </>
   );
 }
