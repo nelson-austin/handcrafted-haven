@@ -6,9 +6,9 @@ import { Invoice, Order, Product, Review, Category } from "./interface";
 
 export async function fetchCategories() {
   unstable_noStore();
-  
+
   try {
-    const data = await sql<Category>`SELECT * FROM categories`
+    const data = await sql<Category>`SELECT * FROM categories`;
 
     return data.rows;
   } catch (error) {
@@ -26,46 +26,48 @@ export async function fetchFilteredProducts(
   unstable_noStore();
 
   try {
-    const client = await db.connect()
-    let keyword = ""
+    const client = await db.connect();
+    let keyword = "";
 
     var sqlQuery = `
               SELECT DISTINCT ON (products.id) * FROM products
               JOIN product_categories ON products.id = product_categories.product_id
             `;
 
-            let categoryOptions = ""
-            let priceOptions = ""
+    let categoryOptions = "";
+    let priceOptions = "";
 
-            if (query && query.length > 0) {
-              keyword = ` (products.name ILIKE ${`'%${query}%'`} OR products.description ILIKE ${`'%${query}%'`})`
-            }
-        
-            if (category.length > 0) {
-              let categories: string[] = []
-              const cats = category.split(',')
-              cats.forEach((cat) => {
-                categories.push(`category_id = ${parseInt(cat)}`)
-              })
-              categoryOptions = ` ${categories.join(' OR ')}`
-            }
-        
-            if (minPrice && maxPrice == undefined) {
-              priceOptions = ` price >= ${minPrice}`
-            }
-            if (maxPrice && minPrice == undefined) {
-              priceOptions = ` price <= ${maxPrice}`
-            }
-            if (minPrice != undefined && maxPrice != undefined) {
-              priceOptions = ` price BETWEEN ${minPrice} AND ${maxPrice}`
-            }
-        
-            let options = [keyword, categoryOptions, priceOptions].filter(val => val).join(' AND');
-            sqlQuery += ` WHERE ${options}`
-        
-            // Execute the query with the parameterized values
-            const products = await client.query(sqlQuery)
-            client.release();
+    if (query && query.length > 0) {
+      keyword = ` (products.name ILIKE ${`'%${query}%'`} OR products.description ILIKE ${`'%${query}%'`})`;
+    }
+
+    if (category.length > 0) {
+      let categories: string[] = [];
+      const cats = category.split(",");
+      cats.forEach((cat) => {
+        categories.push(`category_id = ${parseInt(cat)}`);
+      });
+      categoryOptions = ` ${categories.join(" OR ")}`;
+    }
+
+    if (minPrice && maxPrice == undefined) {
+      priceOptions = ` price >= ${minPrice}`;
+    }
+    if (maxPrice && minPrice == undefined) {
+      priceOptions = ` price <= ${maxPrice}`;
+    }
+    if (minPrice != undefined && maxPrice != undefined) {
+      priceOptions = ` price BETWEEN ${minPrice} AND ${maxPrice}`;
+    }
+
+    let options = [keyword, categoryOptions, priceOptions]
+      .filter((val) => val)
+      .join(" AND");
+    sqlQuery += ` WHERE ${options}`;
+
+    // Execute the query with the parameterized values
+    const products = await client.query(sqlQuery);
+    client.release();
 
     return products.rows;
   } catch (error) {
@@ -147,23 +149,25 @@ export async function fetchFilteredInvoices(
     const invoices = await sql<Invoice>`
       SELECT
         orders.id,
-        users.name,
-        users.email,
-        orders.total_price,
-        orders.order_date
+        users.name as user_name,
+        users.email as user_email,
+        orders.order_date as invoice_date,
+        SUM(ordered_products.quantity * products.price) as total_price
       FROM orders
       JOIN users ON orders.user_id = users.id
-      JOIN products ON orders.product_id = products.id
-      WHERE
-        (users.name ILIKE ${`%${query}%`} OR
-        users.email ILIKE ${`%${query}%`} OR
-        orders.total_price::text ILIKE ${`%${query}%`} OR
-        orders.order_date::text ILIKE ${`%${query}%`}) AND
+      JOIN ordered_products ON orders.id = ordered_products.order_id
+      JOIN products ON ordered_products.product_id = products.id
+      WHERE (
+        users.name ILIKE ${`%${query}%`}
+        OR users.email ILIKE ${`%${query}%`}
+        OR CAST((orders.order_date) AS TEXT) ILIKE ${`%${query}%`}
+      ) AND
         products.user_id = ${sellerId}
+      GROUP BY orders.id, users.name, users.email, orders.order_date
       ORDER BY orders.order_date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
-    
+
     return invoices.rows;
   } catch (error) {
     console.error("Database Error:", error);
@@ -174,18 +178,19 @@ export async function fetchFilteredInvoices(
 export async function fetchInvoicesPages(query: string, sellerId: string) {
   unstable_noStore();
   try {
-    const count = await sql`SELECT COUNT(*)
-    FROM orders
-    JOIN users ON orders.user_id = users.id
-    JOIN products ON orders.product_id = products.id
-    WHERE
-      (users.name ILIKE ${`%${query}%`} OR
-      users.email ILIKE ${`%${query}%`} OR
-      orders.total_price::text ILIKE ${`%${query}%`} OR
-      orders.order_date::text ILIKE ${`%${query}%`}) AND
+    const count = await sql`
+      SELECT COUNT(*) as count
+      FROM orders
+      JOIN users ON orders.user_id = users.id
+      JOIN ordered_products ON orders.id = ordered_products.order_id
+      JOIN products ON ordered_products.product_id = products.id
+      WHERE (
+        users.name ILIKE ${`%${query}%`}
+        OR users.email ILIKE ${`%${query}%`}
+      ) AND
       products.user_id = ${sellerId}
   `;
-  
+
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {

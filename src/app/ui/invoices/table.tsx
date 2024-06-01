@@ -1,4 +1,5 @@
-import { fetchFilteredInvoices } from '@/app/lib/data';
+import { fetchFilteredInvoices } from "@/app/lib/data";
+import Link from "next/link";
 
 export default async function InvoicesTable({
   query,
@@ -23,18 +24,22 @@ export default async function InvoicesTable({
               >
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
-                    <p className="text-sm text-gray-500">{invoice.name}</p>
-                    <p className="text-sm text-gray-500">{invoice.email}</p>
+                    <p className="text-sm text-gray-500">{invoice.user_name}</p>
+                    <p className="text-sm text-gray-500">
+                      {invoice.user_email}
+                    </p>
                   </div>
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
-                    <p className="text-xl font-medium">
-                      {invoice.total_price}
-                    </p>
-                    <p>{invoice.order_date?.toLocaleString()}</p>
+                    <p className="text-xl font-medium">{invoice.total_price}</p>
+                    <p>{invoice.invoice_date?.toLocaleString()}</p>
                   </div>
-                  
+                </div>
+                <div className="flex items-center justify-between pt-4">
+                  <Link href={`/invoices/${invoice.id}`}>
+                    Open Detail
+                  </Link>
                 </div>
               </div>
             ))}
@@ -54,6 +59,9 @@ export default async function InvoicesTable({
                 <th scope="col" className="px-3 py-5 font-medium">
                   Date
                 </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Open Detail
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -64,17 +72,17 @@ export default async function InvoicesTable({
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
-                      <p>{invoice.name}</p>
+                      <p>{invoice.user_name}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {invoice.email}
+                    {invoice.user_email}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {invoice.total_price}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {invoice.order_date?.toLocaleString() ?? "N/A"}
+                    {invoice.invoice_date?.toLocaleString() ?? "N/A"}
                   </td>
                 </tr>
               ))}

@@ -22,7 +22,8 @@ export default async function Page({
     redirect("/login");
   }
 
-  const totalPages = await fetchInvoicesPages(query, session.user.id);
+  //const totalPages = await fetchInvoicesPages(query, session.user.id);
+  const totalPages = await fetchInvoicesPages(query, "87fe51e3-2b78-44b4-aaf2-02a432b7cb7c");
 
   return (
     <div className="w-full">
@@ -36,7 +37,8 @@ export default async function Page({
         <InvoicesTable
           query={query}
           currentPage={currentPage}
-          sellerId={session.user.id}
+          //sellerId={session.user.id}
+          sellerId={"87fe51e3-2b78-44b4-aaf2-02a432b7cb7c"}
         />
       }
       <div className="mt-5 flex w-full justify-center">
