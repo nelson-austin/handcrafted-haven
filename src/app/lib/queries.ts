@@ -18,6 +18,7 @@ const FormSchema = z.object({
     quantity: z.coerce.number(),
     imageId: z.string(),
     image: z.string(),
+    category: z.string().array()
 });
 
 export type State = {
@@ -26,6 +27,7 @@ export type State = {
       description?: string[];
       price?: string[];
       quantity?: string[];
+      category?: string[];
     };
     message?: string | null;
 };
@@ -40,6 +42,7 @@ export async function updateInventory(id: string, prevState: State, formData: Fo
         quantity: formData.get('quantity'),
         imageId: formData.get('imageId'),
         image: formData.get('image'),
+        category: formData.get('category')
     })
 
     if (!validatedFields.success) {
@@ -74,6 +77,7 @@ export async function newProduct(id: string, prevState: State, formData: FormDat
         quantity: formData.get('quantity'),
         imageId: formData.get('imageId'),
         image: formData.get('image'),
+        category: formData.get('category'),
     })
     
     if (!validatedFields.success) {
@@ -83,13 +87,22 @@ export async function newProduct(id: string, prevState: State, formData: FormDat
         };
     }
     
-    const { name, price, quantity, description, image, imageId } = validatedFields.data;
+    const { name, price, quantity, description, image, imageId, category } = validatedFields.data;
  
     try {
         await sql`
             INSERT INTO products (user_id, name, image_id, image, description, price, quantity_available)
-            VALUES (${id}, ${name}, ${imageId}, ${image}, ${description}, ${price}, ${quantity})
+            VALUES (${id}, ${name}, ${imageId}, ${image}, ${description}, ${price}, ${quantity});
             `;
+
+        category.forEach(async (cat) => {
+            await sql`
+            INSERT INTO product_categories (category_id, product_id)
+            VALUES (${parseInt(cat)}, ${id})
+            `
+            console.log(cat)
+        })
+
     } catch (error) {
         return { message: 'Database Error: Failed to create product.' };
     }

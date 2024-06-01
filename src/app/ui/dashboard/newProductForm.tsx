@@ -5,8 +5,9 @@ import { useFormState } from "react-dom";
 import { newProduct } from "@/app/lib/queries";
 import { State } from "@/app/lib/queries";
 import UploadWidget from "@/app/ui/uploadWidget";
+import { Category } from '@/app/lib/interface';
 
-export default function Page({ id }: { id: string }) {
+export default function Page({ id, categories }: { id: string, categories: Category[] }) {
 
     const initialState = { message: null, errors: {} };
     const newInventoryItem = newProduct.bind(null, id);
@@ -48,6 +49,14 @@ export default function Page({ id }: { id: string }) {
                 <div className="block py-3 grid grid-cols-[1fr_4fr]">
                     <label htmlFor="description" className="text-[1.2em]">Description</label>
                     <textarea id="description" name="description" className="border border-solid border-[gray] py-1"></textarea>
+                </div>
+                <div className="block py-3 grid grid-cols-[1fr_4fr]">
+                    <label htmlFor="price" className="text-[1.2em]">Product Category</label>
+                    <select multiple id="category" name="category" className="border border-solid border-[gray] py-1">
+                        {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))}
+                    </select>
                 </div>
 
                 <button type="submit" className="text-[1.2em] text-[white] bg-green-900 hover:bg-green-400 float-right p-2">Create Product</button>
