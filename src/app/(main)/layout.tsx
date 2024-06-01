@@ -3,6 +3,7 @@
 import Header from "../ui/products/header";
 import store from "@/redux/store";
 import { Provider } from "react-redux";
+import { SessionProvider } from "next-auth/react";
 
 export default function Layout({
   children,
@@ -11,10 +12,12 @@ export default function Layout({
 }>) {
   return (
     <>
-      <Provider store={store}>
-        <Header />
-        <main>{children}</main>
-      </Provider>
+      <SessionProvider>
+        <Provider store={store}>
+          <Header />
+          <main>{children}</main>
+        </Provider>
+      </SessionProvider>
     </>
   );
 }
