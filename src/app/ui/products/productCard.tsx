@@ -5,6 +5,7 @@ import AddToCartButton from "./addToCartButton";
 
 export default function ProductCard({
   id,
+  product_id,
   name,
   image_id,
   image,
@@ -13,7 +14,7 @@ export default function ProductCard({
   user_id,
   quantity_available,
 }: Product) {
-  const productPage = `/product/${id}`;
+  const productPage = `/product/${product_id}`;
 
   if (quantity_available === 0) {
     return (
@@ -70,6 +71,7 @@ export default function ProductCard({
           product={{
             id,
             name,
+            product_id,
             image_id,
             image,
             price,
