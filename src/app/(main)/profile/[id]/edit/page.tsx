@@ -1,12 +1,12 @@
-import { getServerSession } from "next-auth";
+
+import { auth } from "@/auth";
 import UpdateUserForm from "./form";
 import { redirect, useParams } from "next/navigation";
-import { authOptions } from "@/app/lib/authOptions";
 
 //metadata.title = "Profile Update";
 
 export default async function UpdateUserPage() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     if(!session) {
        redirect("/login");
