@@ -18,7 +18,7 @@ const FormSchema = z.object({
     quantity: z.coerce.number(),
     imageId: z.string(),
     image: z.string(),
-    category: z.string().array()
+    category: z.string()
 });
 
 export type State = {
@@ -52,13 +52,23 @@ export async function updateInventory(id: string, prevState: State, formData: Fo
         };
     }
 
-    const { name, image, price, quantity, description, imageId } = validatedFields.data;
+    const { name, image, price, quantity, description, imageId, category } = validatedFields.data;
 
     try {
         await sql`
             UPDATE products
             SET name = ${name}, image_id = ${imageId}, image = ${image}, description = ${description}, price = ${price}, quantity_available = ${quantity}
             WHERE id = ${id}`;
+
+        await sql`
+            DELETE FROM product_categories
+            WHERE product_id = ${id}`
+
+        await sql`
+        INSERT INTO product_categories (category_id, product_id)
+        VALUES (${parseInt(category)}, ${id})
+        `
+        
     } catch (error) {
         return { message: 'Database Error: Failed to update product.' };
     }
@@ -77,10 +87,13 @@ export async function newProduct(id: string, prevState: State, formData: FormDat
         quantity: formData.get('quantity'),
         imageId: formData.get('imageId'),
         image: formData.get('image'),
-        category: formData.get('category'),
+        category: formData.get('category')
     })
+
+    
     
     if (!validatedFields.success) {
+        console.log(validatedFields.error.flatten().fieldErrors)
         return {
           errors: validatedFields.error.flatten().fieldErrors,
           message: 'Missing Fields. Failed to Create Product.',
@@ -88,20 +101,23 @@ export async function newProduct(id: string, prevState: State, formData: FormDat
     }
     
     const { name, price, quantity, description, image, imageId, category } = validatedFields.data;
+
+    console.log("Hello", category)
+    
  
     try {
-        await sql`
+        const result = await sql`
             INSERT INTO products (user_id, name, image_id, image, description, price, quantity_available)
-            VALUES (${id}, ${name}, ${imageId}, ${image}, ${description}, ${price}, ${quantity});
+            VALUES (${id}, ${name}, ${imageId}, ${image}, ${description}, ${price}, ${quantity})
+            RETURNING id;
             `;
+        
+        const product_id = result.rows[0].id
 
-        category.forEach(async (cat) => {
-            await sql`
+        await sql`
             INSERT INTO product_categories (category_id, product_id)
-            VALUES (${parseInt(cat)}, ${id})
+            VALUES (${parseInt(category)}, ${product_id})
             `
-            console.log(cat)
-        })
 
     } catch (error) {
         return { message: 'Database Error: Failed to create product.' };

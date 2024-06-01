@@ -269,8 +269,8 @@ async function seedProductCategories(client) {
     const insertedProductCategories = await Promise.all(
       product_category.map(async (prodCat) => {
         return client.sql`
-          INSERT INTO product_categories  (id, category_id, product_id)
-          VALUES (${prodCat.id}, ${prodCat.category_id}, ${prodCat.product_id})
+          INSERT INTO product_categories  (category_id, product_id)
+          VALUES (${prodCat.category_id}, ${prodCat.product_id})
           ON CONFLICT (ID) DO NOTHING;
         `;
       }),
@@ -336,8 +336,8 @@ async function main() {
   //await seedCart(client);
   //await seedOrders(client);
   //await seedOrderedproducts(client);
-  await seedCategories(client)
-  //await seedProductCategories(client)
+  //await seedCategories(client)
+  await seedProductCategories(client)
 
   await client.end();
 }

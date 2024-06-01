@@ -13,6 +13,8 @@ export default function Page({ id, categories }: { id: string, categories: Categ
     const newInventoryItem = newProduct.bind(null, id);
     const [state, dispatch] = useFormState<State, FormData>(newInventoryItem, initialState);
 
+
+
     const [imageUrl, setImageUrl] = useState('');
     const imageRef = useRef<HTMLInputElement>(null);
     
@@ -51,11 +53,11 @@ export default function Page({ id, categories }: { id: string, categories: Categ
                     <textarea id="description" name="description" className="border border-solid border-[gray] py-1"></textarea>
                 </div>
                 <div className="block py-3 grid grid-cols-[1fr_4fr]">
-                    <label htmlFor="price" className="text-[1.2em]">Product Category</label>
-                    <select multiple id="category" name="category" className="border border-solid border-[gray] py-1">
-                        {categories.map((cat) => (
-                            <option key={cat.id} value={cat.id}>{cat.name}</option>
-                        ))}
+                    <label htmlFor="category" className="text-[1.2em]">Product Category</label>
+                    <select id="category" name="category" className="border border-solid border-[gray] py-1">
+                      {categories.map((cat) => (
+                          <option key={cat.id} value={cat.id}>{cat.name}</option>
+                      ))}
                     </select>
                 </div>
 
