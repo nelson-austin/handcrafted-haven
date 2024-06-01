@@ -1,3 +1,4 @@
+import { authOptions } from "@/app/lib/authOptions";
 import { fetchInvoicesPages } from "@/app/lib/data";
 import Pagination from "@/app/ui/invoices/pagination";
 import InvoicesTable from "@/app/ui/invoices/table";
@@ -16,7 +17,7 @@ export default async function Page({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
 
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/login");

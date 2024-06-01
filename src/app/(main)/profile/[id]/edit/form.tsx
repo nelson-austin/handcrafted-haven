@@ -11,7 +11,7 @@ import { useFormStatus } from "react-dom";
 import { FormEvent } from "react";
 import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { Button } from "@/app/ui/button";
 import { User } from "@/app/lib/interface";
 import UploadWidget from "@/app/ui/uploadWidget";
@@ -22,22 +22,14 @@ export default function UpdateUserForm({imageUrl, imageId}: {
 }) {
   const router = useRouter();
   const params = useParams();
+  const { data: session, update, status } = useSession();
+  console.log(session);
+  console.log(status);
 
   const [user, setUser] = useState({} as User);
 
   if (user.id === undefined) {
-    getSession().then((session) => {
-      if (session) {
-        if(session.user.id !== params.id) {
-          router.push(`/profile/${session.user.id}/edit`);
-          router.refresh();
-        }
-        setUser(session.user as User);
-      } else {
-        router.push("/login");
-        router.refresh();
-      }
-    });
+    if(session !== null) setUser(session.user as User)
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -59,6 +51,7 @@ export default function UpdateUserForm({imageUrl, imageId}: {
       }),
     });
     if (response.ok) {
+      //refresh jwt token updating the client session
       router.push(`/profile/${params.id}`);
       router.refresh();
     }
