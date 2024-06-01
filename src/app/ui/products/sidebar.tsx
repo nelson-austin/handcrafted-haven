@@ -13,7 +13,7 @@ export default function CollapsibleMenu({ categories } : {categories: Category[]
   const { replace } = useRouter();
   
   const [searchPhrase, setSearchPhrase] = useState(searchParams.get('query') || '');
-  const [category, setCategory] = useState(searchParams.get('category') || '');
+  const [category, setCategory] = useState(searchParams.get('category')?.split(',') || []);
   const [priceRange, setPriceRange] = useState({
     min: searchParams.get('minPrice') || '',
     max: searchParams.get('maxPrice') || ''
@@ -29,10 +29,11 @@ export default function CollapsibleMenu({ categories } : {categories: Category[]
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = (category: string[]) => {
     const params = new URLSearchParams(searchParams);
     if (category) {
-      params.set('category', category);
+      params.set('category', category.join(','));
+      
     } else {
       params.delete('category');
     }
@@ -53,7 +54,7 @@ export default function CollapsibleMenu({ categories } : {categories: Category[]
 
   const resetFilters = () => {
     setSearchPhrase('');
-    setCategory('');
+    setCategory([]);
     setPriceRange({ min: '', max: '' });
 
     const params = new URLSearchParams();
@@ -102,14 +103,15 @@ export default function CollapsibleMenu({ categories } : {categories: Category[]
               Category
             </label>
             <select
+              multiple
               value={category}
               onChange={(e) => {
-                setCategory(e.target.value);
-                handleCategoryChange(e.target.value);
+                const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+                setCategory(selectedOptions);
+                handleCategoryChange(selectedOptions);
               }}
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
             >
-              <option value="">Select a category</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
