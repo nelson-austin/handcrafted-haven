@@ -1,17 +1,48 @@
 "use client"
 
 import { FormEvent } from "react"
-import { getSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { User } from "@/app/lib/interface"
-import { useParams } from "next/navigation"
-import { setTimeout } from "timers" 
+import { useEffect, useState } from "react"
+
+interface Item {
+    id: string;
+    user_id: string;
+    name: string;
+    image: string;
+    description: string;
+    price: string;
+    quantity_available: number;
+    image_id: string | null;
+    quantity: number;
+}
 
 export default function CheckForm() {
     const router = useRouter()
+    const [items, setItems] = useState<Item[]>([]);
+    const [orderTotal, setOrderTotal] = useState<number>(0);
+    useEffect(() => {
+        const cart = localStorage.getItem('cart');
+        if (cart) {
+          const data = JSON.parse(cart);
+          setItems(data.items);
+    
+          // Calculate order total
+          const total = data.items.reduce((acc: number, item: Item) => {
+            const price = parseFloat(item.price);
+            return acc + price * item.quantity;
+          }, 0);
+          setOrderTotal(total);
+        }
+      }, []);
+
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        const orderDetails = items.map(item => ({
+            id: item.id,
+            quantity: item.quantity
+          }));
+        orderDetails
         alert("You make a submission")
         router.push("/thankyou")
     }
@@ -62,12 +93,23 @@ export default function CheckForm() {
                             <legend className="text-xl font-semibold text-gray-800">Order Summary</legend>
                             <ul>
                                 <li>
-                                <label className="block">All Items :</label>
+                                <label className="block text-xl"><b>All Items :</b></label>
                                 <p className="cartTotal" id="cartTotal"></p>
+                                <ul>
+                                    {items.map(item => {
+                                    const price = parseFloat(item.price); // Convert price to a number
+                                    const totalPrice = price * item.quantity;
+                                    return (
+                                        <li key={item.id}>
+                                        <p>{item.quantity}x {item.name} - ${item.price}</p>
+                                        </li>
+                                    );
+                                    })}
+                                </ul>
                                 </li>
                                 <li>
-                                <label className="orderTotal block"><b>Order Total:</b></label>
-                                <p id="orderTotal"></p>
+                                <label className="block text-xl"><b>Order Total:</b></label>
+                                <p className="text-xl">${orderTotal.toFixed(2)}</p>
                                 </li>
                             </ul>
                             </fieldset>
