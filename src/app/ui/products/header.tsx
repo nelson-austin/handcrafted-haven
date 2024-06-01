@@ -11,7 +11,6 @@ import HeaderLinks from "../header/links";
 export default function Header() {
   const cartCount = useSelector((state: any) => state.cart.totalItems);
   const [user, setUser] = useState({} as User);
-  const [isLoading, setIsLoading] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   if (user.id === undefined) {
@@ -19,33 +18,7 @@ export default function Header() {
       if (session) {
         setUser(session.user as User);
       }
-      setIsLoading(false);
     });
-  }
-
-  if (isLoading) {
-    return (
-      <header className="z-50 h-20 bg-green-900 rounded-lg m-3 md:h-28">
-        <div className="header-items flex justify-between md:h-28">
-          <div className="flex flex-col">
-            <Link href="/">
-              <div className="flex items-center justify-center md:h-28 pl-5">
-                <Image
-                  src="/logo-placeholder-image.png"
-                  width={75}
-                  height={75}
-                  alt="Logo Image"
-                />
-                <p className="text-sky-100 text-[26px] font-bold leading-none">
-                  Handcrafted{" "}
-                  <span className="text-[26px]">Haven</span>
-                </p>
-              </div>
-            </Link>
-          </div>
-          </div>
-      </header>
-    );
   }
 
   return (
@@ -61,9 +34,8 @@ export default function Header() {
                   height={75}
                   alt="Logo Image"
                 />
-                <p className="text-sky-100 pl-5 text-[26px] font-bold leading-none">
-                  Handcrafted{" "}
-                  <span className="text-[26px]">Haven</span>
+                <p className="text-sky-100 pl-3 text-[26px] font-bold leading-none">
+                  Handcrafted <span className="text-[50px] md:text-[53px] lg:text-[26px]">Haven</span>
                 </p>
               </div>
             </Link>
@@ -97,8 +69,10 @@ export default function Header() {
                 />
               </svg>
             </button>
-            <span className={`text-white font-semibold text-[20px] bg-red-900 p-1 rounded-[50%] w-[25px] h-[25px] flex items-center justify-center mb-5 -ml-10 mr-5 md:hidden
-              ${cartCount < 1 && 'invisible'}`}>
+            <span
+              className={`text-sky-100 font-semibold text-[20px] bg-red-900 p-1 rounded-[50%] w-[25px] h-[25px] flex items-center justify-center mb-5 -ml-10 mr-5 md:hidden
+              ${cartCount < 1 && "invisible"}`}
+            >
               {cartCount}
             </span>
           </div>

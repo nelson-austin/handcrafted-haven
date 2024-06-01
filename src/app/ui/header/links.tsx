@@ -19,7 +19,7 @@ export default function HeaderLinks({ user, cartCount }: { user: User; cartCount
           className="font-bold bg-green-900 text-white m-5 p-2 rounded-md hover:bg-green-300 hover:text-black"
           href={`/profile/${user.id}`}
         >
-          My Profile
+          Profile
         </Link>
       )}
       {!!user.id && <Logout />}
