@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 interface Item {
     id: string;
     user_id: string;
+    product_id: string;
     name: string;
     image: string;
     description: string;
@@ -20,6 +21,8 @@ export default function CheckForm() {
     const router = useRouter()
     const [items, setItems] = useState<Item[]>([]);
     const [orderTotal, setOrderTotal] = useState<number>(0);
+    var errorMessage = null
+    
     useEffect(() => {
         const cart = localStorage.getItem('cart');
         if (cart) {
@@ -36,15 +39,26 @@ export default function CheckForm() {
       }, []);
 
 
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+      async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const orderDetails = items.map(item => ({
-            id: item.id,
-            quantity: item.quantity
-          }));
-        orderDetails
-        alert("You make a submission")
-        router.push("/thankyou")
+        errorMessage = null
+        // Update the product quantities in the database
+        items.map(async item => { 
+                const response = await fetch("/api/auth/quantity", {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        id: item.product_id || item.id,
+                        quantity_available: item.quantity_available - item.quantity,
+                    }),
+            });
+            if(response.ok) {
+            } else {
+                errorMessage = response.statusText;
+            }
+        })
+
+        localStorage.setItem('cart', '');
+        router.push('/thankyou');
     }
     return(
         <form onSubmit={handleSubmit}>

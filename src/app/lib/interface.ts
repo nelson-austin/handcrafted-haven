@@ -60,3 +60,8 @@ export type Category = {
   id: number;
   name: string;
 };
+
+export type Quantity = {
+  id: string;
+  quantity_available: number;
+}
