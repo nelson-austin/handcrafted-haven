@@ -199,7 +199,6 @@ export async function fetchInvoicesPages(query: string, sellerId: string) {
   }
 }
 
-//TODO: Fix query
 export async function fetchInvoiceDetail(
   id: string
 ) {
