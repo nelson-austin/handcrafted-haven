@@ -45,8 +45,8 @@ export default async function OrderHistoryPage() {
                   user_id={""}
                   quantity_available={0}
                   product_id={""}
-                  quantity={0}
-                  total_price={0}
+                  //quantity={0} TODO: Fix this
+                  //total_price={0} TODO: Fix this
                   name={""}
                   image={""}
                   description={""}

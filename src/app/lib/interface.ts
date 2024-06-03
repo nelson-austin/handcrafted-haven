@@ -32,18 +32,32 @@ export type User = {
 export type Order = {
   id: string;
   user_id: string;
+  order_date?: Date;
+};
+
+export type OrderDetail = {
+  id: string;
+  order_id: string;
   product_id: string;
   quantity: number;
-  total_price: number;
-  order_date?: Date;
+  price: number;
 };
 
 export type Invoice = {
   id: string;
-  name: string;
-  email: string;
+  user_name: string;
+  user_email: string;
   total_price: number;
-  order_date?: Date;
+  invoice_date: Date;
+};
+
+export type InvoiceDetail = {
+  id: string;
+  product_image: string;
+  product_image_id: string;
+  product_name: string;
+  quantity: number;
+  price: number;
 };
 
 export type Review = {
