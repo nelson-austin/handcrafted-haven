@@ -187,7 +187,7 @@ export default function CartPage() {
             <p className="text-xl font-semibold mt-4">
               Total Cost: ${totalCost.toFixed(2)}
             </p>
-            <Link href={"/cart/checkout"}>
+            <Link href={"/checkout"}>
               <button className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mt-3">
                 Proceed to Checkout
               </button>
