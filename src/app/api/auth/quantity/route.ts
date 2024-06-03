@@ -7,13 +7,12 @@ export async function PUT(request: Request) {
   try {
     const { id, quantity_available } =
       await request.json();
-    alert(id)
     var quantity: Quantity = {
       id: id,
       quantity_available: quantity_available,
     };
 
-    await updateQuantity(quantity);
+    updateQuantity(quantity);
 
   } catch (error) {
     console.error(error);

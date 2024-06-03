@@ -227,8 +227,6 @@ export async function updateQuantity(product: Quantity) {
       id: product.id,
       quantity_available: product.quantity_available,
   });
-  alert(product.quantity_available)
-  alert(product.id)
 
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
@@ -250,6 +248,7 @@ export async function updateQuantity(product: Quantity) {
     `;
     console.log(response);
     revalidatePath(`/product/${id}`);
+    return response;
   } catch (error) {
     return {
         message: 'Database Error: Failed to Update Quantity.'
