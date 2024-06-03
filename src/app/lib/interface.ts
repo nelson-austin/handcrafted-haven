@@ -49,7 +49,6 @@ export type Invoice = {
   user_email: string;
   total_price: number;
   invoice_date: Date;
-  invoice_details: InvoiceDetail[];
 };
 
 export type InvoiceDetail = {

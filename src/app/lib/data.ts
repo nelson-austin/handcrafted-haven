@@ -2,7 +2,7 @@ import { db, sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 
-import { Invoice, Order, Product, Review, Category } from "./interface";
+import { Invoice, Order, Product, Review, Category, InvoiceDetail } from "./interface";
 
 export async function fetchCategories() {
   unstable_noStore();
@@ -196,5 +196,34 @@ export async function fetchInvoicesPages(query: string, sellerId: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch total number of invoices.");
+  }
+}
+
+//TODO: Fix query
+export async function fetchInvoiceDetail(
+  id: string
+) {
+  unstable_noStore();
+  try {
+    const invoices = await sql<InvoiceDetail>`
+      SELECT
+        ordered_products.id,
+        products.image as product_image,
+        products.image_id as product_image_id,
+        products.name as product_name,
+        ordered_products.quantity,
+        ordered_products.price
+      FROM orders
+      JOIN users ON orders.user_id = users.id
+      JOIN ordered_products ON orders.id = ordered_products.order_id
+      JOIN products ON ordered_products.product_id = products.id
+      WHERE orders.id = ${id}
+      ORDER BY orders.order_date DESC
+    `;
+
+    return invoices.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch invoices.");
   }
 }
