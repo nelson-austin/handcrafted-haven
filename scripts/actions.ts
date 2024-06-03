@@ -6,6 +6,7 @@ import bcrypt, { compare } from "bcrypt";
 import { User } from "./definitions";
 import { v4 } from "uuid";
 
+
 export const FormSchema = z.object({
   name: z.string().min(1).max(50),
   email: z.string().email(),

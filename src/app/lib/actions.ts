@@ -4,7 +4,7 @@ import { revalidatePath, unstable_noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import bcrypt, { compare } from "bcrypt";
 import { v4 } from "uuid";
-import { User, Review } from "./interface";
+import { User, Review, Quantity } from "./interface";
 
 export const FormSchema = z.object({
   name: z.string().min(1).max(50),
@@ -203,4 +203,58 @@ export async function createReview(review: Review) {
   
   revalidatePath(`/product/${product_id}`);
   redirect(`/product/${product_id}`);
+}
+
+
+const FormProductSchema = z.object({
+  id: z.string(),
+  product_id: z.string(),
+  user_id: z.string(),
+  comment: z.string(),
+  rating: z.coerce.number().gt(0, { message: 'Please enter an amount greater than $0.' }),
+  date: z.string(),
+});
+
+const UpdateQuantity = FormReviewSchema.omit({});
+
+export type QuantityState = {
+  errors?: {
+    id?: string[];
+    quantity_available?: number;
+  };
+  message?: string | null;
+};
+
+export async function updateQuantity(product: Quantity) {
+  const validatedFields = UpdateQuantity.safeParse({
+      id: product.id,
+      quantity_available: product.quantity_available,
+  });
+  alert(product.quantity_available)
+  alert(product.id)
+
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+      return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Quantity.',
+      };
+  }
+
+  // Prepare data for insertion into the database
+
+  try {
+    
+      await sql`
+      UPDATE products
+      SET quantity_available = ${product.quantity_available}
+      WHERE id = ${product.id}
+    `;
+    revalidatePath(`/product/${product.id}`);
+  } catch (error) {
+    return {
+        message: 'Database Error: Failed to Update Quantity.'
+    };
+}
+
 }
