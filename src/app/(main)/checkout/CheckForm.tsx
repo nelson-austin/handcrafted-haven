@@ -44,11 +44,11 @@ export default function CheckForm() {
         errorMessage = null
         // Update the product quantities in the database
         items.map(async item => { 
-                const response = await fetch("/api/auth/quantity", {
+                const response = await fetch("../api/auth/quantity", {
                     method: 'PUT',
                     body: JSON.stringify({
                         id: item.product_id || item.id,
-                        quantity_available: item.quantity_available - item.quantity,
+                        quantity_available: item.quantity_available,
                     }),
             });
             if(response.ok) {

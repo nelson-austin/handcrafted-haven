@@ -208,14 +208,10 @@ export async function createReview(review: Review) {
 
 const FormProductSchema = z.object({
   id: z.string(),
-  product_id: z.string(),
-  user_id: z.string(),
-  comment: z.string(),
-  rating: z.coerce.number().gt(0, { message: 'Please enter an amount greater than $0.' }),
-  date: z.string(),
+  quantity_available: z.coerce.number().gt(0, { message: 'Please enter an amount greater than 0.' }),
 });
 
-const UpdateQuantity = FormReviewSchema.omit({});
+
 
 export type QuantityState = {
   errors?: {
@@ -226,12 +222,11 @@ export type QuantityState = {
 };
 
 export async function updateQuantity(product: Quantity) {
-  const validatedFields = UpdateQuantity.safeParse({
+  console.log("something")
+  const validatedFields = FormProductSchema.safeParse({
       id: product.id,
       quantity_available: product.quantity_available,
   });
-  alert(product.quantity_available)
-  alert(product.id)
 
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
@@ -242,15 +237,18 @@ export async function updateQuantity(product: Quantity) {
   }
 
   // Prepare data for insertion into the database
-
+  const {id, quantity_available } = validatedFields.data
+  console.log(id)
+  console.log(quantity_available)
   try {
-    
-      await sql`
+      const response = await sql`
       UPDATE products
-      SET quantity_available = ${product.quantity_available}
-      WHERE id = ${product.id}
+      SET quantity_available = ${quantity_available}
+      WHERE id = ${id}
     `;
-    revalidatePath(`/product/${product.id}`);
+    console.log(response);
+    revalidatePath(`/product/${id}`);
+    return response;
   } catch (error) {
     return {
         message: 'Database Error: Failed to Update Quantity.'
