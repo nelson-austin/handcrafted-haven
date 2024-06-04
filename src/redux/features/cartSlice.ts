@@ -114,6 +114,7 @@ const cartSlice = createSlice({
       if (typeof window !== "undefined") {
         localStorage.removeItem("cart");
       }
+      saveState(state);
     },
   },
 });
