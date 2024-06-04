@@ -81,10 +81,10 @@ export default function Page({ product, categories }: {product: Product, categor
             <div className="block py-3 grid grid-cols-[1fr_3fr]">
               <label htmlFor="category" className="text-[1.2em]">Product Category</label>
               <select id="category" name="category" disabled={disabled} className="disabled:bg-slate-200 enabled:border enabled:border-solid enabled:border-[gray] p-2 disabled:text-black">
-                <option value="">-- Select Category --</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
-                 ))}
+                <option value={product.category_id}>{product.category_name}</option>
+                {categories.filter(cat => cat.id !== product.category_id).map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
               </select>
             </div>
             {disabled
