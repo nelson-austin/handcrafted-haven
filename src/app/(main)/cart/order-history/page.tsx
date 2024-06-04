@@ -1,6 +1,11 @@
 import { fetchOrderHistory } from "@/app/lib/data";
 import OrderHistoryCard from "./orderHistoryCard";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Order History",
+};
 
 export default async function OrderHistoryPage() {
   const orderHistory = await fetchOrderHistory();

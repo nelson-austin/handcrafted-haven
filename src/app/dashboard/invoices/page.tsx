@@ -4,6 +4,11 @@ import InvoicesTable from "@/app/ui/invoices/table";
 import Search from "@/app/ui/search";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Invoices",
+};
 
 export default async function Page({
   searchParams,

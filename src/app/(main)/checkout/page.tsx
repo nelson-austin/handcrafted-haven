@@ -1,6 +1,11 @@
 import CheckForm from "./CheckForm";
 import CheckoutCarousel  from "./checkoutCarousel";
 import CheckoutCard from "./checkoutCard";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Checkout",
+};
 
 export default function CheckOutPage() {
   return (
