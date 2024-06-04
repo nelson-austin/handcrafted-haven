@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export default async function SignupPage() {
   const session = await auth();
   if (session?.user.is_seller) {
-    // redirect(`/profile/${session.user.id}/edit`);
+    redirect(`/dashboard`);
   }
   if (session) {
   return <SignupForm user={session.user}/>;
