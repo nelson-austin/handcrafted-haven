@@ -25,12 +25,12 @@ export default async function Dashboard() {
   return (
     <main>
       <div className="flex m-5">
-        <Image 
+        { user.image ? <Image 
         src={user.image}
         width={100}
         height={100}
         alt="My company logo"
-        />
+        /> : null }
         <h1 className="text-3xl self-center">{user.business_name}</h1>
       </div>
       <div className="m-5 my-10 text-2xl">
