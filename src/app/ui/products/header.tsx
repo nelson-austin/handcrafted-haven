@@ -24,9 +24,9 @@ export default function Header() {
 
   return (
     <>
-      <header className="z-50 h-20 bg-green-900 rounded-lg m-3 md:h-28">
-        <div className="header-items flex justify-between md:h-28">
-          <div className="flex flex-col">
+      <header className="z-50 h-26 bg-green-900 rounded-lg m-3 md:h-28">
+        <div className="header-items flex justify-between h-24 md:h-28">
+          <div className="flex flex-col pt-[10px] md:pt-0">
             <Link href="/">
               <div className="flex items-center justify-center md:h-28 pl-5">
                 <Image
