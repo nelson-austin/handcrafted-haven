@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     <div className="block bg-gray-50  rounded-xl overflow-hidden shadow-lg mx-4 my-4 p-5 md:min-w-[30rem] md:max-w-[30rem]">
                         <h1 className="font-bold text-[35px] text-center">★ ★ ★</h1>
                         <h1 className="font-bold text-[30px] text-center">Thanks for sending a Review</h1>
-                        <p className="text-[30px] text-center">of</p>
+                        <p className="text-[30px] text-center">about</p>
                         <p className="font-bold text-[30px] text-center">{product.name}</p>
                         <div className="flex item-center justify-center">
                             <Image
