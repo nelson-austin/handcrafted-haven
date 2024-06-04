@@ -2,37 +2,24 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-import { getSession, useSession } from "next-auth/react";
-import { User } from "@/app/lib/interface";
-import HeaderLinks from "../header/links";
-import { set } from "zod";
+import { useState } from "react";
+import { signOut } from "next-auth/react";
 
 export default function Header() {
-  const cartCount = useSelector((state: any) => state.cart.totalItems);
-  const [user, setUser] = useState({} as User);
+  
   const [isNavOpen, setIsNavOpen] = useState(false);
-
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    if (session !== null) {
-      setUser(session.user as User);
-    }
-  }, [session]);
 
   return (
     <>
-      <header className="z-50 h-26 bg-green-900 rounded-lg m-3 md:h-28">
-        <div className="header-items flex justify-between h-24 md:h-28">
-          <div className="flex flex-col pt-[10px] md:pt-0">
+      <header className="z-50 h-20 bg-green-900 rounded-lg m-3">
+        <div className="header-items flex justify-between md:h-28">
+          <div className="flex flex-col">
             <Link href="/">
-              <div className="flex items-center justify-center md:h-28 pl-5">
+              <div className="flex items-center justify-center h-20 pl-5">
                 <Image
                   src="/HH-Logo.png"
-                  width={75}
-                  height={75}
+                  width={50}
+                  height={50}
                   alt="Logo Image"
                 />
                 <p className="text-sky-100 pl-3 text-[26px] font-bold leading-none">
@@ -42,9 +29,6 @@ export default function Header() {
             </Link>
           </div>
           <div className="header-items flex items-center justify-between">
-            <div className="hidden md:flex items-center">
-              <HeaderLinks user={user} cartCount={cartCount} />
-            </div>
             <button
               data-collapse-toggle="navbar-default"
               type="button"
@@ -70,18 +54,17 @@ export default function Header() {
                 />
               </svg>
             </button>
-            <span
-              className={`text-sky-100 font-semibold text-[20px] bg-red-900 p-1 rounded-[50%] w-[25px] h-[25px] flex items-center justify-center mb-5 -ml-10 mr-5 md:hidden
-              ${cartCount < 1 && "invisible"}`}
-            >
-              {cartCount}
-            </span>
           </div>
         </div>
       </header>
       {isNavOpen && (
         <div className="md:hidden p-5 bg-green-900 rounded-lg ml-20 mr-20 md:h-28">
-          <HeaderLinks user={user} cartCount={cartCount} />
+          <div className="flex flex-col md:flex-row items-center">
+            <Link className="font-bold bg-green-900 text-white m-4 rounded-md hover:bg-green-300 hover:text-black" href={'/dashboard'}>Profile</Link>
+            <Link className="font-bold bg-green-900 text-white m-4 rounded-md hover:bg-green-300 hover:text-black" href={'/dashboard/inventory'}>Inventory</Link>
+            <Link className="font-bold bg-green-900 text-white m-4 rounded-md hover:bg-green-300 hover:text-black" href={'/dashboard/invoices'}>Invoices</Link>
+            <Link className="font-bold bg-green-900 text-white m-4 rounded-md hover:bg-green-300 hover:text-black" onClick={() => signOut()} href={'/'}>Log Out</Link>
+          </div>
         </div>
       )}
     </>
