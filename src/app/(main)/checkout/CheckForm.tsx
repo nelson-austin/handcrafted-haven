@@ -3,21 +3,12 @@
 import { FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { newOrder } from "@/app/lib/queries";
+import { Item } from "@/app/lib/interface";
 
-interface Item {
-    id: string;
-    user_id: string;
-    product_id: string;
-    name: string;
-    image: string;
-    description: string;
-    price: string;
-    quantity_available: number;
-    image_id: string | null;
-    quantity: number;
-}
 
-export default function CheckForm() {
+
+export default function CheckForm({ id }: { id: string}) {
     const router = useRouter()
     const [items, setItems] = useState<Item[]>([]);
     const [orderTotal, setOrderTotal] = useState<number>(0);
@@ -56,6 +47,8 @@ export default function CheckForm() {
                 errorMessage = response.statusText;
             }
         })
+
+        newOrder(id, items)
 
         localStorage.setItem('cart', '');
         router.push('/thankyou');

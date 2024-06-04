@@ -57,6 +57,7 @@ export default async function OrderHistoryPage() {
                   description={""}
                   price={0}
                   key={order.id}
+                  order_date={new Date}
                   {...order}
                 />
               );
