@@ -36,7 +36,7 @@ export default function Header() {
                   alt="Logo Image"
                 />
                 <p className="text-sky-100 pl-3 text-[26px] font-bold leading-none">
-                  Handcrafted <span className="text-[50px] md:text-[53px] lg:text-[26px]">Haven</span>
+                  Handcrafted Haven
                 </p>
               </div>
             </Link>
