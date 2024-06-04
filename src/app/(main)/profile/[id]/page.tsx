@@ -2,6 +2,11 @@ import UserProfileView from "./profile";
 import { getProfileById } from "@/app/lib/actions";
 import { fetchMyInventory } from "@/app/lib/data";
 import { auth } from "@/auth";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Profile",
+};
 
 export default async function UserProfilePage({ params }: { params: { id: string }}) {
     const session = await auth();

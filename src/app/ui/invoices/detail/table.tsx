@@ -48,7 +48,7 @@ export default async function InvoicesDetailsTable({ id }: { id: string }) {
                   Product
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Amount
+                  Price
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Quantity

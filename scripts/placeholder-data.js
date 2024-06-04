@@ -393,105 +393,90 @@ const orders = [
 
 const ordered_products = [
     {
-        id:1,
         order_id: orders[0].id,
         product_id: products[0].id,
         quantity: 1,
         price: products[0].price
     },
     {
-        id: 2,
         order_id: orders[1].id,
         product_id: products[2].id,
         quantity: 1,
         price: products[2].price
     },
     {
-        id: 3,
         order_id: orders[2].id,
         product_id: products[4].id,
         quantity: 1,
         price: products[4].price
     },
     {
-        id: 4,
         order_id: orders[3].id,
         product_id: products[6].id,
         quantity: 2,
         price: products[6].price
     },
     {
-        id: 5,
         order_id: orders[4].id,
         product_id: products[8].id,
         quantity: 3,
         price: products[8].price
     },
     {
-        id: 6,
         order_id: orders[5].id,
         product_id: products[1].id,
         quantity: 2,
         price: products[1].price
     },
     {
-        id: 7,
         order_id: orders[6].id,
         product_id: products[3].id,
         quantity: 1,
         price: products[3].price
     },
     {
-        id: 8,
         order_id: orders[7].id,
         product_id: products[5].id,
         quantity: 1,
         price: products[5].price
     },
     {
-        id: 9,
         order_id: orders[8].id,
         product_id: products[7].id,
         quantity: 1,
         price: products[7].price
     },
     {
-        id: 10,
         order_id: orders[9].id,
         product_id: products[9].id,
         quantity: 1,
         price: products[9].price
     },
     {
-        id: 11,
         order_id: orders[10].id,
         product_id: products[0].id,
         quantity: 2,
         price: products[0].price
     },
     {
-        id: 12,
         order_id: orders[11].id,
         product_id: products[2].id,
         quantity: 1,
         price: products[2].price
     },
     {
-        id: 13,
         order_id: orders[12].id,
         product_id: products[4].id,
         quantity: 2,
         price: products[4].price
     },
     {
-        id: 14,
         order_id: orders[13].id,
         product_id: products[6].id,
         quantity: 1,
         price: products[6].price
     },
     {
-        id: 15,
         order_id: orders[14].id,
         product_id: products[8].id,
         quantity: 1,

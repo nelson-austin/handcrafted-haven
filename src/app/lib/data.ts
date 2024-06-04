@@ -2,7 +2,7 @@ import { db, sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 
-import { Invoice, Order, Product, Review, Category, InvoiceDetail } from "./interface";
+import { Invoice, Order, Product, Review, Category, InvoiceDetail, Company } from "./interface";
 
 export async function fetchCategories() {
   unstable_noStore();
@@ -93,7 +93,12 @@ export async function fetchProductById(id: string) {
   unstable_noStore();
   try {
     const data = await sql<Product>`
-        SELECT * FROM products
+        SELECT products.id, products.user_id, products.name, products.image, products.description, products.price,
+                products.quantity_available, categories.id as category_id, categories.name as category_name FROM products
+        INNER JOIN product_categories
+        ON product_categories.product_id = products.id
+        INNER JOIN categories
+        ON categories.id = product_categories.category_id
         WHERE products.id = ${id}`;
 
     return data.rows[0];
@@ -116,6 +121,21 @@ export async function fetchReviewsByProductById(id: string) {
   } catch (error) {
     console.error("Data Fetch Error:", error);
     throw new Error("Failed to find reviews");
+  }
+}
+
+export async function fetchCompanyByProductById(id: string) {
+  unstable_noStore();
+  try {
+    const data = await sql<Company>`
+        SELECT * FROM products
+        JOIN users ON products.user_id = users.id
+        WHERE products.id = ${id}`;
+
+    return data.rows[0];
+  } catch (error) {
+    console.error("Data Fetch Error:", error);
+    throw new Error("Failed to find company");
   }
 }
 

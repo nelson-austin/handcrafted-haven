@@ -26,6 +26,7 @@ export default function CheckForm() {
   const [orderTotal, setOrderTotal] = useState<number>(0);
   var errorMessage = null;
 
+
   useEffect(() => {
     const cart = localStorage.getItem("cart");
     if (cart) {
@@ -38,6 +39,7 @@ export default function CheckForm() {
         return acc + price * item.quantity;
       }, 0);
       setOrderTotal(total);
+
     }
   }, []);
 

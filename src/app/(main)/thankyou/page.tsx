@@ -1,4 +1,10 @@
 import Link from "next/link"
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Thank You Page",
+};
+
 export default function ThankYouPage() {
     return ( 
     <div>

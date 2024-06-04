@@ -1,14 +1,24 @@
 import { notFound } from "next/navigation";
-import { fetchProductById, fetchReviewsByProductById } from "@/app/lib/data";
+import { fetchProductById, fetchReviewsByProductById, fetchCompanyByProductById } from "@/app/lib/data";
 import Image from "next/image";
 import AddToCartButton from "@/app/ui/products/addToCartButton";
 import ReviewForm from "./ReviewForm";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = params.id;
+  const product = await fetchProductById(id);
+
+  return {
+    title: product.name,
+  };
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const product = await fetchProductById(id);
   const reviews = await fetchReviewsByProductById(id);
-  //console.log(reviews);
+  const company = await fetchCompanyByProductById(id);
   const star = "★";
 
   if (!product) {
@@ -18,6 +28,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <div className="pl-3 pr-3 overflow-y-clip md:pl-[10%] md:pr-[10%]">
       <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100">
+        
         <Image
           src={product.image}
           width={560}
@@ -32,6 +43,21 @@ export default async function Page({ params }: { params: { id: string } }) {
         </p>
         <p className="text-gray-700 text-xl font-semibold">${product.price}</p>
         <AddToCartButton product={product} />
+      </div>
+      <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100 mt-5">
+        <div className="block bg-red-900 w-[560] rounded-xl overflow-hidden shadow-lg mx-4 my-4 p-5 pb-7">
+          <p className="text-center text-[15px] text-white"><strong>Presented by</strong></p>
+          <div className="flex flex-row items-center justify-center">
+            {company.image ? (<Image
+            src={company.image}
+            width={560}
+            height={620}
+            className="w-[50px] rounded-full"
+            alt={company.business_name + " " + "logo"}
+            />) : null}
+            <h1 className="font-bold text-[25px] text-center text-white pl-5">{company.business_name}</h1>
+          </div>
+        </div>
       </div>
       <div className="flex flex-col rounded-xl items-left justify-left p-3 bg-blue-100 mt-5">
         <div className="md:flex md:justify-center">
