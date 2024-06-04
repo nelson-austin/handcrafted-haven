@@ -51,7 +51,7 @@ export default function CheckForm({ id }: { id: string }) {
         method: "PUT",
         body: JSON.stringify({
           id: item.product_id || item.id,
-          quantity_available: item.quantity_available - item.quantity,
+          quantity_available: item.quantity_available,
         }),
       });
       if (response.ok) {
