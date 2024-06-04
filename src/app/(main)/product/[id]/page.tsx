@@ -3,6 +3,16 @@ import { fetchProductById, fetchReviewsByProductById } from "@/app/lib/data";
 import Image from "next/image";
 import AddToCartButton from "@/app/ui/products/addToCartButton";
 import ReviewForm from "./ReviewForm";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = params.id;
+  const product = await fetchProductById(id);
+
+  return {
+    title: product.name,
+  };
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;

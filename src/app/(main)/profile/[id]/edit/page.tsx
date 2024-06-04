@@ -2,6 +2,11 @@
 import { auth } from "@/auth";
 import UpdateUserForm from "./form";
 import { redirect, useParams } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit Profile",
+};
 
 //metadata.title = "Profile Update";
 

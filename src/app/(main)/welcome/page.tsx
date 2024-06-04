@@ -3,6 +3,11 @@ import Link from "next/link";
 
 import Footer from "./partials/footer";
 import { auth } from "@/auth";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Welcome",
+};
 
 export default async function SellerPage() {
   const session = await auth();
