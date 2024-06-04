@@ -16,6 +16,8 @@ export type Product = {
   description: string;
   price: number;
   quantity_available: number;
+  category_id?: number,
+  category_name?: string,
 };
 
 export type User = {
