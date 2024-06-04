@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { clearCart } from "@/redux/features/cartSlice";
+import { newOrder } from "@/app/lib/queries";
 
 interface Item {
   id: string;
@@ -19,13 +20,12 @@ interface Item {
   quantity: number;
 }
 
-export default function CheckForm() {
+export default function CheckForm({ id }: { id: string }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [items, setItems] = useState<Item[]>([]);
   const [orderTotal, setOrderTotal] = useState<number>(0);
   var errorMessage = null;
-
 
   useEffect(() => {
     const cart = localStorage.getItem("cart");
@@ -39,7 +39,6 @@ export default function CheckForm() {
         return acc + price * item.quantity;
       }, 0);
       setOrderTotal(total);
-
     }
   }, []);
 
@@ -60,6 +59,8 @@ export default function CheckForm() {
         errorMessage = response.statusText;
       }
     });
+
+    newOrder(id, items);
 
     dispatch(clearCart());
     localStorage.setItem("cart", "");
