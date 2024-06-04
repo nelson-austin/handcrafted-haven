@@ -19,7 +19,6 @@ export default async function Page({ params }: { params: { id: string } }) {
   const product = await fetchProductById(id);
   const reviews = await fetchReviewsByProductById(id);
   const company = await fetchCompanyByProductById(id);
-  console.log(company);
   const star = "★";
 
   if (!product) {
