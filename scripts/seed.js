@@ -173,8 +173,8 @@ async function seedOrders(client) {
     const insertedOrders = await Promise.all(
       orders.map(async (order) => {
         return client.sql`
-        INSERT INTO orders (id, user_id)
-        VALUES (${order.id}, ${order.user_id})
+        INSERT INTO orders (user_id)
+        VALUES (${order.user_id})
         ON CONFLICT (ID) DO NOTHING;
       `;
       }),
@@ -211,8 +211,8 @@ async function seedOrderedproducts (client) {
     const insertedOrderedProducts = await Promise.all(
       ordered_products.map(async (ordered) => {
         return client.sql`
-          INSERT INTO ordered_products (id, order_id, product_id, quantity, price)
-          VALUES (${ordered.id}, ${ordered.order_id}, ${ordered.product_id}, ${ordered.quantity}, ${ordered.price})
+          INSERT INTO ordered_products (order_id, product_id, quantity, price)
+          VALUES (${ordered.order_id}, ${ordered.product_id}, ${ordered.quantity}, ${ordered.price})
           ON CONFLICT (ID) DO NOTHING;
         `;
       })
@@ -348,11 +348,11 @@ async function main() {
  // await seedReviews(client);
   //await seedCart(client);
   //await seedOrders(client);
-  //await seedOrderedproducts(client);
+  await seedOrderedproducts(client);
   //await seedCategories(client)
   //await seedProductCategories(client)
 
-  await updatePass(client)
+  //await updatePass(client)
 
   await client.end();
 }

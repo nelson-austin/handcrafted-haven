@@ -4,6 +4,7 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { Item } from './interface';
 
 const FormSchema = z.object({
     id: z.string(),
@@ -121,6 +122,33 @@ export async function newProduct(id: string, prevState: State, formData: FormDat
 
     } catch (error) {
         return { message: 'Database Error: Failed to create product.' };
+    }
+    revalidatePath('/dashboard/inventory');
+    redirect('/dashboard/inventory');
+}
+
+export async function newOrder(id: string, items: Item[]) {
+
+    try {
+        const result = await sql`
+            INSERT INTO orders (user_id)
+            VALUES (${id})
+            RETURNING id;
+        `;
+        
+        const order_id = result.rows[0].id
+
+        items.map(async (item) => {
+            await sql`
+                INSERT INTO ordered_products (order_id, product_id, quantity, price)
+                VALUES (${order_id}, ${item.product_id}, ${item.quantity}, ${item.price})
+            `
+        })
+
+        console.log("Inserting new Order")
+
+    } catch (error) {
+        return { message: 'Database Error: Failed to create order.' };
     }
     revalidatePath('/dashboard/inventory');
     redirect('/dashboard/inventory');
