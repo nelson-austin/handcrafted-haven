@@ -91,7 +91,12 @@ export async function fetchProductById(id: string) {
   unstable_noStore();
   try {
     const data = await sql<Product>`
-        SELECT * FROM products
+        SELECT products.id, products.user_id, products.name, products.image, products.description, products.price,
+                products.quantity_available, categories.id as category_id, categories.name as category_name FROM products
+        INNER JOIN product_categories
+        ON product_categories.product_id = products.id
+        INNER JOIN categories
+        ON categories.id = product_categories.category_id
         WHERE products.id = ${id}`;
 
     return data.rows[0];
