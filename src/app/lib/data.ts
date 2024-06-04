@@ -2,7 +2,7 @@ import { db, sql } from "@vercel/postgres";
 import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 
-import { Invoice, Order, Product, Review, Category, InvoiceDetail } from "./interface";
+import { Invoice, Order, Product, Review, Category, InvoiceDetail, Company } from "./interface";
 
 export async function fetchCategories() {
   unstable_noStore();
@@ -121,6 +121,21 @@ export async function fetchReviewsByProductById(id: string) {
   } catch (error) {
     console.error("Data Fetch Error:", error);
     throw new Error("Failed to find reviews");
+  }
+}
+
+export async function fetchCompanyByProductById(id: string) {
+  unstable_noStore();
+  try {
+    const data = await sql<Company>`
+        SELECT * FROM products
+        JOIN users ON products.user_id = users.id
+        WHERE products.id = ${id}`;
+
+    return data.rows[0];
+  } catch (error) {
+    console.error("Data Fetch Error:", error);
+    throw new Error("Failed to find company");
   }
 }
 
