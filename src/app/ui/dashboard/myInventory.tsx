@@ -13,7 +13,7 @@ export default async function myInventory() {
     {products?.map((item) => (
       
       <Link key={item.id} href={`/dashboard/inventory/edit-item/${item.id}`}>
-        <div className="grid grid-cols-[1fr_1fr] gap-10 m-10">
+        <div className="grid grid-cols-[1fr_1fr] gap-10 m-10 hover:bg-slate-100 hover:shadow-lg">
           <Image
           src={item.image}
           width={500}

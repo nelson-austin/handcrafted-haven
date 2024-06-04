@@ -57,6 +57,19 @@ async function seedUsers(client) {
   }
 };
 
+async function updatePass(client) {
+  const insertedUsers = await Promise.all(
+    users.map(async (user) => {
+      const hashedPassword = await bcrypt.hash(await "myPassword1", 10);
+      return client.sql`
+      UPDATE users
+      SET password = ${hashedPassword}
+      WHERE id = ${user.id};
+    `;
+    }),
+  );
+}
+
 async function seedProducts(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -337,7 +350,9 @@ async function main() {
   //await seedOrders(client);
   //await seedOrderedproducts(client);
   //await seedCategories(client)
-  await seedProductCategories(client)
+  //await seedProductCategories(client)
+
+  await updatePass(client)
 
   await client.end();
 }
