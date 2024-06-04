@@ -81,3 +81,18 @@ export type Quantity = {
   id: string;
   quantity_available: number;
 }
+
+export type Company = {
+  id: string;
+  user_id: string;
+  name: string;
+  image: string;
+  description: string;
+  price: string;
+  quantity_available: number;
+  image_id: string,
+  email: string;
+  password: string;
+  is_seller: boolean;
+  business_name: string;
+};
