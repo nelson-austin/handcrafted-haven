@@ -2,37 +2,48 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Product } from "@/app/lib/interface";
+
 interface CartItem extends Product {
   quantity: number;
 }
+
 interface CartState {
   items: CartItem[];
   totalItems: number;
 }
 
-const initialState: CartState = (() => {
-  // Load state from local storage if available
-  if (typeof window !== "undefined") {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      return JSON.parse(savedCart);
-    }
-  }
-
-  return {
-    items: [],
-    totalItems: 0,
-  };
-})();
+// Define a static initial state
+const initialState: CartState = {
+  items: [],
+  totalItems: 0,
+};
 
 const saveState = (state: CartState) => {
-  localStorage.setItem("cart", JSON.stringify(state));
+  if (typeof window !== "undefined") {
+    localStorage.setItem("cart", JSON.stringify(state));
+  }
+};
+
+// Action to load state from localStorage
+const loadState = () => {
+  return (dispatch: any) => {
+    if (typeof window !== "undefined") {
+      const savedCart = localStorage.getItem("cart");
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        dispatch(cartSlice.actions.setCartState(parsedCart));
+      }
+    }
+  };
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCartState(state, action: PayloadAction<CartState>) {
+      return action.payload;
+    },
     addItemToCart(state, action: PayloadAction<Product>) {
       const existingItem = state.items.find(
         (item) => item.id === action.payload.id
@@ -100,7 +111,10 @@ const cartSlice = createSlice({
     clearCart(state) {
       state.items = [];
       state.totalItems = 0;
-      localStorage.removeItem("cart");
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("cart");
+      }
+      saveState(state);
     },
   },
 });
@@ -111,5 +125,9 @@ export const {
   decrementItemQuantity,
   removeItemFromCart,
   clearCart,
+  setCartState,
 } = cartSlice.actions;
+
+export const loadCartState: any = loadState;
+
 export default cartSlice.reducer;

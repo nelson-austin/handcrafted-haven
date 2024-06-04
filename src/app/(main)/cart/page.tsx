@@ -1,9 +1,11 @@
 "use client";
 
-import Link from "next/link"; 
-import { useDispatch, useSelector } from "react-redux"; 
-import { Product } from "@/app/lib/interface"; 
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
+import { Product } from "@/app/lib/interface";
 import {
+  loadCartState,
   removeItemFromCart,
   incrementItemQuantity,
   decrementItemQuantity,
@@ -15,8 +17,13 @@ export interface CartItem extends Product {
 }
 
 export default function CartPage() {
-  // Use the dispatch hook to dispatch actions to the Redux store
   const dispatch = useDispatch();
+
+  // Load state from localStorage when the component mounts
+  useEffect(() => {
+    dispatch(loadCartState());
+  }, [dispatch]);
+
   // Use the selector hook to access the cart items from the Redux store
   const cartItems = useSelector((state: any) => state.cart.items);
 
@@ -42,12 +49,11 @@ export default function CartPage() {
   return (
     <section className="pb-10">
       {/* Title */}
-      {cartItems.length === 0 ? ( // Conditional rendering based on whether the cart is empty
+      {cartItems.length === 0 ? (
         <div className="text-center text-[36px]">
           <p>Your cart is empty.</p>
           <Link href={"/"}>
             <div className="flex items-center justify-center gap-3 pt-5 text-gray-400 md:hover:text-gray-500">
-              {/* SVG icon for the continue shopping link */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -89,10 +95,7 @@ export default function CartPage() {
                 </svg>
               </span>
             </Link>{" "}
-            {/* Styling the section with padding */}
-            <h2 className="text-center text-[33px] font-bold">
-              Shopping Cart
-            </h2>{" "}
+            <h2 className="text-center text-[33px] font-bold">Shopping Cart</h2>{" "}
           </div>
           <div className="flex flex-col items-center md:grid place-items-center grid-cols-2 lg:grid-cols-3">
             {cartItems.map((item: CartItem) => (
@@ -100,7 +103,6 @@ export default function CartPage() {
                 key={item.id}
                 className="flex flex-col m-3 items-center bg-blue-100 shadow-lg rounded-lg p-4 w-[363px] md:w-[365px] lg:w-[390px]"
               >
-                {/* Display product image */}
                 <img
                   src={`${item.image}`}
                   alt={item.name}
@@ -111,13 +113,11 @@ export default function CartPage() {
                 <p className="text-gray-600">{item.description}</p>
                 <p className="text-gray-800">Quantity: {item.quantity}</p>
                 <div className="flex gap-3 justify-center mt-1">
-                  {/* Conditional rendering based on item availability */}
                   {item.quantity_available === 0 ? (
                     <button
                       onClick={() => handleIncrement(item.id)}
-                      className="hidden text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
+                      className="hidden text-[15px] md:hover:bg-green-700 hover:text-slate-100 hover:scale-125 transition-all"
                     >
-                      {/* SVG icon for increment button */}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -136,9 +136,8 @@ export default function CartPage() {
                   ) : (
                     <button
                       onClick={() => handleIncrement(item.id)}
-                      className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
+                      className="text-[15px] md:hover:bg-green-700 hover:text-slate-100 hover:scale-125 transition-all"
                     >
-                      {/* SVG icon for increment button */}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -157,9 +156,8 @@ export default function CartPage() {
                   )}
                   <button
                     onClick={() => handleDecrement(item.id)}
-                    className="text-[15px] md:hover:bg-green-700 hover:text-sky-100 font-black mb-1 bg-white rounded-[50%] p-4"
+                    className="text-[15px] md:hover:bg-red-600 hover:text-slate-100 hover:scale-125 transition-all"
                   >
-                    {/* SVG icon for decrement button */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -171,68 +169,29 @@ export default function CartPage() {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => handleRemove(item.id)}
-                    className="text-[15px] md:hover:bg-green-700 hover:text-red-900 font-black mb-1 bg-white rounded-[50%] p-4"
-                  >
-                    {/* SVG icon for remove button */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                        d="M19.5 12h-15"
                       />
                     </svg>
                   </button>
                 </div>
+                <button
+                  onClick={() => handleRemove(item.id)}
+                  className="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded mt-3"
+                >
+                  Remove
+                </button>
               </div>
             ))}
           </div>
-          <div className="flex flex-col">
-            {/* Display total cost and checkout link */}
-            <div className="flex justify-between items-center mt-10 m-auto p-4 bg-green-900 text-sky-100 rounded-lg w-[360px] md:mr-[20px]">
-              <h3 className="text-xl font-semibold">
-                Total Cost: {`$${totalCost.toFixed(2)}`}
-              </h3>
-              <Link href={"/checkout"}>
-                <p className="text-xl font-semibold md:hover:bg-sky-100 md:p-3 rounded-lg hover:underline md:hover:text-green-900">
-                  Checkout
-                </p>
-              </Link>
-            </div>
-            <div className="text-[36px]">
-              {/* Continue shopping link */}
-              <Link href={"/"}>
-                <div className="flex items-center justify-center md:justify-end gap-1 pt-4 text-gray-400 md:mr-5 md:hover:text-gray-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
-                    />
-                  </svg>
-                  <p>Continue Shopping</p>
-                </div>
-              </Link>
-            </div>
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-xl font-semibold mt-4">
+              Total Cost: ${totalCost.toFixed(2)}
+            </p>
+            <Link href={"/checkout"}>
+              <button className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mt-3">
+                Proceed to Checkout
+              </button>
+            </Link>
           </div>
         </div>
       )}
