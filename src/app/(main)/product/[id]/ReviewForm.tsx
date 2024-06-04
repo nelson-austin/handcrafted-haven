@@ -32,6 +32,7 @@ export default function ReviewForm() {
             setTimeout(() => {
                 console.log("Loading...")
               }, 800)
+            router.refresh()
             router.push(`/review/${params.id}`)
             setReview("")
             setRating(0)
