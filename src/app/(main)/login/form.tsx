@@ -35,7 +35,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="pb-20">
+    <form onSubmit={handleSubmit} className="pb-5">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`mb-3 text-2xl`}>Please login to continue.</h1>
         <div className="w-full">
