@@ -30,6 +30,7 @@ export default async function Dashboard() {
         width={100}
         height={100}
         alt="My company logo"
+        className="w-[100px] rounded-full mr-4"
         /> : null }
         <h1 className="text-3xl self-center">{user.business_name}</h1>
       </div>
