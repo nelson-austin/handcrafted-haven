@@ -4,6 +4,7 @@ import Image from "next/image";
 import AddToCartButton from "@/app/ui/products/addToCartButton";
 import ReviewForm from "./ReviewForm";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const id = params.id;
@@ -39,13 +40,13 @@ export default async function Page({ params }: { params: { id: string } }) {
         <h1 className="font-bold text-[30px] mb-2">{product.name}</h1>
         <p className="text-gray-700 text-base">{product.description}</p>
         <p className="text-gray-700 text-base">
-          Quantity Aviable: {product.quantity_available}
+          Quantity Available: {product.quantity_available}
         </p>
         <p className="text-gray-700 text-xl font-semibold">${product.price}</p>
         <AddToCartButton product={product} />
       </div>
       <div className="flex flex-col rounded-xl items-center justify-center p-3 bg-blue-100 mt-5">
-        <div className="block bg-red-900 w-[560] rounded-xl overflow-hidden shadow-lg mx-4 my-4 p-5 pb-7">
+        <Link href={`/profile/${company.id}`} className="block bg-red-900 w-[560] rounded-xl overflow-hidden shadow-lg mx-4 my-4 p-5 pb-7">
           <p className="text-center text-[15px] text-white"><strong>Presented by</strong></p>
           <div className="flex flex-row items-center justify-center">
             {company.image ? (<Image
@@ -57,7 +58,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             />) : null}
             <h1 className="font-bold text-[25px] text-center text-white pl-5">{company.business_name}</h1>
           </div>
-        </div>
+        </Link>
       </div>
       <div className="flex flex-col rounded-xl items-left justify-left p-3 bg-blue-100 mt-5">
         <div className="md:flex md:justify-center">
