@@ -4,6 +4,7 @@ import { Product, User } from "@/app/lib/interface";
 import { ExclamationCircleIcon, UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Carousel from "./carousel";
+import Image from "next/image";
 //metadata.title = "Profile View";
 
 export default function UserProfileView({
@@ -21,9 +22,18 @@ export default function UserProfileView({
         {(profile && (
           <>
             <div className="flex flex-col mb-2">
-              <h1 className={`mb-3 text-2xl font-bold`}>
+              <div className="flex my-5">
+                { profile.image ? <Image 
+                src={profile.image}
+                width={100}
+                height={100}
+                alt="Company logo"
+                className="w-[100px] rounded-full mr-4"
+                /> : null }
+                <h1 className={`mb-3 text-2xl font-bold self-center`}>
                 {profile.name}&apos;s Profile
-              </h1>
+                </h1>
+              </div>
               <h2 className={`self-start mt-3 mb-3 text-xl font-bold`}>
                 About:
               </h2>
