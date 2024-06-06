@@ -18,7 +18,7 @@ export default async function SignupPage() {
   return (
     <>
       <SignupForm />
-      <span className="px-6 pb-20">Already have an account? <Link className="text-blue-900 hover:underline" href={'/login'}>Log in</Link></span>
+      <span className="px-6 pb-20">Already have an account? <Link className="text-blue-900 hover:underline" href={'/login'}>Log In</Link></span>
     </>
   );
 }
